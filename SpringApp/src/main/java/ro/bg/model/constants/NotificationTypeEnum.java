@@ -1,0 +1,11 @@
+package ro.bg.model.constants;
+
+public enum NotificationTypeEnum {
+    INVITATION_EVENT,
+    REQUEST_FRIENDSHIP,
+    REQUEST_EVENT_ACCEPTED,
+    REQUEST_EVENT_PARTICIPATION,
+    UPDATE_EVENT,
+    REQUEST_GAME_RESERVATION
+
+}
