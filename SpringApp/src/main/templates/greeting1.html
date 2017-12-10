@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Getting Started: Serving Web Content</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/first_page.css"/>
+</head>
+<body>
+<div id="page">
+
+    <ul>
+        <li><a href="/greeting1">Home</a></li>
+        <li class="dropdown">
+            <a href="/editprogram" class="dropbtn">Program</a>
+        </li>
+        <li class="dropdown">
+            <a href="/editreservation" class="dropbtn">Reservation</a>
+        </li>
+        <li class="dropdown">
+            <a href="/editgym" class="dropbtn">Gyms</a>
+        </li>
+        <li class="dropdown">
+            <a href="/editteacher" class="dropbtn">Employees</a>
+        </li>
+        <li class="dropdown" >
+            <a href="/editstudent" class="dropbtn">Students</a>
+        </li>
+        <li class="dropdown" >
+            <a href="/editsport" class="dropbtn">Sports</a>
+
+        </li>
+        <li><img id="logo" src="img/logo.png" alt="Logo" /></li>
+        <li style="float:right" class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">About</a>
+            <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+            </div>
+        </li>
+    </ul>
+
+    <img id="motto" src="img/motto.png" alt="Teacher" width="500px" height="300px"/>
+
+    <div id="contain">
+        <div class="floating-box">
+
+            <img src="img/gym.jpg" alt="Gym" width="200px" height="200px"/>
+            <div class="text">
+
+                <p class="title">GYMS</p>
+                <p>Gyms and courts for all types of sports</p>
+            </div>
+
+
+        </div>
+        <div class="floating-box">
+
+            <img src="img/teacher.jpg" alt="Teacher" width="200px" height="200px"/>
+            <div class="text">
+
+                <p class="title">TEACHERS</p>
+                <p>Best teachers for your training</p>
+            </div>
+        </div>
+        <div class="floating-box">
+
+            <img src="img/equipement.jpg" alt="Equipment" width="200px" height="200px"/>
+            <div class="text">
+
+                <p class="title">EQUIPMENT</p>
+                <p>The most new equipment wait you</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <p id="demo"></p>
+</div>
+</body>
+</html>

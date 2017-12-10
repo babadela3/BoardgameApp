@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="/js/javascript.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/seeprogram.css"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<ul>
+    <li><a href="/greeting1">Home</a></li>
+    <li class="dropdown">
+        <a href="/editprogram" class="dropbtn">Program</a>
+    </li>
+    <li class="dropdown">
+        <a href="/editreservation" class="dropbtn">Reservation</a>
+    </li>
+    <li class="dropdown">
+        <a href="/editgym" class="dropbtn">Gyms</a>
+    </li>
+    <li class="dropdown">
+        <a href="/editteacher" class="dropbtn">Employees</a>
+    </li>
+    <li class="dropdown" >
+        <a href="/editstudent" class="dropbtn">Students</a>
+    </li>
+    <li class="dropdown" >
+        <a href="/editsport" class="dropbtn">Sports</a>
+
+    </li>
+    <li><img id="logo" src="img/logo.png" alt="Logo" /></li>
+    <li style="float:right" class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">About</a>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
+        </div>
+    </li>
+</ul>
+
+
+
+
+
+
+<div id="page">
+    <table class="scroll" align="center">
+        <thead>
+        <tr>
+            <th>LAST NAME</th>
+            <th>FIRST NAME</th>
+            <th>SPORT</th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        <span th:each="teachers : ${list}">
+
+          <tr th:each="sport: ${teachers.getSport()}">
+              <td th:text="${teachers.getLast_name()}">2.41</td>
+              <td th:text="${teachers.getFirst_name()}">2.41</td>
+              <td th:text="${sport.getName()}">sas</td>
+
+          </tr>
+
+        </span>
+
+        </tbody>
+
+
+    </table>
+
+</div>
+
+<div class="container">
+    <form class="form-inline" action="#" th:action="@{/editteacher/add}" method="post">
+        <div class="form-group">
+            <input type="text" placeholder="Last Name" name="last_name" class="form-control"/>
+        </div>
+        <div class="form-group" >
+            <input type="text" class="form-control" placeholder="First Name" name="first_name"/>
+        </div>
+        <div class="form-group">
+            <select name="sport" class="selector">
+                <option th:each="sport : ${sportslist}" th:value="${sport.getSport_id()}" th:text="${sport.getName()}">Volvo</option>
+            </select>
+        </div>
+        <div class="btn-default">
+            <input class="btn" type="submit" value="Insert" />
+        </div>
+    </form>
+</div>
+<div class="container">
+    <form class="form-inline" action="#" th:action="@{/editteacher/delete}" method="post">
+        <div class="form-group">
+            <select name="teacher" class="selector">
+                <option th:each="teacher : ${list}" th:value="${teacher.getTeacher_id()}" th:text="${teacher.getLast_name()} + ' ' + ${teacher.getFirst_name()}">Volvo</option>
+            </select>
+        </div>
+        <div class="btn-default">
+            <input class="btn" type="submit" value="Delete"  />
+        </div>
+    </form>
+</div>
+<div class="container">
+    <form class="form-inline" action="#" th:action="@{/editteacher/update}" method="post">
+        <div class="form-group">
+            <select name="teacher" class="selector">
+                <option th:each="teacher : ${list}" th:value="${teacher.getTeacher_id()}" th:text="${teacher.getLast_name()} + ' ' + ${teacher.getFirst_name()}">Volvo</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select name="sport" class="selector">
+                <option th:each="sport : ${sportslist}" th:value="${sport.getSport_id()}" th:text="${sport.getName()}">Volvo</option>
+            </select>
+        </div>
+        <div class="btn-default">
+            <input class="btn" type="submit" value="Update"  />
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

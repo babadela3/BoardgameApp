@@ -10,7 +10,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "pk_pub_id")
+    @Column(name = "pk_reservation_id")
     private int id;
 
     @ManyToOne

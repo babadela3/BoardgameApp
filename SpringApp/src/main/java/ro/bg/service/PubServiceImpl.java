@@ -3,6 +3,9 @@ package ro.bg.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.bg.dao.PubDAO;
+import ro.bg.exception.BoardGameServiceException;
+import ro.bg.exception.ExceptionMessage;
+import ro.bg.model.Account;
 import ro.bg.model.Pub;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -11,6 +14,17 @@ public class PubServiceImpl implements PubService{
 
     @Autowired
     PubDAO pubDAO;
+
+    @Override
+    public Pub getPub(Account account) throws BoardGameServiceException {
+        Pub pub = pubDAO.findByEmailAndPassword(account.getUsername(),account.getPassword());
+        if(pub == null){
+            throw new BoardGameServiceException(ExceptionMessage.MISSING_PUB);
+        }
+        pub.setPassword(null);
+        pub.setReservations(null);
+        return pub;
+    }
 
     @Override
     public void createPub(Pub pub) {

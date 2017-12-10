@@ -1,8 +1,12 @@
 package ro.bg.service;
 
+import ro.bg.exception.BoardGameServiceException;
+import ro.bg.model.Account;
 import ro.bg.model.Pub;
 
 public interface PubService {
+
+    Pub getPub(Account account) throws BoardGameServiceException;
 
     void createPub(Pub pub);
 

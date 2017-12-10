@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="/js/loginPage.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/loginPages.css"/>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+<body>
+<div id="divPage">
+    <div id="divImg">
+        <img id="imgPhone" src="/images/whitePhone.png"/>
+    </div>
+    <div id="divMenu">
+        <div id="divTitle">
+            <img id="imgTitle" src="/images/logo.png"/>
+        </div>
+        <div id="divEmail">
+            <input type="text" id="email" placeholder="Email"/>
+        </div>
+        <div id="divPass">
+            <input type="password" id="pass" placeholder="Password"/>
+        </div>
+        <div id="divErrorLogin">
+            <label id="labelErrorLogin">The mail or password is incorrect.</label>
+        </div>
+        <div id="divButton">
+            <input id="button" onclick="login()" type="submit" value="Sign in"/>
+        </div>
+        <div id="divForgetPassword">
+            <label id="forgetPassword">Forgot Password?</label>
+        </div>
+    </div>
+    <div id="divCreateAccount">
+        <label id="account">Don't have an account? Sign Up</label>
+    </div>
+</div>
+</body>
+
+</html>
