@@ -2,7 +2,8 @@ package ro.bg.exception;
 
 public enum  ExceptionMessage {
 
-    MISSING_PUB("BG-01", "Pub is not registred in the application");
+    MISSING_PUB("BG-01", "Pub is not registred in the application"),
+    EMAIL_NOT_EXISTING("BG-02", "The email is not registred");
 
     private String code;
     private String message;

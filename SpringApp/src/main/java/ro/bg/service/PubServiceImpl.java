@@ -1,6 +1,9 @@
 package ro.bg.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ro.bg.dao.PubDAO;
 import ro.bg.exception.BoardGameServiceException;
@@ -14,6 +17,9 @@ public class PubServiceImpl implements PubService{
 
     @Autowired
     PubDAO pubDAO;
+
+    @Autowired
+    public JavaMailSender javaMailSender;
 
     @Override
     public Pub getPub(Account account) throws BoardGameServiceException {
@@ -54,5 +60,23 @@ public class PubServiceImpl implements PubService{
     @Override
     public void deletePub(Pub pub) {
         pubDAO.delete(pub.getId());
+    }
+
+    @Override
+    public void resetPassword(String mail) throws MailException, BoardGameServiceException {
+        Pub pub = pubDAO.findByEmail(mail);
+        if(pub != null){
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(mail);
+            message.setFrom("bgboardgame@gmail.com");
+            message.setSubject("Reset Password");
+            message.setText("Hi,\n\nWe got a request to reset your BoardGame password\n\nYour password is: " + pub.getPassword() + "\n\nIf you want to change the password, " +
+                    "click to follow link to change your password: http://localhost:8081/accounts/password/change/" + pub.getEmail() +"\n\nIf you ignore this message, " +
+                    "your password will not be change");
+            javaMailSender.send(message);
+        }
+        else{
+            throw new BoardGameServiceException(ExceptionMessage.EMAIL_NOT_EXISTING);
+        }
     }
 }

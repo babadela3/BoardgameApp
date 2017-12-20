@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script src="/js/loginPage.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/loginPages.css"/>
+    <script src="/js/login.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/loginPage.css"/>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body>
@@ -27,7 +27,7 @@
             <input id="button" onclick="login()" type="submit" value="Sign in"/>
         </div>
         <div id="divForgetPassword">
-            <label id="forgetPassword">Forgot Password?</label>
+            <label id="forgetPassword" onclick="resetPassword()">Forgot Password?</label>
         </div>
     </div>
     <div id="divCreateAccount">

@@ -28,3 +28,7 @@ function login() {
             });
 
 }
+
+function resetPassword(){
+    window.location.href = "http://localhost:8081/accounts/password/reset";
+}

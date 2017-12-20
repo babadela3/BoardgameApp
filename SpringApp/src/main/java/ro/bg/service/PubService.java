@@ -15,4 +15,6 @@ public interface PubService {
     void changePassword(Pub pub);
 
     void deletePub(Pub pub);
+
+    void resetPassword(String mail) throws BoardGameServiceException;
 }

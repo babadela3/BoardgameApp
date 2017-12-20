@@ -3,9 +3,12 @@ package ro.bg.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.Account;
 import ro.bg.model.Pub;
@@ -23,8 +26,12 @@ public class PubController {
     }
 
     @RequestMapping(value = "/accounts/password/reset")
-    public String resetPassword() {
-        return "resetPassword";
+    public String resetPassword() {return "resetPassword";}
+
+    @RequestMapping(value = "/pub/resetPassword", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void sendResetEmail(@RequestParam("email") String email) throws MailException, BoardGameServiceException {
+        pubService.resetPassword(email);
     }
 
     @RequestMapping(value = "/getPub", method = RequestMethod.POST)
