@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script src="/js/login.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/loginPage.css"/>
+    <script src="/js/loginPage.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/login.css"/>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body>
@@ -14,24 +14,41 @@
         <div id="divTitle">
             <img id="imgTitle" src="/images/logo.png"/>
         </div>
-        <div id="divEmail">
-            <input type="text" id="email" placeholder="Email"/>
+        <form action="#" th:action="@{/getPub}" method="post">
+            <div id="divEmail">
+                <input type="text" id="email" placeholder="Email" name="username"/>
+            </div>
+            <div id="divPass">
+                <input type="password" id="pass" placeholder="Password" name="password"/>
+            </div>
+            <div id="divButton">
+                <input id="button" onclick="login()" type="submit" value="Log in"/>
+            </div>
+        </form>
+        <div id="divName">
+            <input type="text" id="name" placeholder="Name"/>
         </div>
-        <div id="divPass">
-            <input type="password" id="pass" placeholder="Password"/>
+        <div id="divAddress">
+            <input type="text" id="address" placeholder="Address"/>
+        </div>
+        <div id="divDescription">
+            <input type="text" id="description" placeholder="Description"/>
         </div>
         <div id="divErrorLogin">
             <label id="labelErrorLogin">The mail or password is incorrect.</label>
         </div>
-        <div id="divButton">
-            <input id="button" onclick="login()" type="submit" value="Sign in"/>
+        <div id="divButtonSignUp">
+            <input id="buttonSignUp" onclick="createAccount()" type="submit" value="Sign Up"/>
         </div>
         <div id="divForgetPassword">
             <label id="forgetPassword" onclick="resetPassword()">Forgot Password?</label>
         </div>
     </div>
     <div id="divCreateAccount">
-        <label id="account">Don't have an account? Sign Up</label>
+        <label id="account">Don't have an account? <span onclick="signUp()">Sign Up</span></label>
+    </div>
+    <div id="divEnterAccount">
+        <label id="enterAccount">Have an account? <span onclick="loginInRedirect()">Log in</span></label>
     </div>
 </div>
 </body>

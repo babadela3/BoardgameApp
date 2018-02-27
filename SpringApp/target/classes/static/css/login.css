@@ -1,4 +1,4 @@
-#button{
+#button, #buttonSignUp{
 	background-color: #2196F3;
     width: 100%;
     height: 30px;
@@ -7,7 +7,7 @@
     color:white;
     cursor: pointer;
 }
-#button:hover {
+#button:hover, #buttonSignUp:hover {
 	background: #0b7dda;
     width: 100%;
     height: 30px;
@@ -79,13 +79,13 @@ html, body
     margin: auto;
 }
 
-#divForgetPassword,#divButton{
+#divForgetPassword,#divButton, #divButtonSignUp{
 	width: 70%;
     margin: auto;
     margin-top: 40px;
 }
 
-#email, #pass{
+#email, #pass, #name, #address, #description{
 	width: 100%;
     height: 25px;
     margin-top: 10px;
@@ -102,7 +102,7 @@ html, body
     cursor: pointer;
 }
 
-#divCreateAccount{
+#divCreateAccount, #divEnterAccount{
     width: 375px;
     height: 70px;
     float: right;
@@ -115,9 +115,14 @@ html, body
     border-width: thin;
 }
 
-#account{
+#account,#enterAccount{
     margin: auto;
     width:60%;
+}
+
+#enterAccount{
+    margin: auto;
+    width:45%;
 }
 
 #divErrorLogin{
@@ -133,6 +138,20 @@ html, body
     display: block;
 }
 
+#divName, #divDescription, #divAddress , #divButtonSignUp{
+    display: none;
+    width: 70%;
+    margin: auto;
+}
+
+#divEnterAccount{
+    display: none;
+}
+
+span{
+    cursor: pointer;
+}
+
 @media only screen and (max-width:1880px) {
   #divImg {
         display:none;
@@ -141,7 +160,7 @@ html, body
         float:none;
         margin:auto;
    }
-  #divCreateAccount{
+  #divCreateAccount, #divEnterAccount{
         float:none;
         margin:auto;
         margin-top: 30px;

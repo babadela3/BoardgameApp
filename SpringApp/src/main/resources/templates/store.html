@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/menu.css"/>
+    <script src="/js/store.js"></script>
+</head>
+<body>
+    <div id="divBarMenu">
+        <div id="divLogo">
+            <img id="logoImg" src="https://i.pinimg.com/736x/d8/4c/50/d84c5091474284d693db4ea2e8701500--logo-inspiration-board-games.jpg" />
+            <img id="logoTitle" src="/images/logo.png"/>
+        </div>
+        <div id="divSearch">
+            <input id="searchBar" type="text" placeholder="Search..." />
+        </div>
+        <div id="divAutentification">
+            <label onclick="profile()">Profile</label>
+            <label>|</label>
+            <label>Notifications</label>
+            <label>|</label>
+            <label>Log out</label>
+        </div>
+    </div>
+    <div id="divProfile">
+        <div id="divProfilePicture">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU1y7FYK3KgOBjxsEpXyMesq7vGidgYu1wkqLgcihQe63nPmpR" class="roundedcorners"/>
+        </div>
+        <div id="divProfileInfo">
+            <div id="divProfileName">
+                <label id="profileName" th:text="${pub.getName()}"/>
+            </div>
+            <form class="form" action="#" th:action="@{/editProfile}" method="post">
+                <input type="hidden" id="pub" name="pub" th:value='${pubString}'/>
+                <div id="divProfileButton">
+                    <input id="profileButton" type="submit" value="Edit profile"/>
+                </div>
+            </form>
+            <div id="divProfileDetails">
+                <div id="divProfilePhotos">
+                    <label id="profilePhotos">63 photos</label>
+                </div>
+                <div id="divProfileAlbums">
+                    <label id="profileAlbums">23 reservations</label>
+                </div>
+                <div id="divProfileComments">
+                    <label id="profileComments">102 events</label>
+                </div>
+            </div>
+            <div id="divProfileEmail">
+                <label id="profileEmail" th:text="${pub.getEmail()}"/>
+            </div>
+        </div>
+    </div>
+    <div id="divOptions">
+        <div class="options">
+            <label id="optionPhotos" onclick="store()">Store</label>
+        </div>
+        <div class="options">
+            <label id="optionCreate" onclick="upload()">Upload</label>
+        </div>
+        <div class="options">
+            <label id="optionAlbums">Photos</label>
+        </div>
+    </div>
+    <div id="divMenu">
+        <div class="divImg">
+            <img src="https://static1.squarespace.com/static/55ef0e29e4b099e22cdc9eea/58a6b79fe58c622c7953997e/58a6b79fbf629a5d3edd7422/1487320993474/Monopoly+Logo.jpg?format=1500w" class="imgPresentation"/>
+        </div>
+        <div class="divImg">
+            <img src="https://pollinationinaction.files.wordpress.com/2009/11/activity-original1.jpg" class="imgPresentation"/>
+        </div>
+        <div class="divImg">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5uaztjfRQHhMSK5IM7aGWd34BLHJeiAEM651yrfb_yu_4Ehb6" class="imgPresentation"/>
+        </div>
+        <div class="divImg">
+            <img src="https://static1.squarespace.com/static/55ef0e29e4b099e22cdc9eea/58a6b79fe58c622c7953997e/58a6b79fbf629a5d3edd7422/1487320993474/Monopoly+Logo.jpg?format=1500w" class="imgPresentation"/>
+        </div>
+        <div class="divImg">
+            <img src="https://pollinationinaction.files.wordpress.com/2009/11/activity-original1.jpg" class="imgPresentation"/>
+        </div>
+        <div class="divImg">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5uaztjfRQHhMSK5IM7aGWd34BLHJeiAEM651yrfb_yu_4Ehb6" class="imgPresentation"/>
+        </div>
+    </div>
+</body>
+</html>

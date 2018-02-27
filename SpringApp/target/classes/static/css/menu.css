@@ -1,0 +1,315 @@
+#divLogo{
+    float: left;
+    width:300px;
+    height: 100%;
+    padding:21px 0;
+    margin-left: 17%;
+}
+#divSearch{
+    display: inline-block;
+    padding:32px 0;
+}
+#divAutentification{
+	width: 300px;
+    float:right;
+    padding:38px 0;
+    margin-right: 17%;
+}
+#divBarMenu{
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    background-color: white;
+    border-bottom: thin solid #CDCECF;
+    position: fixed;
+    top: 0;
+}
+#logoImg , #logoTitle{
+	height: 55%;
+}
+
+#searchBar{
+    height:25px;
+    width:260px;
+    text-align:center;
+    padding: 3px;
+    background-color: #FBF6F6;
+    border: thin solid #CDCECF;
+}
+#signUp, #logIn, #line{
+	font-size:20px;
+	font-weight: bold;
+}
+#signUp, #logIn{
+    color:#2196F3;
+    margin-right:5px;
+    margin-left:5px;
+    cursor: pointer;
+}
+
+html, body
+{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    background: url(/images/photo1.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    text-align: center;
+}
+
+#divProfile {
+    width: 600px;
+    margin: auto;
+    margin-top: 150px;
+    padding: 18px;
+    overflow: auto;
+}
+
+.roundedcorners {
+    border-radius: 100px;
+    width: 150px;
+    height: 150px;
+}
+
+#divProfilePicture {
+    width: 150px;
+    height: 150px;
+    float: left;
+}
+
+#divProfileInfo {
+    width: 400px;
+    float: right;
+}
+
+#divProfileName {
+    width: 59%;
+    display: inline-block;
+    border-color: red;
+}
+
+#divProfileButton {
+    width: 39%;
+    display: inline-block;
+    border-color: coral;
+    float:left;
+}
+
+#divProfilePhotos {
+    width: 30%;
+    display: inline-block;
+}
+
+#divProfileAlbums {
+    width: 30%;
+    display: inline-block;
+}
+
+#divProfileComments {
+    width: 30%;
+    display: inline-block;
+}
+
+#profileName {
+    float:right;
+    font-size:25px;
+    margin-right:47px;
+}
+
+#profileButton {
+    float: left;
+    border: thin solid #CDCECF;
+    outline: none;
+    font-size: 15px;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+
+
+#divProfileDetails {
+    margin-top: 25px;
+}
+
+#profilePhotos, #profileAlbums, #profileComments {
+    font-size:17px;
+}
+
+#divProfileEmail {
+    width: 59%;
+    margin-top: 25px;
+    color: black;
+}
+
+#profileEmail {
+    float: right;
+    margin-right:20px;
+    font-size:20px;
+}
+
+#divOptions {
+    width: 600px;
+    margin: auto;
+    margin-top: 10px;
+    padding: 18px;
+    overflow: auto;
+    border-top: thin solid #CDCECF;
+}
+
+.options {
+    width:22%;
+    display: inline-block;
+}
+
+#optionAlbums, #optionUpload, #optionPhotos, #optionCreate {
+    font-size: 18px;
+    cursor: pointer;
+    color: black;
+}
+
+#optionPhotos, #optionAlbums:hover, #optionUpload:hover, #optionPhotos:hover, #optionCreate:hover {
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+}
+
+#divMenu {
+    width: 1250px;
+    display: block;
+    margin: auto;
+    margin-bottom: 100px;
+    padding: 18px;
+
+}
+
+.divImg {
+    width: 30%;
+    border: thin solid #CDCECF;
+    display: inline-block;
+    margin: 18px;
+    left: 0px;
+    float: left;
+}
+
+.description {
+    height: 50px;
+    background-color: white;
+}
+
+.imgPresentation {
+    width: 100%;
+    height: 300px;
+}
+
+.divEditProfile {
+    display:none;
+    background-color: white;
+    width: 1250px;
+    height: 650px;
+    display: block;
+    margin: auto;
+    margin-bottom: 100px;
+    border: thin solid #CDCECF;
+}
+
+
+#divEmpty {
+    width: 350px;
+    height: 100%;
+    border-right: 2px solid #CDCECF;
+    float: left;
+}
+
+#divMenuEdit {
+    width: 800px;
+    height: 650px;
+    float: right;
+}
+
+#divEditTitle {
+    margin-top: 80px;
+    text-align: left;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#editTitle {
+    font-size: 35px;
+}
+
+#divEditInfo {
+    margin: 50px;
+    text-align: left;
+    margin-top: 60px;
+}
+
+#editInfo {
+    font-size: 20px;
+}
+
+#divEditEmailLabel, #divEditNameLabel, #divEditCityLabel, #divEditPictureLabel {
+    margin-top: 10px;
+    width: 100px;
+    text-align: left;
+    margin-left: 80px;
+    margin-right: 50px;
+}
+
+#editEmailLabel, #editNameLabel, #editCityLabel {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#divEditEmailText, #divEditNameText, #divEditCityText {
+    display: inline-block;
+    width: 250px;
+    text-align: left;
+    position: relative;
+    bottom: 32px;
+    right: 100px;
+}
+
+
+
+#editEmailText, #editNameText, #editCityText {
+    height: 30px;
+    width: 100%;
+    font-size: 20px;
+}
+
+
+#divButtonEdit {
+    width: 200px;
+    text-align: left;
+    margin-left: 70px;
+    margin-right: 50px;
+}
+
+
+#buttonEdit {
+    background-color: #2196F3;
+    width: 100%;
+    height: 30px;
+    margin-top: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    color:white;
+}
+
+#buttonEdit:hover {
+    background: #0b7dda;
+    width: 100%;
+    height: 30px;
+    cursor: pointer;
+}
+
+.form{
+    display:inline-block;
+}
+

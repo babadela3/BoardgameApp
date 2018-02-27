@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/edit.css"/>
+    <script src="/js/editProfile.js"></script>
+</head>
+<body>
+<div id="divBarMenu">
+    <div id="divLogo">
+        <img id="logoImg" src="https://i.pinimg.com/736x/d8/4c/50/d84c5091474284d693db4ea2e8701500--logo-inspiration-board-games.jpg" />
+        <img id="logoTitle" src="/images/logo.png"/>
+    </div>
+    <div id="divSearch">
+        <input id="searchBar" type="text" placeholder="Search..." />
+    </div>
+    <div id="divAutentification">
+        <label onclick="profile()">Profile</label>
+        <label>|</label>
+        <label>Notifications</label>
+        <label>|</label>
+        <label>Log out</label>
+    </div>
+</div>
+
+<div id="divProfile">
+    <div id="divProfilePicture">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU1y7FYK3KgOBjxsEpXyMesq7vGidgYu1wkqLgcihQe63nPmpR" class="roundedcorners"/>
+    </div>
+    <div id="divProfileInfo">
+        <div id="divProfileName">
+            <label id="profileName" th:text="${pub.getName()}"/>
+        </div>
+        <div id="divProfileDetails">
+            <div id="divProfilePhotos">
+                <label id="profilePhotos">63 photos</label>
+            </div>
+            <div id="divProfileAlbums">
+                <label id="profileAlbums">23 reservations</label>
+            </div>
+            <div id="divProfileComments">
+                <label id="profileComments">102 events</label>
+            </div>
+        </div>
+        <div id="divProfileEmail">
+            <label id="profileEmail" th:text="${pub.getEmail()}"/>
+        </div>
+    </div>
+</div>
+<div id="divMenu">
+    <div id="divEmpty">
+    </div>
+    <div id="divMenuEdit">
+        <div id="divEditTitle">
+            <label id="editTitle">Edit Profile</label>
+        </div>
+        <div id="divEditInfo">
+            <label id="editInfo">Help us to have your updated information.</label>
+        </div>
+        <div id="divEditEmailLabel">
+            <label id="editEmailLabel">Email</label>
+        </div>
+        <div id="divEditEmailText">
+            <input type="text" id="editEmailText" readonly="true"/>
+        </div>
+        <div id="divEditNameLabel">
+            <label id="editNameLabel">Name</label>
+        </div>
+        <div id="divEditNameText">
+            <input type="text" id="editNameText"/>
+        </div>
+        <div id="divEditCityLabel">
+            <label id="editCityLabel">City</label>
+        </div>
+        <div id="divEditCityText">
+            <input type="text" id="editCityText" />
+        </div>
+        <div id="divButtonEdit">
+            <input type="button" id="buttonEdit" value="Save" />
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
