@@ -71,7 +71,7 @@ public class PubServiceImpl implements PubService{
             message.setFrom("bgboardgame@gmail.com");
             message.setSubject("Reset Password");
             message.setText("Hi,\n\nWe got a request to reset your BoardGame password\n\nYour password is: " + pub.getPassword() + "\n\nIf you want to change the password, " +
-                    "click to follow link to change your password: http://localhost:8081/accounts/password/change/" + pub.getEmail() +"\n\nIf you ignore this message, " +
+                    "click to follow link to change your password: http://localhost:8181/accounts/password/change/" + pub.getEmail() +"\n\nIf you ignore this message, " +
                     "your password will not be change");
             javaMailSender.send(message);
         }
