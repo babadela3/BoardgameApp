@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/edit.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/editprofile.css"/>
     <script src="/js/editProfile.js"></script>
 </head>
 <body>
@@ -25,7 +25,7 @@
 
 <div id="divProfile">
     <div id="divProfilePicture">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU1y7FYK3KgOBjxsEpXyMesq7vGidgYu1wkqLgcihQe63nPmpR" class="roundedcorners"/>
+        <img th:src="'/images?email=' + ${pub.getEmail()}" class="roundedcorners"/>
     </div>
     <div id="divProfileInfo">
         <div id="divProfileName">
@@ -57,28 +57,42 @@
         <div id="divEditInfo">
             <label id="editInfo">Help us to have your updated information.</label>
         </div>
-        <div id="divEditEmailLabel">
-            <label id="editEmailLabel">Email</label>
-        </div>
-        <div id="divEditEmailText">
-            <input type="text" id="editEmailText" readonly="true"/>
-        </div>
-        <div id="divEditNameLabel">
-            <label id="editNameLabel">Name</label>
-        </div>
-        <div id="divEditNameText">
-            <input type="text" id="editNameText"/>
-        </div>
-        <div id="divEditCityLabel">
-            <label id="editCityLabel">City</label>
-        </div>
-        <div id="divEditCityText">
-            <input type="text" id="editCityText" />
-        </div>
-        <div id="divButtonEdit">
-            <input type="button" id="buttonEdit" value="Save" />
-        </div>
-
+        <form action="#" th:action="@{/updatePub}" method="post" enctype="multipart/form-data">
+            <div id="divEditFileUpload">
+                <label id="editFileUpload">Photo</label>
+            </div>
+            <div id="divEditFileUploadText">
+                <input id="editFileUploadText" type="file" name="file" />
+            </div>
+            <div id="divEditEmailLabel">
+                <label id="editEmailLabel">Email</label>
+            </div>
+            <div id="divEditEmailText">
+                <input type="hidden" name="id" th:value="${pub.getId()}"/>
+                <input type="text" name="email" id="editEmailText" readonly="true" th:value="${pub.getEmail()}"/>
+            </div>
+            <div id="divEditNameLabel">
+                <label id="editNameLabel">Name</label>
+            </div>
+            <div id="divEditNameText">
+                <input type="text" name="name" id="editNameText" th:value="${pub.getName()}"/>
+            </div>
+            <div id="divEditAddressLabel">
+                <label id="editAddressLabel">Address</label>
+            </div>
+            <div id="divEditAddressText">
+                <textarea name="address" id="editAddressText" rows="2" cols="50" th:text="${pub.getAddress()}"></textarea>
+            </div>
+            <div id="divEditDescriptionLabel">
+                <label id="editDescriptionLabel">Description</label>
+            </div>
+            <div id="divEditDescriptionText">
+                <textarea name="description" id="editDescriptionText" rows="4" cols="50" th:text="${pub.getDescription()}"></textarea>
+            </div>
+            <div id="divButtonEdit">
+                <input type="submit" id="buttonEdit" value="Save" />
+            </div>
+        </form>
     </div>
 </div>
 </body>

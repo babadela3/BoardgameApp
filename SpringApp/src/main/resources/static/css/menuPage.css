@@ -61,7 +61,7 @@ html, body
 }
 
 #divProfile {
-    width: 600px;
+    width: 800px;
     margin: auto;
     margin-top: 150px;
     padding: 18px;
@@ -81,18 +81,21 @@ html, body
 }
 
 #divProfileInfo {
-    width: 400px;
+    width: 600px;
     float: right;
 }
 
 #divProfileName {
     width: 59%;
     display: inline-block;
+    border-color: red;
 }
 
 #divProfileButton {
-    width: 39%;
+    width: 200px;
+    height:30px;
     display: inline-block;
+    float:left;
 }
 
 #divProfilePhotos {
@@ -113,20 +116,23 @@ html, body
 #profileName {
     float:right;
     font-size:25px;
-    margin-right:100px;
+    margin-right:47px;
 }
 
 #profileButton {
-    float: left;
-    margin-left: 20px;
     border: thin solid #CDCECF;
     outline: none;
     font-size: 15px;
     padding: 5px;
-    padding-left: 15px;
     padding-right: 15px;
+    padding-left: 15px;
     border-radius: 2px;
     cursor: pointer;
+}
+
+#custom{
+    width:32px;
+    height:32px;
 }
 
 
@@ -138,108 +144,6 @@ html, body
 #profilePhotos, #profileAlbums, #profileComments {
     font-size:17px;
 }
-
-#divMenu {
-    background-color: white;
-    width: 1250px;
-    height: 650px;
-    display: block;
-    margin: auto;
-    margin-top: 20px;
-    margin-bottom: 100px;
-    border: thin solid #CDCECF;
-}
-
-
-#divEmpty {
-    width: 350px;
-    height: 100%;
-    border-right: 2px solid #CDCECF;
-    float: left;
-}
-
-#divMenuEdit {
-    width: 800px;
-    height: 650px;
-    float: right;
-}
-
-#divEditTitle {
-    margin-top: 80px;
-    text-align: left;
-    margin-left: 50px;
-    margin-right: 50px;
-}
-
-#editTitle {
-    font-size: 35px;
-}
-
-#divEditInfo {
-    margin: 50px;
-    text-align: left;
-    margin-top: 60px;
-}
-
-#editInfo {
-    font-size: 20px;
-}
-
-#divEditEmailLabel, #divEditNameLabel, #divEditCityLabel, #divEditPictureLabel {
-    margin-top: 10px;
-    width: 100px;
-    text-align: left;
-    margin-left: 80px;
-    margin-right: 50px;
-}
-
-#editEmailLabel, #editNameLabel, #editCityLabel {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-#divEditEmailText, #divEditNameText, #divEditCityText {
-    display: inline-block;
-    width: 250px;
-    text-align: left;
-    position: relative;
-    bottom: 32px;
-    right: 100px;
-}
-
-
-
-#editEmailText, #editNameText, #editCityText {
-    height: 30px;
-    width: 100%;
-    font-size: 20px;
-}
-
-
-#divButtonEdit {
-    width: 200px;
-    text-align: left;
-    margin-left: 170px;
-    margin-right: 50px;
-}
-
-
-#buttonEdit {
-    background-color: #2196F3;
-    width: 100%;
-    height: 30px;
-    margin-top: 15px;
-    font-size: 16px;
-    cursor: pointer;
-    color:white;
-}
-
-    #buttonEdit:hover {
-        background: #0b7dda;
-        width: 100%;
-        height: 30px;
-        cursor: pointer;
-    }
 
 #divProfileEmail {
     width: 59%;
@@ -277,6 +181,34 @@ html, body
     font-weight: bold;
     cursor: pointer;
     color: black;
+}
+
+#divMenu {
+    width: 1250px;
+    display: block;
+    margin: auto;
+    margin-bottom: 100px;
+    padding: 18px;
+
+}
+
+.divImg {
+    width: 30%;
+    border: thin solid #CDCECF;
+    display: inline-block;
+    margin: 18px;
+    left: 0px;
+    float: left;
+}
+
+.description {
+    height: 50px;
+    background-color: white;
+}
+
+.imgPresentation {
+    width: 100%;
+    height: 300px;
 }
 
 .divEditProfile {
@@ -359,7 +291,7 @@ html, body
 #divButtonEdit {
     width: 200px;
     text-align: left;
-    margin-left: 170px;
+    margin-left: 70px;
     margin-right: 50px;
 }
 
@@ -379,5 +311,9 @@ html, body
     width: 100%;
     height: 30px;
     cursor: pointer;
+}
+
+.form{
+    display:inline-block;
 }
 

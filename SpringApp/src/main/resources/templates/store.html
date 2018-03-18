@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/menu.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/menuPage.css"/>
     <script src="/js/store.js"></script>
 </head>
 <body>
@@ -24,18 +24,18 @@
     </div>
     <div id="divProfile">
         <div id="divProfilePicture">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU1y7FYK3KgOBjxsEpXyMesq7vGidgYu1wkqLgcihQe63nPmpR" class="roundedcorners"/>
+            <img th:src="'/images?email=' + ${pub.getEmail()}" class="roundedcorners"/>
         </div>
         <div id="divProfileInfo">
-            <div id="divProfileName">
-                <label id="profileName" th:text="${pub.getName()}"/>
-            </div>
-            <form class="form" action="#" th:action="@{/editProfile}" method="post">
-                <input type="hidden" id="pub" name="pub" th:value='${pubString}'/>
-                <div id="divProfileButton">
-                    <input id="profileButton" type="submit" value="Edit profile"/>
+                <div id="divProfileName">
+                    <label id="profileName" th:text="${pub.getName()}"/>
                 </div>
-            </form>
+                <form class="form" action="#" th:action="@{/editProfile}" method="post">
+                    <input type="hidden" id="pub" name="pub" th:value='${pubString}'/>
+                    <div id="divProfileButton">
+                        <input id="profileButton" type="submit" value="Edit profile"/>
+                    </div>
+                </form>
             <div id="divProfileDetails">
                 <div id="divProfilePhotos">
                     <label id="profilePhotos">63 photos</label>
@@ -50,6 +50,12 @@
             <div id="divProfileEmail">
                 <label id="profileEmail" th:text="${pub.getEmail()}"/>
             </div>
+            <form class="form" action="#" th:action="@{/editProfile}" method="post">
+                <input type="hidden" name="pub" th:value='${pubString}'/>
+                <div>
+                    <img id="custom" src="/images/custom.png" />
+                </div>
+            </form>
         </div>
     </div>
     <div id="divOptions">

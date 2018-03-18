@@ -8,6 +8,8 @@ public interface PubService {
 
     Pub getPub(Account account) throws BoardGameServiceException;
 
+    Pub getPubByEmail(String email);
+
     void createPub(Pub pub);
 
     void updatePubInformation(Pub pub);

@@ -27,8 +27,8 @@ public class Pub {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "profile_picture")
-    private String picture;
+    @Column(name="profile_picture", nullable=false, columnDefinition="mediumblob")
+    private byte[] picture;
 
     @OneToMany(mappedBy = "pub",cascade = CascadeType.ALL)
     private Set<GameReservation> gameReservations;
@@ -45,6 +45,18 @@ public class Pub {
 
     @OneToMany(mappedBy = "pub",cascade = CascadeType.ALL)
     private Set<Reservation> reservations;
+
+    public Pub() {
+    }
+
+    public Pub(int id, String email, String name, String address, String description, byte[] picture) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.address = address;
+        this.description = description;
+        this.picture = picture;
+    }
 
     public int getId() {
         return id;
@@ -94,11 +106,11 @@ public class Pub {
         this.description = description;
     }
 
-    public String getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 

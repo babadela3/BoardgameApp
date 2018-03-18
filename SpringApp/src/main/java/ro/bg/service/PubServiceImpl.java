@@ -33,6 +33,11 @@ public class PubServiceImpl implements PubService{
     }
 
     @Override
+    public Pub getPubByEmail(String email) {
+        return pubDAO.findByEmail(email);
+    }
+
+    @Override
     public void createPub(Pub pub) {
         if(EmailValidator.getInstance().isValid(pub.getEmail()) && pubDAO.findByEmail(pub.getEmail()) == null){
             pubDAO.saveAndFlush(pub);
