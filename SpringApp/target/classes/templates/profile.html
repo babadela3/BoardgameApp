@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/menuPage.css"/>
-    <script src="/js/store.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/men.css"/>
+    <script src="/js/profile.js"></script>
 </head>
 <body>
     <div id="divBarMenu">
@@ -24,7 +24,7 @@
     </div>
     <div id="divProfile">
         <div id="divProfilePicture">
-            <img th:src="'/images?email=' + ${pub.getEmail()}" class="roundedcorners"/>
+            <img th:src="'/profilePhoto?email=' + ${pub.getEmail()}" class="roundedcorners"/>
         </div>
         <div id="divProfileInfo">
                 <div id="divProfileName">
@@ -50,12 +50,6 @@
             <div id="divProfileEmail">
                 <label id="profileEmail" th:text="${pub.getEmail()}"/>
             </div>
-            <form class="form" action="#" th:action="@{/editProfile}" method="post">
-                <input type="hidden" name="pub" th:value='${pubString}'/>
-                <div>
-                    <img id="custom" src="/images/custom.png" />
-                </div>
-            </form>
         </div>
     </div>
     <div id="divOptions">
@@ -63,30 +57,36 @@
             <label id="optionPhotos" onclick="store()">Store</label>
         </div>
         <div class="options">
-            <label id="optionCreate" onclick="upload()">Upload</label>
-        </div>
-        <div class="options">
-            <label id="optionAlbums">Photos</label>
+            <label id="optionAlbums" onclick="photos()">Photos</label>
         </div>
     </div>
     <div id="divMenu">
-        <div class="divImg">
-            <img src="https://static1.squarespace.com/static/55ef0e29e4b099e22cdc9eea/58a6b79fe58c622c7953997e/58a6b79fbf629a5d3edd7422/1487320993474/Monopoly+Logo.jpg?format=1500w" class="imgPresentation"/>
+        <div id="divStore">
+            <div class="divImg">
+                <img src="https://static1.squarespace.com/static/55ef0e29e4b099e22cdc9eea/58a6b79fe58c622c7953997e/58a6b79fbf629a5d3edd7422/1487320993474/Monopoly+Logo.jpg?format=1500w" class="imgPresentation"/>
+            </div>
+            <div class="divImg">
+                <img src="https://pollinationinaction.files.wordpress.com/2009/11/activity-original1.jpg" class="imgPresentation"/>
+            </div>
+            <div class="divImg">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5uaztjfRQHhMSK5IM7aGWd34BLHJeiAEM651yrfb_yu_4Ehb6" class="imgPresentation"/>
+            </div>
+            <div class="divImg">
+                <img src="https://static1.squarespace.com/static/55ef0e29e4b099e22cdc9eea/58a6b79fe58c622c7953997e/58a6b79fbf629a5d3edd7422/1487320993474/Monopoly+Logo.jpg?format=1500w" class="imgPresentation"/>
+            </div>
+            <div class="divImg">
+                <img src="https://pollinationinaction.files.wordpress.com/2009/11/activity-original1.jpg" class="imgPresentation"/>
+            </div>
+            <div class="divImg">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5uaztjfRQHhMSK5IM7aGWd34BLHJeiAEM651yrfb_yu_4Ehb6" class="imgPresentation"/>
+            </div>
         </div>
-        <div class="divImg">
-            <img src="https://pollinationinaction.files.wordpress.com/2009/11/activity-original1.jpg" class="imgPresentation"/>
-        </div>
-        <div class="divImg">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5uaztjfRQHhMSK5IM7aGWd34BLHJeiAEM651yrfb_yu_4Ehb6" class="imgPresentation"/>
-        </div>
-        <div class="divImg">
-            <img src="https://static1.squarespace.com/static/55ef0e29e4b099e22cdc9eea/58a6b79fe58c622c7953997e/58a6b79fbf629a5d3edd7422/1487320993474/Monopoly+Logo.jpg?format=1500w" class="imgPresentation"/>
-        </div>
-        <div class="divImg">
-            <img src="https://pollinationinaction.files.wordpress.com/2009/11/activity-original1.jpg" class="imgPresentation"/>
-        </div>
-        <div class="divImg">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5uaztjfRQHhMSK5IM7aGWd34BLHJeiAEM651yrfb_yu_4Ehb6" class="imgPresentation"/>
+        <div id="divPhotos">
+            <tr th:each="picture : ${pictures}">
+                <div class="divImg">
+                    <img th:src="'/pubPicture?id=' + ${picture.getId()}" class="imgPresentation"/>
+                </div>
+            </tr>
         </div>
     </div>
 </body>

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ro.bg.dao.PubPictureDAO;
 import ro.bg.model.PubPicture;
 
+import java.util.List;
+
 @Service
 public class PubPictureServiceImpl implements PubPictureService{
 
@@ -19,5 +21,15 @@ public class PubPictureServiceImpl implements PubPictureService{
     @Override
     public void deletePicture(PubPicture pubPicture) {
         pubPictureDAO.delete(pubPicture.getId());
+    }
+
+    @Override
+    public PubPicture getPicture(int id) {
+        return pubPictureDAO.findOne(id);
+    }
+
+    @Override
+    public List<PubPicture> getPictures(int pubId) {
+        return pubPictureDAO.findByPubId(pubId);
     }
 }

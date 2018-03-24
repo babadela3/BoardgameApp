@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/editprofile.css"/>
-    <script src="/js/editProfile.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/edit.css"/>
+    <script src="/js/edit.js"></script>
 </head>
 <body>
 <div id="divBarMenu">
@@ -25,7 +25,7 @@
 
 <div id="divProfile">
     <div id="divProfilePicture">
-        <img th:src="'/images?email=' + ${pub.getEmail()}" class="roundedcorners"/>
+        <img th:src="'/profilePhoto?email=' + ${pub.getEmail()}" class="roundedcorners"/>
     </div>
     <div id="divProfileInfo">
         <div id="divProfileName">
@@ -49,6 +49,19 @@
 </div>
 <div id="divMenu">
     <div id="divEmpty">
+        <div id="emptyDiv"/>
+        <div class="bgmenu">
+            <label id="optionEdit">Edit profile</label>
+        </div>
+        <div class="bgmenu">
+            <label id="optionPhoto" onclick="photo()">Add photo</label>
+        </div>
+        <div class="bgmenu">
+            <label id="optionStore">Custom your store</label>
+        </div>
+        <div class="bgmenu">
+            <label id="optionBoardgame">Add boardgame</label>
+        </div>
     </div>
     <div id="divMenuEdit">
         <div id="divEditTitle">
@@ -57,12 +70,12 @@
         <div id="divEditInfo">
             <label id="editInfo">Help us to have your updated information.</label>
         </div>
-        <form action="#" th:action="@{/updatePub}" method="post" enctype="multipart/form-data">
+        <form id="editForm" action="#" th:action="@{/updatePub}" method="post" enctype="multipart/form-data">
             <div id="divEditFileUpload">
                 <label id="editFileUpload">Photo</label>
             </div>
             <div id="divEditFileUploadText">
-                <input id="editFileUploadText" type="file" name="file" />
+                <input id="editFileUploadText" type="file" name="file" onchange="onFileSelected(event)"/>
             </div>
             <div id="divEditEmailLabel">
                 <label id="editEmailLabel">Email</label>
@@ -91,6 +104,24 @@
             </div>
             <div id="divButtonEdit">
                 <input type="submit" id="buttonEdit" value="Save" />
+            </div>
+        </form>
+        <form id="addPhotoForm" action="#" th:action="@{/addPhoto}" method="post" enctype="multipart/form-data">
+            <div id="divAddPhotoFileUpload">
+                <label id="addPhotoFileUpload">File</label>
+            </div>
+            <div id="divAddPhotoFileUploadText">
+                <input id="addPhotoFileUploadText" type="file" name="file" onchange="onFileSelected(event)"/>
+                <input type="hidden" name="email" id="addPhotoEmailText" readonly="true" th:value="${pub.getEmail()}"/>
+            </div>
+            <div id="divAddPhoto">
+                <label id="addPhoto">Photo</label>
+            </div>
+            <div id="divAddPhotoText">
+                <img id="myimage"/>
+            </div>
+            <div id="divButtonAddPhoto">
+                <input type="submit" id="buttonAddPhoto" value="Save" />
             </div>
         </form>
     </div>

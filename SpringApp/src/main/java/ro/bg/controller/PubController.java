@@ -1,40 +1,36 @@
 package ro.bg.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.Account;
 import ro.bg.model.Pub;
+import ro.bg.model.PubPicture;
+import ro.bg.service.PubPictureService;
 import ro.bg.service.PubService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Controller
 public class PubController {
 
     @Autowired
     PubService pubService;
+
+    @Autowired
+    PubPictureService pubPictureService;
 
     @RequestMapping(value = "/")
     public String login() {
@@ -65,14 +61,16 @@ public class PubController {
         rm.addFlashAttribute("pub", pub);
         Gson gson = new Gson();
         String personString = gson.toJson(pub);
+        List<PubPicture> pubPictureList = pubPictureService.getPictures(pub.getId());
         rm.addFlashAttribute("pubString", personString);
-        return "redirect:/store";
+        rm.addFlashAttribute("pictures", pubPictureList);
+        return "redirect:/profile";
     }
 
 
-        @RequestMapping(value = "/store")
+        @RequestMapping(value = "/profile")
     public String getStore(Model model) {
-        return "store";
+        return "profile";
     }
 
 
@@ -99,7 +97,7 @@ public class PubController {
         Gson gson = new Gson();
         Pub pub = gson.fromJson(pubString, Pub.class);
         model.addAttribute("pub", pub);
-        return "editProfile";
+        return "edit";
     }
 
     @RequestMapping(value = "/updatePub", method = RequestMethod.POST, headers = "content-type=multipart/*")
@@ -117,11 +115,11 @@ public class PubController {
         }
         Pub pub = pubService.getPubByEmail(email);
         model.addAttribute("pub", pub);
-        return "editProfile";
+        return "edit";
     }
 
-    @RequestMapping(value = "/images", method = RequestMethod.GET)
-    public void showImage(@RequestParam("email") String email, HttpServletResponse response,HttpServletRequest request)
+    @RequestMapping(value = "/profilePhoto", method = RequestMethod.GET)
+    public void showProfilePhoto(@RequestParam("email") String email, HttpServletResponse response,HttpServletRequest request)
             throws ServletException, IOException {
         Pub pub = pubService.getPubByEmail(email);
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");

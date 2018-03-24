@@ -6,17 +6,25 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ro.bg.dao.PubDAO;
+import ro.bg.dao.PubPictureDAO;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.exception.ExceptionMessage;
 import ro.bg.model.Account;
 import ro.bg.model.Pub;
 import org.apache.commons.validator.routines.EmailValidator;
+import ro.bg.model.PubPicture;
+
+import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class PubServiceImpl implements PubService{
 
     @Autowired
     PubDAO pubDAO;
+
+    @Autowired
+    PubPictureDAO pubPictureDAO;
 
     @Autowired
     public JavaMailSender javaMailSender;
@@ -27,6 +35,8 @@ public class PubServiceImpl implements PubService{
         if(pub == null){
             throw new BoardGameServiceException(ExceptionMessage.MISSING_PUB);
         }
+
+        pub.setPubPictures(null);
         pub.setPassword(null);
         pub.setReservations(null);
         return pub;

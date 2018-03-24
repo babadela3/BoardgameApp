@@ -61,7 +61,7 @@ html, body
 }
 
 #divProfile {
-    width: 800px;
+    width: 600px;
     margin: auto;
     margin-top: 150px;
     padding: 18px;
@@ -81,21 +81,18 @@ html, body
 }
 
 #divProfileInfo {
-    width: 600px;
+    width: 400px;
     float: right;
 }
 
 #divProfileName {
     width: 59%;
     display: inline-block;
-    border-color: red;
 }
 
 #divProfileButton {
-    width: 200px;
-    height:30px;
+    width: 39%;
     display: inline-block;
-    float:left;
 }
 
 #divProfilePhotos {
@@ -116,23 +113,20 @@ html, body
 #profileName {
     float:right;
     font-size:25px;
-    margin-right:47px;
+    margin-right:100px;
 }
 
 #profileButton {
+    float: left;
+    margin-left: 20px;
     border: thin solid #CDCECF;
     outline: none;
     font-size: 15px;
     padding: 5px;
-    padding-right: 15px;
     padding-left: 15px;
+    padding-right: 15px;
     border-radius: 2px;
     cursor: pointer;
-}
-
-#custom{
-    width:32px;
-    height:32px;
 }
 
 
@@ -157,67 +151,13 @@ html, body
     font-size:20px;
 }
 
-#divOptions {
-    width: 600px;
-    margin: auto;
-    margin-top: 10px;
-    padding: 18px;
-    overflow: auto;
-    border-top: thin solid #CDCECF;
-}
-
-.options {
-    width:22%;
-    display: inline-block;
-}
-
-#optionAlbums, #optionUpload, #optionPhotos, #optionCreate {
-    font-size: 18px;
-    cursor: pointer;
-    color: black;
-}
-
-#optionPhotos, #optionAlbums:hover, #optionUpload:hover, #optionPhotos:hover, #optionCreate:hover {
-    font-weight: bold;
-    cursor: pointer;
-    color: black;
-}
-
 #divMenu {
-    width: 1250px;
-    display: block;
-    margin: auto;
-    margin-bottom: 100px;
-    padding: 18px;
-
-}
-
-.divImg {
-    width: 30%;
-    border: thin solid #CDCECF;
-    display: inline-block;
-    margin: 18px;
-    left: 0px;
-    float: left;
-}
-
-.description {
-    height: 50px;
-    background-color: white;
-}
-
-.imgPresentation {
-    width: 100%;
-    height: 300px;
-}
-
-.divEditProfile {
-    display:none;
     background-color: white;
     width: 1250px;
-    height: 650px;
+    height: 800px;
     display: block;
     margin: auto;
+    margin-top: 20px;
     margin-bottom: 100px;
     border: thin solid #CDCECF;
 }
@@ -257,7 +197,7 @@ html, body
     font-size: 20px;
 }
 
-#divEditEmailLabel, #divEditNameLabel, #divEditCityLabel, #divEditPictureLabel {
+#divAddPhotoFileUpload,#divEditFileUpload,#divEditEmailLabel, #divEditNameLabel, #divEditAddressLabel, #divEditPictureLabel, #divEditDescriptionLabel, #divAddPhoto {
     margin-top: 10px;
     width: 100px;
     text-align: left;
@@ -265,38 +205,44 @@ html, body
     margin-right: 50px;
 }
 
-#editEmailLabel, #editNameLabel, #editCityLabel {
+#addPhotoFileUpload,#editFileUpload,#editEmailLabel, #editNameLabel, #editAddressLabel, #editDescriptionLabel, #addPhoto {
     font-size: 20px;
     font-weight: bold;
 }
 
-#divEditEmailText, #divEditNameText, #divEditCityText {
+#divAddPhotoFileUploadText,#divEditFileUploadText,#divEditEmailText, #divEditNameText, #divEditAddressText, #divEditDescriptionText, #divAddPhotoText {
     display: inline-block;
-    width: 250px;
+    width: 260px;
     text-align: left;
     position: relative;
     bottom: 32px;
     right: 100px;
+    margin-left:100px;
 }
 
 
 
-#editEmailText, #editNameText, #editCityText {
+#editFileUploadText,#addPhotoFileUploadText,#editEmailText,#addPhotoEmailText, #editNameText {
     height: 30px;
     width: 100%;
     font-size: 20px;
 }
 
+#editDescriptionText, #editAddressText{
+     width: 100%;
+     font-size: 20px;
+}
 
-#divButtonEdit {
+
+#divButtonEdit, #divButtonAddPhoto {
     width: 200px;
     text-align: left;
-    margin-left: 70px;
+    margin-left: 220px;
     margin-right: 50px;
 }
 
 
-#buttonEdit {
+#buttonEdit, #buttonAddPhoto {
     background-color: #2196F3;
     width: 100%;
     height: 30px;
@@ -306,14 +252,32 @@ html, body
     color:white;
 }
 
-#buttonEdit:hover {
+#buttonEdit:hover, #buttonAddPhoto:hover {
     background: #0b7dda;
     width: 100%;
     height: 30px;
     cursor: pointer;
 }
 
-.form{
-    display:inline-block;
+#emptyDiv{
+    height:100px;
+}
+
+.bgmenu{
+    height:60px;
+}
+
+#optionEdit, #optionPhoto, #optionStore, #optionBoardgame {
+    font-size: 18px;
+}
+
+#optionEdit, #optionEdit:hover, #optionPhoto:hover, #optionStore:hover, #optionBoardgame:hover {
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+}
+
+#addPhotoForm{
+    display:none;
 }
 

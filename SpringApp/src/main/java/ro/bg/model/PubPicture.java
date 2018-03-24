@@ -15,8 +15,16 @@ public class PubPicture {
     @JoinColumn(name = "fk_pub_id")
     private Pub pub;
 
-    @JoinColumn(name = "picture")
-    private String picture;
+    @JoinColumn(name = "picture", columnDefinition="mediumblob")
+    private byte[] picture;
+
+    public PubPicture(Pub pub, byte[] picture) {
+        this.pub = pub;
+        this.picture = picture;
+    }
+
+    public PubPicture() {
+    }
 
     public int getId() {
         return id;
@@ -34,11 +42,9 @@ public class PubPicture {
         this.pub = pub;
     }
 
-    public String getPicture() {
-        return picture;
-    }
+    public byte[] getPicture() { return picture; }
 
-    public void setPicture(String picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 }
