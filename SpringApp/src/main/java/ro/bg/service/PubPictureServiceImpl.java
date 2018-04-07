@@ -19,8 +19,10 @@ public class PubPictureServiceImpl implements PubPictureService{
     }
 
     @Override
-    public void deletePicture(PubPicture pubPicture) {
-        pubPictureDAO.delete(pubPicture.getId());
+    public void deletePictures(List<Integer> ids) {
+        for(int id : ids){
+            pubPictureDAO.delete(id);
+        }
     }
 
     @Override
@@ -30,6 +32,10 @@ public class PubPictureServiceImpl implements PubPictureService{
 
     @Override
     public List<PubPicture> getPictures(int pubId) {
-        return pubPictureDAO.findByPubId(pubId);
+        List<PubPicture> pubPictures = pubPictureDAO.findByPubId(pubId);
+        for(PubPicture pubPicture : pubPictures){
+            pubPicture.setPub(null);
+        }
+        return pubPictures;
     }
 }

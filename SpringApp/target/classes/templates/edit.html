@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/edit.css"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/editStyle.css"/>
     <script src="/js/edit.js"></script>
 </head>
 <body>
 <div id="divBarMenu">
     <div id="divLogo">
         <img id="logoImg" src="https://i.pinimg.com/736x/d8/4c/50/d84c5091474284d693db4ea2e8701500--logo-inspiration-board-games.jpg" />
-        <img id="logoTitle" src="/images/logo.png"/>
+        <form class="form" action="#" th:action="@{/redirectProfile}" method="post">
+            <input type="hidden" id="email" name="email" th:value='${pub.getEmail()}'/>
+            <div class="divProfileButton">
+                <input type="submit" id="logoTitle" value=""/>
+            </div>
+        </form>
     </div>
     <div id="divSearch">
         <input id="searchBar" type="text" placeholder="Search..." />
@@ -51,16 +57,19 @@
     <div id="divEmpty">
         <div id="emptyDiv"/>
         <div class="bgmenu">
-            <label id="optionEdit">Edit profile</label>
+            <label id="optionEdit" onclick="edit()">Edit profile</label>
         </div>
         <div class="bgmenu">
             <label id="optionPhoto" onclick="photo()">Add photo</label>
         </div>
         <div class="bgmenu">
-            <label id="optionStore">Custom your store</label>
+            <label id="optionDeletePhoto" onclick="deletePhoto()">Delete photo</label>
         </div>
         <div class="bgmenu">
-            <label id="optionBoardgame">Add boardgame</label>
+            <label id="optionAddBoardgame" onclick="addBoardGameMenu()">Add board game</label>
+        </div>
+        <div class="bgmenu">
+            <label id="optionDeleteBoardgame" onclick="deleteBoardGameMenu()">Delete board game</label>
         </div>
     </div>
     <div id="divMenuEdit">
@@ -106,6 +115,33 @@
                 <input type="submit" id="buttonEdit" value="Save" />
             </div>
         </form>
+
+        <div id="deletePhotoForm">
+            <div id="divDeletePhotoForm">
+                <table id="tableDeletePhoto">
+                    <thead id="theadDeletePhoto">
+                    <tr>
+                        <th width="610">Picture</th>
+                        <th>Select</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbodyDeletePhoto">
+                    <tr th:each="picture : ${pictures}">
+                        <td>
+                            <img th:src="'/pubPicture?id=' + ${picture.getId()}" width="150" height="150"/>
+                        </td>
+                        <td>
+                            <input type="checkbox" th:id="${picture.getId()}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="divButtonDeletePhoto">
+                <button onclick="deletePhotos()" id="buttonDeletePhoto">Delete</button>
+            </div>
+        </div>
+
         <form id="addPhotoForm" action="#" th:action="@{/addPhoto}" method="post" enctype="multipart/form-data">
             <div id="divAddPhotoFileUpload">
                 <label id="addPhotoFileUpload">File</label>
@@ -124,6 +160,42 @@
                 <input type="submit" id="buttonAddPhoto" value="Save" />
             </div>
         </form>
+        <div id="addBoardGameForm">
+            <div id="divSearchGame">
+                <label id="searchGame">Search</label>
+            </div>
+            <div id="divSearchGameText">
+                <input type="text" id="searchGameText" placeholder="ex: Activity" onkeypress="keyPressListener(event)"/>
+            </div>
+                <div id="divTable">
+                    <div id="divTableRemove">
+                        <table id="tableAddBoardGame">
+                            <thead id="theadAddBoardGame">
+                            </thead>
+                            <tbody id="tbodyAddBoardGame">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="divButtonAddGame">
+                    <button onclick="addBoardgames()" id="buttonAddGame">Add</button>
+                </div>
+        </div>
+
+
+        <div id="deleteBoardGameForm">
+            <div id="divDeleteBoardGameForm">
+                <table id="tableDeleteBoardGame">
+                    <thead id="theadDeleteBoardGame">
+                    </thead>
+                    <tbody id="tbodyDeleteBoardGame">
+                    </tbody>
+                </table>
+            </div>
+            <div id="divButtonDeleteGame">
+                <button onclick="deleteBoardgames()" id="buttonDeleteGame">Delete</button>
+            </div>
+        </div>
     </div>
 </div>
 </body>

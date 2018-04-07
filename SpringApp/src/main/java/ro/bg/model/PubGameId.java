@@ -1,11 +1,12 @@
 package ro.bg.model;
 
+
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
-public class PubGameId implements Serializable{
+public class PubGameId implements Serializable {
 
     @ManyToOne
     private Pub pub;

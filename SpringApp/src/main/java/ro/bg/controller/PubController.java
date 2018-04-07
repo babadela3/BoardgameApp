@@ -11,8 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.Account;
+import ro.bg.model.BoardGame;
 import ro.bg.model.Pub;
 import ro.bg.model.PubPicture;
+import ro.bg.service.BoardGameService;
 import ro.bg.service.PubPictureService;
 import ro.bg.service.PubService;
 
@@ -31,6 +33,9 @@ public class PubController {
 
     @Autowired
     PubPictureService pubPictureService;
+
+    @Autowired
+    BoardGameService boardGameService;
 
     @RequestMapping(value = "/")
     public String login() {
@@ -62,8 +67,10 @@ public class PubController {
         Gson gson = new Gson();
         String personString = gson.toJson(pub);
         List<PubPicture> pubPictureList = pubPictureService.getPictures(pub.getId());
+        List<BoardGame> boardGames = boardGameService.getAllById(pub.getId());
         rm.addFlashAttribute("pubString", personString);
         rm.addFlashAttribute("pictures", pubPictureList);
+        rm.addFlashAttribute("boardgames",boardGames);
         return "redirect:/profile";
     }
 
@@ -96,7 +103,11 @@ public class PubController {
     public String editProfile(@ModelAttribute("pub") String pubString, Model model) {
         Gson gson = new Gson();
         Pub pub = gson.fromJson(pubString, Pub.class);
+        List<BoardGame> boardGames = boardGameService.getAllById(pub.getId());
+        List<PubPicture> pubPictureList = pubPictureService.getPictures(pub.getId());
+        model.addAttribute("boardgames",boardGames);
         model.addAttribute("pub", pub);
+        model.addAttribute("pictures", pubPictureList);
         return "edit";
     }
 
@@ -128,4 +139,17 @@ public class PubController {
         response.getOutputStream().close();
     }
 
+    @RequestMapping(value = "/redirectProfile", method = RequestMethod.POST)
+    public String redirectProfile(@ModelAttribute("email") String email, RedirectAttributes rm) {
+        Pub pub = pubService.getPubByEmail(email);
+        List<BoardGame> boardGames = boardGameService.getAllById(pub.getId());
+        List<PubPicture> pubPictureList = pubPictureService.getPictures(pub.getId());
+        Gson gson = new Gson();
+        String personString = gson.toJson(pub);
+        rm.addFlashAttribute("pub", pub);
+        rm.addFlashAttribute("pubString", personString);
+        rm.addFlashAttribute("pictures", pubPictureList);
+        rm.addFlashAttribute("boardgames",boardGames);
+        return "redirect:/profile";
+    }
 }

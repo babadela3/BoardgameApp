@@ -2,7 +2,10 @@ package ro.bg.service;
 
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.Account;
+import ro.bg.model.BoardGame;
 import ro.bg.model.Pub;
+
+import java.util.List;
 
 public interface PubService {
 

@@ -28,7 +28,7 @@ function createAccount(){
                 dataType: 'json',
                 contentType: "application/json"
                 }).done(function(data) {
-                    alert("create successfully");
+
                 }).fail(function(jqXHR, textStatus) {
                     var data = JSON.parse(jqXHR.responseText);
                     if(data["message"] == "Pub is not registred in the application"){

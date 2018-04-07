@@ -8,7 +8,6 @@ import java.util.Set;
 public class BoardGame {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pk_board_game_id")
     private int id;
 
@@ -27,11 +26,25 @@ public class BoardGame {
     @OneToMany(mappedBy = "boardGame",cascade = CascadeType.ALL)
     private Set<GameReservation> gameReservations;
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "boardGames",cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "pub_game_play",
+            joinColumns = {@JoinColumn(name = "pk_board_game_id")},
+            inverseJoinColumns = {@JoinColumn(name = "pk_pub_id")})
     private Set<Pub> pubs;
 
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "boardGames",cascade = CascadeType.ALL)
     private Set<User> users;
+
+    public BoardGame() {
+    }
+
+    public BoardGame(int id, String name, String description, String picture) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+    }
 
     public int getId() {
         return id;
@@ -79,6 +92,22 @@ public class BoardGame {
 
     public void setGameReservations(Set<GameReservation> gameReservations) {
         this.gameReservations = gameReservations;
+    }
+
+    public Set<Pub> getPubs() {
+        return pubs;
+    }
+
+    public void setPubs(Set<Pub> pubs) {
+        this.pubs = pubs;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override

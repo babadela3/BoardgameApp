@@ -33,11 +33,7 @@ public class Pub {
     @OneToMany(mappedBy = "pub",cascade = CascadeType.ALL)
     private Set<GameReservation> gameReservations;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "pub_game_play",
-            joinColumns = {@JoinColumn(name = "pk_pub_id")},
-            inverseJoinColumns = {@JoinColumn(name = "pk_board_game_id")})
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "pubs",cascade = CascadeType.ALL)
     private Set<BoardGame> boardGames;
 
     @OneToMany(mappedBy = "pub",cascade = CascadeType.ALL)

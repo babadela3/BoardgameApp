@@ -8,7 +8,7 @@ public interface PubPictureService {
 
     void addPicture(PubPicture pubPicture);
 
-    void deletePicture(PubPicture pubPicture);
+    void deletePictures(List<Integer> ids);;
 
     PubPicture getPicture(int id);
 

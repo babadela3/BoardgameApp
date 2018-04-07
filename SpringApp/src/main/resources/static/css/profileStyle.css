@@ -23,9 +23,23 @@
     border-bottom: thin solid #CDCECF;
     position: fixed;
     top: 0;
+    z-index: 1;
 }
-#logoImg , #logoTitle{
+
+#logoImg {
 	height: 55%;
+	float: left;
+	display: inline-block;
+}
+
+#logoTitle{
+    padding: 23px 115px;
+    background: url('/images/logo.png') no-repeat;
+    background-size: 220px 55px;
+    display: inline-block;
+    float: left;
+    margin-left:-78px;
+    border:none;
 }
 
 #searchBar{
@@ -90,7 +104,7 @@ html, body
     display: inline-block;
 }
 
-#divProfileButton {
+.divProfileButton {
     width: 39%;
     display: inline-block;
 }
@@ -187,6 +201,7 @@ html, body
 
 .divImg {
     width: 30%;
+    position: relative;
     border: thin solid #CDCECF;
     display: inline-block;
     margin: 18px;
@@ -199,9 +214,13 @@ html, body
     background-color: white;
 }
 
-.imgPresentation {
+.imgPresentation, .imgPresentationHover {
     width: 100%;
     height: 300px;
+    opacity: 1;
+    display: block;
+    transition: .5s ease;
+    backface-visibility: hidden;
 }
 
 .divEditProfile {
@@ -310,7 +329,33 @@ html, body
     display:inline-block;
 }
 
-#divPhoto{
+#divPhotos{
     display:none;
 }
 
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.text {
+  color: #2E2E2E;
+  font-weight: bold;
+  font-size: 22px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.divImg:hover .imgPresentationHover {
+  opacity: 0.3;
+}
+
+.divImg:hover .middle {
+  opacity: 1;
+}

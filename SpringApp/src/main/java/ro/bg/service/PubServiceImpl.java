@@ -10,10 +10,12 @@ import ro.bg.dao.PubPictureDAO;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.exception.ExceptionMessage;
 import ro.bg.model.Account;
+import ro.bg.model.BoardGame;
 import ro.bg.model.Pub;
 import org.apache.commons.validator.routines.EmailValidator;
 import ro.bg.model.PubPicture;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,9 +24,6 @@ public class PubServiceImpl implements PubService{
 
     @Autowired
     PubDAO pubDAO;
-
-    @Autowired
-    PubPictureDAO pubPictureDAO;
 
     @Autowired
     public JavaMailSender javaMailSender;
@@ -39,12 +38,18 @@ public class PubServiceImpl implements PubService{
         pub.setPubPictures(null);
         pub.setPassword(null);
         pub.setReservations(null);
+        pub.setBoardGames(null);
         return pub;
     }
 
     @Override
     public Pub getPubByEmail(String email) {
-        return pubDAO.findByEmail(email);
+        Pub pub = pubDAO.findByEmail(email);
+        pub.setPubPictures(null);
+        pub.setPassword(null);
+        pub.setReservations(null);
+        pub.setBoardGames(null);
+        return pub;
     }
 
     @Override
@@ -94,4 +99,5 @@ public class PubServiceImpl implements PubService{
             throw new BoardGameServiceException(ExceptionMessage.EMAIL_NOT_EXISTING);
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package ro.bg.controller;
 
+import co.yellowbricks.bggclient.fetch.FetchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+
 
 @Controller
 public class PubPictureController {
@@ -38,18 +41,26 @@ public class PubPictureController {
         return "edit";
     }
 
-    @RequestMapping(value = "/deletePicture", method = RequestMethod.POST)
-    public String deletePicture(@RequestBody PubPicture pubPicture) {
-        pubPictureService.deletePicture(pubPicture);
-        return "";
+    @RequestMapping(value = "/deletePhotos", method = RequestMethod.POST)
+    @ResponseBody
+    public void boardGamesDelete(@RequestParam(value="photosIds[]") List<Integer> photosIds, @RequestParam(value="email") String email) throws FetchException {
+        pubPictureService.deletePictures(photosIds);
     }
 
     @RequestMapping(value = "/pubPicture", method = RequestMethod.GET)
     public void showImage(@RequestParam("id") int id, HttpServletResponse response, HttpServletRequest request)
             throws ServletException, IOException {
+
         PubPicture pubPicture = pubPictureService.getPicture(id);
         response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
         response.getOutputStream().write(pubPicture.getPicture());
         response.getOutputStream().close();
+    }
+
+    @RequestMapping(value = "/getPictures", method = RequestMethod.GET, produces="application/json")
+    public @ResponseBody  List<PubPicture> getPubPictures(@RequestParam("email") String email, HttpServletResponse response, HttpServletRequest request){
+        Pub pub = pubService.getPubByEmail(email);
+        List<PubPicture> pubPictureList = pubPictureService.getPictures(pub.getId());
+        return pubPictureList;
     }
 }
