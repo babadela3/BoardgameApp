@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/reservation.css"/>
+</head>
+<body>
+    <div id="divBarMenu">
+        <div id="divLogo">
+            <img id="logoImg" src="https://i.pinimg.com/736x/d8/4c/50/d84c5091474284d693db4ea2e8701500--logo-inspiration-board-games.jpg" />
+            <form class="form" action="#" th:action="@{/redirectProfile}" method="post">
+                <input type="hidden" id="email" name="email" th:value='${pub.getEmail()}'/>
+                <div class="divProfileButton">
+                    <input type="submit" id="logoTitle" value=""/>
+                </div>
+            </form>
+        </div>
+        <div id="divAutentification">
+            <form class="formIcons" action="#" th:action="@{/redirectProfile}" method="post">
+                <input type="hidden" name="email" th:value='${pub.getEmail()}'/>
+                <div class="icons">
+                    <input type="submit" class="iconProfile" value=""/>
+                </div>
+            </form>
+            <form class="formIcons" action="#" th:action="@{/redirectProfile}" method="post">
+                <input type="hidden" name="email" th:value='${pub.getEmail()}'/>
+                <div class="icons">
+                    <input type="submit" class="iconNotification" value=""/>
+                </div>
+            </form>
+            <form class="formIcons" action="#" th:action="@{/logout}" method="get">
+                <div class="icons">
+                    <input type="submit" class="iconLogout" value=""/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="divMenu">
+        <div id="divLeft">
+            <div class="reservation">
+                <div id="divUser">
+                    <div class="profilePicture">
+                        <img th:src="'/profilePhoto?email=' + ${pub.getEmail()}" class="roundedcorners"/>
+                    </div>
+                    <div class="profileInfo">
+                        <div class="userprofile">
+                            <label th:text="${pub.getName()}"/>
+                        </div>
+                        <div class="userprofile">
+                            <label th:text="${pub.getEmail()}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="divPictureEvent">
+                    <img src="/images/boardgames.jpg" />
+                </div>
+                <div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Event</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">Shadow Event #13</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Description</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">Descriere</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Players</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">4</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Board games</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">Activity, Resistance, Camel Up</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Date</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">18:22 &nbsp;&nbsp;&nbsp; 09.04.2018</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Mesaj</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <textarea class="textInfo" rows="20" cols="30"/>
+                    </div>
+                    <div>
+                        <input class="button" type="button" value="Approve"/>
+                        <input class="button" type="button" value="Reject"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reservation">
+                <div id="divUser">
+                    <div class="profilePicture">
+                        <img th:src="'/profilePhoto?email=' + ${pub.getEmail()}" class="roundedcorners"/>
+                    </div>
+                    <div class="profileInfo">
+                        <div class="userprofile">
+                            <label th:text="${pub.getName()}"/>
+                        </div>
+                        <div class="userprofile">
+                            <label th:text="${pub.getEmail()}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="divPictureEvent">
+                    <img src="/images/boardgames.jpg" />
+                </div>
+                <div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Event</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">Shadow Event #13</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Description</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">Descriere</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Players</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">4</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Board games</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">Activity, Resistance, Camel Up</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Date</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <label class="textInfo">18:22 &nbsp;&nbsp;&nbsp; 09.04.2018</label>
+                    </div>
+                    <div class="divLabelInfo">
+                        <label class="labelInfo">Mesaj</label>
+                    </div>
+                    <div class="divTextInfo">
+                        <textarea class="textInfo" rows="20" cols="30"/>
+                    </div>
+                    <div>
+                        <input class="button" type="button" value="Approve"/>
+                        <input class="button" type="button" value="Reject"/>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div id="divRight">
+            <div id="divProfile">
+                    <div class="divProfilePicture">
+                        <img th:src="'/profilePhoto?email=' + ${pub.getEmail()}" class="roundedcorners"/>
+                    </div>
+                    <div class="divProfileInfo">
+                        <div class="profileLeft" id="divProfileName">
+                            <label id="profileName" th:text="${pub.getName()}"/>
+                        </div>
+                        <div class="profileLeft" id="divProfileEmail">
+                            <label id="profileEmail" th:text="${pub.getEmail()}"/>
+                        </div>
+                    </div>
+            </div>
+            <div id="divApprovedReservations">
+                <div class="approvedReservation">
+                    <div class="divProfilePicture">
+                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
+                    </div>
+                    <div class="divProfileInfo">
+                        <div class="profileLeft" >
+                            <label>Matei Cornel + 3</label>
+                        </div>
+                        <div class="profileLeft" >
+                            <label>19:00 &nbsp;&nbsp;  09.04.2018</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="approvedReservation">
+                    <div class="divProfilePicture">
+                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
+                    </div>
+                    <div class="divProfileInfo">
+                        <div class="profileLeft" >
+                            <label>Matei Cornel + 3</label>
+                        </div>
+                        <div class="profileLeft" >
+                            <label>19:00 &nbsp;&nbsp;  09.04.2018</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="approvedReservation">
+                    <div class="divProfilePicture">
+                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
+                    </div>
+                    <div class="divProfileInfo">
+                        <div class="profileLeft" >
+                            <label>Matei Cornel + 3</label>
+                        </div>
+                        <div class="profileLeft" >
+                            <label>19:00 &nbsp;&nbsp;  09.04.2018</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="approvedReservation">
+                    <div class="divProfilePicture">
+                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
+                    </div>
+                    <div class="divProfileInfo">
+                        <div class="profileLeft" >
+                            <label>Matei Cornel + 3</label>
+                        </div>
+                        <div class="profileLeft" >
+                            <label>19:00 &nbsp;&nbsp;  09.04.2018</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="approvedReservation">
+                    <div class="divProfilePicture">
+                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
+                    </div>
+                    <div class="divProfileInfo">
+                        <div class="profileLeft" >
+                            <label>Matei Cornel + 3</label>
+                        </div>
+                        <div class="profileLeft" >
+                            <label>19:00 &nbsp;&nbsp; 09.04.2018</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

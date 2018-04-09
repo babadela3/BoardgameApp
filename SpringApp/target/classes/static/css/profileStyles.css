@@ -3,7 +3,7 @@
     width:300px;
     height: 100%;
     padding:21px 0;
-    margin-left: 17%;
+    margin-left: 20%;
 }
 #divSearch{
     display: inline-block;
@@ -50,16 +50,36 @@
     background-color: #FBF6F6;
     border: thin solid #CDCECF;
 }
-#signUp, #logIn, #line{
-	font-size:20px;
-	font-weight: bold;
+
+.icons {
+    width:50px;
+    display: inline-block;
 }
-#signUp, #logIn{
-    color:#2196F3;
-    margin-right:5px;
-    margin-left:5px;
-    cursor: pointer;
+
+.iconProfile{
+    padding: 16px 16px;
+    background: url('/images/profile.png') no-repeat;
+    background-size: 25px 25px;
+    display: inline-block;
+    border:none;
 }
+
+.iconNotification{
+    padding: 16px 16px;
+    background: url('/images/notification.png') no-repeat;
+    background-size: 25px 25px;
+    display: inline-block;
+    border:none;
+}
+
+.iconLogout{
+    padding: 16px 16px;
+    background: url('/images/logout.png') no-repeat;
+    background-size: 25px 25px;
+    display: inline-block;
+    border:none;
+}
+
 
 html, body
 {
@@ -358,4 +378,10 @@ html, body
 
 .divImg:hover .middle {
   opacity: 1;
+}
+
+.formIcons{
+    width: 51px;
+    display: inline-block;
+    margin-left:20px;
 }

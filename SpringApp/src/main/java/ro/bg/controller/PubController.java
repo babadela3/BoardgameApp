@@ -152,4 +152,21 @@ public class PubController {
         rm.addFlashAttribute("boardgames",boardGames);
         return "redirect:/profile";
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout() {
+        return "redirect:";
+    }
+
+    @RequestMapping(value = "/notifications", method = RequestMethod.GET)
+    public String reservations(@ModelAttribute("email") String email, RedirectAttributes rm) {
+        Pub pub = pubService.getPubByEmail(email);
+        rm.addFlashAttribute("pub", pub);
+        return "redirect:/reservations";
+    }
+
+    @RequestMapping(value = "/reservations", method = RequestMethod.GET)
+    public String reservationsPage() {
+        return "reservations";
+    }
 }

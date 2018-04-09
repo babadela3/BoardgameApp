@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/profileStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/profileStyles.css"/>
     <script src="/js/profile.js"></script>
 </head>
 <body>
@@ -16,15 +16,24 @@
                 </div>
             </form>
         </div>
-        <div id="divSearch">
-            <input id="searchBar" type="text" placeholder="Search..." />
-        </div>
         <div id="divAutentification">
-            <label onclick="profile()">Profile</label>
-            <label>|</label>
-            <label>Notifications</label>
-            <label>|</label>
-            <label>Log out</label>
+            <form class="formIcons" action="#" th:action="@{/redirectProfile}" method="post">
+                <input type="hidden" name="email" th:value='${pub.getEmail()}'/>
+                <div class="icons">
+                    <input type="submit" class="iconProfile" value=""/>
+                </div>
+            </form>
+            <form class="formIcons" action="#" th:action="@{/notifications}" method="get">
+                <input type="hidden" name="email" th:value='${pub.getEmail()}'/>
+                <div class="icons">
+                    <input type="submit" class="iconNotification" value=""/>
+                </div>
+            </form>
+            <form class="formIcons" action="#" th:action="@{/logout}" method="get">
+                <div class="icons">
+                    <input type="submit" class="iconLogout" value=""/>
+                </div>
+            </form>
         </div>
     </div>
     <div id="divProfile">
