@@ -36,4 +36,10 @@ public class UserController {
         userService.deleteUser(user);
         return "";
     }
+
+    @RequestMapping(value = "/getUser", method = RequestMethod.POST)
+    public void getPub(@ModelAttribute("email") String email,
+                         @ModelAttribute("password") String password){
+        System.out.println(email + " " + password);
+    }
 }
