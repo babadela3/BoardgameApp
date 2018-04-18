@@ -2,7 +2,6 @@ package android.bg.ro.boardgame;
 
 import android.bg.ro.boardgame.services.ReceiveData;
 import android.bg.ro.boardgame.services.TaskDelegate;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
@@ -16,50 +15,38 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginActivity extends AppCompatActivity implements TaskDelegate {
+
+public class ForgotPasswordActivity extends AppCompatActivity implements TaskDelegate{
 
     private TextView email;
-    private TextView password;
-    private TextView forgotPassword;
     private TaskDelegate taskDelegate;
     private ReceiveData receiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_forgot_password);
         getSupportActionBar().hide();
-
-        Button loginButton = (Button) findViewById(R.id.buttonLogin);
-        email = (TextView) findViewById(R.id.textEmail);
-        password = (TextView) findViewById(R.id.textPassword);
         taskDelegate = this;
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        email = (TextView) findViewById(R.id.textEmail);
+        Button forgotButton = (Button) findViewById(R.id.buttonForgot);
+
+
+        forgotButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 URL url = null;
                 try {
-                    url = new URL("http://" + getResources().getString(R.string.localhost) + "/getUser");
+                    url = new URL("http://" + getResources().getString(R.string.localhost) + "/user/sendPassword");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
 
                 List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
                 params.add(new Pair<>("email",email.getText().toString()));
-                params.add(new Pair<>("password",password.getText().toString()));
 
-                receiveData = (ReceiveData) new ReceiveData(LoginActivity.this.getApplicationContext(),"getUser", params,taskDelegate).execute(url);
-            }
-        });
-
-        forgotPassword = (TextView) findViewById(R.id.textForgotPassword);
-
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("android.bg.ro.boardgame.ForgotPasswordActivity");
-                startActivity(intent);
+                receiveData = (ReceiveData) new ReceiveData(ForgotPasswordActivity.this.getApplicationContext(),"user/sendPassword", params,taskDelegate).execute(url);
             }
         });
 
@@ -70,15 +57,14 @@ public class LoginActivity extends AppCompatActivity implements TaskDelegate {
     public void TaskCompletionResult(String result) {
         switch (receiveData.getResponseCode()) {
             case 200:
-                Toast.makeText(LoginActivity.this, "Login successfully.",
-                    Toast.LENGTH_LONG).show();
+                Toast.makeText(ForgotPasswordActivity.this, "We sent an email with your password.",
+                        Toast.LENGTH_LONG).show();
                 break;
             case 401:
-                Toast.makeText(LoginActivity.this, "The mail or password is incorrect.",
+                Toast.makeText(ForgotPasswordActivity.this, "The mail is incorrect.",
                         Toast.LENGTH_LONG).show();
                 break;
 
         }
     }
 }
-

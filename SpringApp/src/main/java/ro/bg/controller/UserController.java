@@ -1,10 +1,15 @@
 package ro.bg.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import ro.bg.exception.BoardGameServiceException;
+import ro.bg.model.Account;
 import ro.bg.model.User;
+import ro.bg.model.constants.AccountTypeEnum;
 import ro.bg.service.UserService;
 
 @Controller
@@ -12,12 +17,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @RequestMapping(value = "/createAccount", method = RequestMethod.POST)
-    public String createAccount(@RequestBody User user) {
-        userService.createUser(user);
-        return "";
-    }
 
     @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
     public String updateAccount(@RequestBody User user) {
@@ -38,8 +37,39 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getUser", method = RequestMethod.POST)
-    public void getPub(@ModelAttribute("email") String email,
-                         @ModelAttribute("password") String password){
-        System.out.println(email + " " + password);
+    public ResponseEntity<Object> getUser(@ModelAttribute("email") String email,
+                                         @ModelAttribute("password") String password) {
+        User user = null;
+        try {
+            user = userService.getUser(new Account(email,password));
+        } catch (BoardGameServiceException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @RequestMapping(value = "/createBgUser", method = RequestMethod.POST)
+    public ResponseEntity<Object> createUser(@ModelAttribute("email") String email,
+                                             @ModelAttribute("password") String password,
+                                             @ModelAttribute("name") String name,
+                                             @ModelAttribute("town") String town,
+                                             @ModelAttribute("photo") String photo) {
+        User user = new User(email, password, name, town, AccountTypeEnum.BGACCOUNT, photo.getBytes());
+        try {
+            userService.createUser(user);
+        } catch (BoardGameServiceException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @RequestMapping(value = "/user/sendPassword", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPassword(@ModelAttribute("email") String email) {
+        try {
+            userService.sendPassword(email);
+        } catch (BoardGameServiceException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

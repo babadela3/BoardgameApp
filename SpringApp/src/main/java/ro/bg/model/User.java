@@ -30,8 +30,8 @@ public class User {
     @Column(name = "account_type")
     private AccountTypeEnum accountType;
 
-    @Column(name = "profile_picture")
-    private String profilePicture;
+    @Column(name="profile_picture", nullable=false, columnDefinition="mediumblob")
+    private byte[] profilePicture;
 
     @OneToMany(mappedBy = "userCreator",cascade = CascadeType.ALL)
     private Set<Event> createdEvents;
@@ -70,6 +70,18 @@ public class User {
             joinColumns = {@JoinColumn(name = "pk_user_id")},
             inverseJoinColumns = {@JoinColumn(name = "pk_board_game_id")})
     private Set<BoardGame> boardGames;
+
+    public User(String email, String password, String name, String town, AccountTypeEnum accountType, byte[] profilePicture) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.town = town;
+        this.accountType = accountType;
+        this.profilePicture = profilePicture;
+    }
+
+    public User() {
+    }
 
     public int getId() {
         return id;
@@ -119,11 +131,11 @@ public class User {
         this.accountType = accountType;
     }
 
-    public String getProfilePicture() {
+    public byte[] getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
     }
 

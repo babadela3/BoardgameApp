@@ -1,23 +1,44 @@
 package android.bg.ro.boardgame;
 
+import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.TaskDelegate;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements TaskDelegate{
 
     private static int RESULT_LOAD_IMAGE = 1;
+    private ImageView profilePicture;
+    private TextView name;
+    private TextView email;
+    private TextView password;
+    private TextView town;
+
+    private TaskDelegate taskDelegate;
+    private ReceiveData receiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         getSupportActionBar().hide();
 
-        ImageView profilePicture = (ImageView) findViewById(R.id.imgView);
+        profilePicture = (ImageView) findViewById(R.id.imgView);
 
 
         profilePicture.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +60,38 @@ public class SignUpActivity extends AppCompatActivity {
 
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
 
+            }
+        });
+
+        Button signupButton = (Button) findViewById(R.id.buttonSignUp);
+        email = (TextView) findViewById(R.id.editEmail);
+        name = (TextView) findViewById(R.id.editName);
+        password = (TextView) findViewById(R.id.editPassword);
+        town = (TextView) findViewById(R.id.editTown);
+        taskDelegate = this;
+
+
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BitmapDrawable drawable = (BitmapDrawable) profilePicture.getDrawable();
+                String profilePhoto = getStringImage(drawable.getBitmap());
+
+                URL url = null;
+                try {
+                    url = new URL("http://" + getResources().getString(R.string.localhost) + "/createBgUser");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+
+                List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
+                params.add(new Pair<>("name",name.getText().toString()));
+                params.add(new Pair<>("email",email.getText().toString()));
+                params.add(new Pair<>("password",password.getText().toString()));
+                params.add(new Pair<>("town",town.getText().toString()));
+                params.add(new Pair<>("photo", profilePhoto));
+
+                receiveData = (ReceiveData) new ReceiveData(SignUpActivity.this.getApplicationContext(),"createBgUser", params,taskDelegate).execute(url);
             }
         });
 
@@ -77,7 +130,13 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-
+    private String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
 
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
         ParcelFileDescriptor parcelFileDescriptor =
@@ -86,5 +145,20 @@ public class SignUpActivity extends AppCompatActivity {
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
         return image;
+    }
+
+    @Override
+    public void TaskCompletionResult(String result) {
+        switch (receiveData.getResponseCode()) {
+            case 200:
+                Toast.makeText(SignUpActivity.this, "Account successfully created.",
+                        Toast.LENGTH_LONG).show();
+                break;
+            case 409:
+                Toast.makeText(SignUpActivity.this, "The mail is already used.",
+                        Toast.LENGTH_LONG).show();
+                break;
+
+        }
     }
 }

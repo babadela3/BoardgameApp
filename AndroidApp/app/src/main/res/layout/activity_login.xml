@@ -134,7 +134,7 @@
     <ImageView
         android:id="@+id/imageLogo"
         android:layout_width="118dp"
-        android:layout_height="80dp"
+        android:layout_height="90dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="308dp"
