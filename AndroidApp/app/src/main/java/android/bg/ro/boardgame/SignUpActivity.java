@@ -74,8 +74,15 @@ public class SignUpActivity extends AppCompatActivity implements TaskDelegate{
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 BitmapDrawable drawable = (BitmapDrawable) profilePicture.getDrawable();
-                String profilePhoto = getStringImage(drawable.getBitmap());
+                Bitmap bitmap = drawable.getBitmap();
+                bitmap = scaleImage(bitmap);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                bitmap.recycle();
+                String profilePhoto = Base64.encodeToString(byteArray, Base64.DEFAULT);;
 
                 URL url = null;
                 try {
@@ -145,6 +152,30 @@ public class SignUpActivity extends AppCompatActivity implements TaskDelegate{
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
         return image;
+    }
+
+    private static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        image.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
+    }
+
+    private Bitmap scaleImage(Bitmap bitmap){
+        final int maxSize = 960;
+        int outWidth;
+        int outHeight;
+        int inWidth = bitmap.getWidth();
+        int inHeight = bitmap.getHeight();
+        if(inWidth > inHeight){
+            outWidth = maxSize;
+            outHeight = (inHeight * maxSize) / inWidth;
+        } else {
+            outHeight = maxSize;
+            outWidth = (inWidth * maxSize) / inHeight;
+        }
+
+        return Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
     }
 
     @Override

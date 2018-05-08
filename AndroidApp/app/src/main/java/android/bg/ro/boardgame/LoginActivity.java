@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -70,8 +74,19 @@ public class LoginActivity extends AppCompatActivity implements TaskDelegate {
     public void TaskCompletionResult(String result) {
         switch (receiveData.getResponseCode()) {
             case 200:
-                Toast.makeText(LoginActivity.this, "Login successfully.",
-                    Toast.LENGTH_LONG).show();
+                JSONParser parser = new JSONParser();
+                JSONObject json = null;
+                try {
+                    json = (JSONObject) parser.parse(receiveData.getResponse());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                intent.putExtra("email", (json.get("email").toString()));
+                intent.putExtra("password", (json.get("password").toString()));
+                startActivity(intent);
+                finish();
                 break;
             case 401:
                 Toast.makeText(LoginActivity.this, "The mail or password is incorrect.",

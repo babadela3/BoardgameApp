@@ -17,4 +17,6 @@ public interface UserService {
     User getUser(Account account) throws BoardGameServiceException;
 
     void sendPassword(String mail) throws BoardGameServiceException;
+
+    byte[] getProfileImage(String email);
 }

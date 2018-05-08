@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService{
         if(user == null){
             throw new BoardGameServiceException(ExceptionMessage.MISSING_USER);
         }
-        user.setPassword(null);
         user.setBoardGames(null);
         user.setCreatedEvents(null);
         user.setEventUserSet(null);
@@ -93,5 +92,11 @@ public class UserServiceImpl implements UserService{
         else{
             throw new BoardGameServiceException(ExceptionMessage.EMAIL_NOT_EXISTING);
         }
+    }
+
+    @Override
+    public byte[] getProfileImage(String email) {
+        User user = userDAO.findByEmail(email);
+        return user.getProfilePicture();
     }
 }

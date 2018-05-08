@@ -11,6 +11,9 @@ import ro.bg.model.Account;
 import ro.bg.model.User;
 import ro.bg.model.constants.AccountTypeEnum;
 import ro.bg.service.UserService;
+import org.apache.commons.codec.binary.Base64;
+
+import java.io.UnsupportedEncodingException;
 
 @Controller
 public class UserController {
@@ -54,7 +57,8 @@ public class UserController {
                                              @ModelAttribute("name") String name,
                                              @ModelAttribute("town") String town,
                                              @ModelAttribute("photo") String photo) {
-        User user = new User(email, password, name, town, AccountTypeEnum.BGACCOUNT, photo.getBytes());
+        User user = null;
+        user = new User(email, password, name, town, AccountTypeEnum.BGACCOUNT, Base64.decodeBase64(photo));
         try {
             userService.createUser(user);
         } catch (BoardGameServiceException e) {
@@ -71,5 +75,10 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @RequestMapping(value = "/user/getProfileImage", method = RequestMethod.POST)
+    public ResponseEntity<Object> getProfileImage(@ModelAttribute("email") String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getProfileImage(email));
     }
 }

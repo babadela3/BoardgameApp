@@ -43,6 +43,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".MenuActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.bg.ro.boardgame.MenuActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
