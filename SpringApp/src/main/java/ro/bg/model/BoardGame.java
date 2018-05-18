@@ -33,7 +33,12 @@ public class BoardGame {
             inverseJoinColumns = {@JoinColumn(name = "pk_pub_id")})
     private Set<Pub> pubs;
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "boardGames",cascade = CascadeType.ALL)
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_games",
+            joinColumns = {@JoinColumn(name = "pk_board_game_id")},
+            inverseJoinColumns = {@JoinColumn(name = "pk_user_id")})
     private Set<User> users;
 
     public BoardGame() {

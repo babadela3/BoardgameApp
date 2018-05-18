@@ -10,6 +10,16 @@ public class BoardGame {
 
     private String picture;
 
+    public BoardGame() {
+    }
+
+    public BoardGame(int id, String name, String description, String picture) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+    }
+
     public int getId() {
         return id;
     }

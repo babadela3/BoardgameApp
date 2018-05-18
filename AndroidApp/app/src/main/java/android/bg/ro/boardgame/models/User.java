@@ -3,6 +3,7 @@ package android.bg.ro.boardgame.models;
 import android.bg.ro.boardgame.models.constrants.AccountTypeEnum;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class User {
@@ -21,7 +22,9 @@ public class User {
 
     private byte[] profilePicture;
 
-    private Set<BoardGame> boardGames;
+    private List<BoardGame> boardGames;
+
+    private List<Friend> friends;
 
     public int getId() {
         return id;
@@ -71,11 +74,11 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public Set<BoardGame> getBoardGames() {
+    public List<BoardGame> getBoardGames() {
         return boardGames;
     }
 
-    public void setBoardGames(Set<BoardGame> boardGames) {
+    public void setBoardGames(List<BoardGame> boardGames) {
         this.boardGames = boardGames;
     }
 
@@ -87,17 +90,11 @@ public class User {
         this.accountType = accountType;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", town='" + town + '\'' +
-                ", accountType=" + accountType +
-                ", profilePicture=" + Arrays.toString(profilePicture) +
-                ", boardGames=" + boardGames +
-                '}';
+    public List<Friend> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<Friend> friends) {
+        this.friends = friends;
     }
 }

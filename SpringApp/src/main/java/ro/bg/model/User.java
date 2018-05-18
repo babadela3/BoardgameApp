@@ -3,6 +3,7 @@ package ro.bg.model;
 import ro.bg.model.constants.AccountTypeEnum;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Set;
 
 @Entity
@@ -64,11 +65,7 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Notification> notifications;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_games",
-            joinColumns = {@JoinColumn(name = "pk_user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "pk_board_game_id")})
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "users",cascade = CascadeType.ALL)
     private Set<BoardGame> boardGames;
 
     public User(String email, String password, String name, String town, AccountTypeEnum accountType, byte[] profilePicture) {
@@ -261,5 +258,28 @@ public class User {
         result = 31 * result + (getFriendshipsSetOne() != null ? getFriendshipsSetOne().hashCode() : 0);
         result = 31 * result + (getFriendshipsSetTwo() != null ? getFriendshipsSetTwo().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", town='" + town + '\'' +
+                ", accountType=" + accountType +
+                ", profilePicture=" + Arrays.toString(profilePicture) +
+                ", createdEvents=" + createdEvents +
+                ", eventUserSet=" + eventUserSet +
+                ", events=" + events +
+                ", friendshipsSetOne=" + friendshipsSetOne +
+                ", friendshipsSetTwo=" + friendshipsSetTwo +
+                ", senders=" + senders +
+                ", receivers=" + receivers +
+                ", gameReservations=" + gameReservations +
+                ", notifications=" + notifications +
+                ", boardGames=" + boardGames +
+                '}';
     }
 }

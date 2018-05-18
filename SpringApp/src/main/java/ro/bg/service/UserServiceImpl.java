@@ -9,8 +9,12 @@ import ro.bg.dao.UserDAO;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.exception.ExceptionMessage;
 import ro.bg.model.Account;
+import ro.bg.model.BoardGame;
+import ro.bg.model.Friendship;
 import ro.bg.model.User;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -63,17 +67,44 @@ public class UserServiceImpl implements UserService{
         if(user == null){
             throw new BoardGameServiceException(ExceptionMessage.MISSING_USER);
         }
-        user.setBoardGames(null);
+        List<BoardGame> boardGames = new ArrayList<>(user.getBoardGames());
+        for(BoardGame boardGame: boardGames){
+            boardGame.setEvents(null);
+            boardGame.setUsers(null);
+            boardGame.setPubs(null);
+            boardGame.setGameReservations(null);
+        }
+
+        List<Friendship> friendshipList = new ArrayList<>();
+        List<Friendship> friendships = new ArrayList<>(user.getFriendshipsSetOne());
+        for(Friendship friendship: friendships){
+            if(friendship.getFriendTwo().getId() != user.getId()){
+                User user1 = new User();
+                user1.setName(friendship.getFriendTwo().getName());
+                user1.setId(friendship.getFriendTwo().getId());
+                friendshipList.add(new Friendship(user1,null));
+            };
+        }
+        friendships = new ArrayList<>(user.getFriendshipsSetTwo());
+        for(Friendship friendship: friendships){
+            if(friendship.getFriendOne().getId() != user.getId()){
+                User user1 = new User();
+                user1.setName(friendship.getFriendOne().getName());
+                user1.setId(friendship.getFriendOne().getId());
+               // user1.setProfilePicture(friendship.getFriendOne().getProfilePicture());
+                friendshipList.add(new Friendship(user1,null));
+            };
+        }
+        user.setBoardGames(new HashSet<BoardGame>(boardGames));
         user.setCreatedEvents(null);
         user.setEventUserSet(null);
         user.setEvents(null);
-        user.setFriendshipsSetOne(null);
+        user.setFriendshipsSetOne(new HashSet<Friendship>(friendshipList));
         user.setFriendshipsSetTwo(null);
         user.setSenders(null);
         user.setReceivers(null);
         user.setGameReservations(null);
         user.setNotifications(null);
-
         return user;
     }
 

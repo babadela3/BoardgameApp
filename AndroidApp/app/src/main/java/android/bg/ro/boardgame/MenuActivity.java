@@ -64,17 +64,7 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate{
 
                 Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentForProfile);
 
-
                 if(fragment != null){
-                    if(fragment.getChildFragmentManager().findFragmentById(R.id.imageButtonEvents) != null){
-                        System.out.println("macar atat: events");
-                    }
-                    if(fragment.getChildFragmentManager().findFragmentById(R.id.imageButtonGames) != null){
-                        System.out.println("macar atat: games");
-                    }
-                    if(fragment.getChildFragmentManager().findFragmentById(R.id.imageButtonFriends) != null){
-                        System.out.println("macar atat: friends");
-                    }
                     getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.fragmentForProfile)).commit();
                 }
                 getFragmentManager().beginTransaction().replace(R.id.fragmentsMenu, new ProfileFragment()).addToBackStack(null).commit();
