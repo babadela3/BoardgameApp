@@ -1,7 +1,6 @@
 package android.bg.ro.boardgame.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.bg.ro.boardgame.MenuActivity;
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.models.User;

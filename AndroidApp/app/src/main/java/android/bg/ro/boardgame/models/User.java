@@ -1,7 +1,10 @@
 package android.bg.ro.boardgame.models;
 
 import android.bg.ro.boardgame.models.constrants.AccountTypeEnum;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -97,4 +100,5 @@ public class User {
     public void setFriends(List<Friend> friends) {
         this.friends = friends;
     }
+
 }

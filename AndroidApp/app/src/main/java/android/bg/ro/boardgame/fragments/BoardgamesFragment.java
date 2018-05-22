@@ -1,27 +1,17 @@
 package android.bg.ro.boardgame.fragments;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.bg.ro.boardgame.MenuActivity;
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.adapters.BoardGameAdapter;
-import android.bg.ro.boardgame.models.BoardGame;
 import android.bg.ro.boardgame.models.User;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BoardgamesFragment extends Fragment {
 

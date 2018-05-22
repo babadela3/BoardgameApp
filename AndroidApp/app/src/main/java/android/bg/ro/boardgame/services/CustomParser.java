@@ -2,6 +2,7 @@ package android.bg.ro.boardgame.services;
 
 import android.bg.ro.boardgame.models.BoardGame;
 import android.bg.ro.boardgame.models.Friend;
+import android.bg.ro.boardgame.models.Message;
 import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.models.constrants.AccountTypeEnum;
 import android.util.Base64;
@@ -11,6 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -73,5 +75,34 @@ public class CustomParser {
         user.setFriends(friends);
 
         return user;
+    }
+
+    public List<Message> getMessages(String jsonString){
+        List<Message> messages = new ArrayList<>();
+        JSONArray json = null;
+        JSONParser parser = new JSONParser();
+        try {
+            json = (JSONArray) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Iterator iter = json.iterator();
+        while (iter.hasNext()) {
+            JSONObject messageObject = null;
+            try {
+                messageObject = (JSONObject) parser.parse(iter.next().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Message message = new Message();
+            message.setSenderId(Integer.parseInt(messageObject.get("sender").toString()));
+            message.setReceiverId(Integer.parseInt(messageObject.get("receiver").toString()));
+            message.setMessage(messageObject.get("message").toString());
+            message.setDate(messageObject.get("date").toString());
+            messages.add(message);
+        }
+
+        return messages;
     }
 }

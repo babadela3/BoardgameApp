@@ -31,6 +31,17 @@ public class Message {
     @Column(name = "data")
     private Date date;
 
+    public Message() {
+    }
+
+    public Message(Friendship friendship, int sender, int receiver, String message, Date date) {
+        this.friendship = friendship;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        this.date = date;
+    }
+
     public int getId() {
         return id;
     }
