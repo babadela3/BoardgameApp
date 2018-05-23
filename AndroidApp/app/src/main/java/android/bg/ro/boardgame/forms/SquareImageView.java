@@ -1,4 +1,4 @@
-package android.bg.ro.boardgame.services;
+package android.bg.ro.boardgame.forms;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,6 +1,7 @@
 package android.bg.ro.boardgame;
 
 import android.app.Fragment;
+import android.bg.ro.boardgame.fragments.CreateEventFragment;
 import android.bg.ro.boardgame.fragments.HomeFragment;
 import android.bg.ro.boardgame.fragments.ProfileFragment;
 import android.bg.ro.boardgame.models.Client;
@@ -63,6 +64,7 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
 
         ImageButton profileButton = (ImageButton) findViewById(R.id.imageButtonProfile);
         ImageButton homeButton = (ImageButton) findViewById(R.id.imageButtonHome);
+        ImageButton createEventButton = (ImageButton) findViewById(R.id.imageButtonAdd);
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +86,17 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
                 Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentsMenu);
                 if(!(fragment instanceof HomeFragment)){
                     getFragmentManager().beginTransaction().replace(R.id.fragmentsMenu, new HomeFragment()).addToBackStack(null).commit();
+
+                }
+            }
+        });
+
+        createEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentsMenu);
+                if(!(fragment instanceof CreateEventFragment)){
+                    getFragmentManager().beginTransaction().replace(R.id.fragmentsMenu, new CreateEventFragment()).addToBackStack(null).commit();
 
                 }
             }
