@@ -3,6 +3,7 @@ package ro.bg.controller;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -168,5 +169,10 @@ public class PubController {
     @RequestMapping(value = "/reservations", method = RequestMethod.GET)
     public String reservationsPage() {
         return "reservations";
+    }
+
+    @RequestMapping(value = "/getPubs", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubs() {
+        return ResponseEntity.status(HttpStatus.OK).body(pubService.getPubs());
     }
 }

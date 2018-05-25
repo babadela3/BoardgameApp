@@ -24,7 +24,7 @@ public class SocketClientConnection extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         for(Pair<String, String> pair : parameters){
             if(pair.first.equals("id")){
-                client = new Client("192.168.1.101", 8181, pair.second);
+                client = new Client("192.168.1.102", 8181, pair.second);
                 client.start();
             }
         }

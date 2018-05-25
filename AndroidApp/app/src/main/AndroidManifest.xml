@@ -59,6 +59,30 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".InviteFriendActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.bg.ro.boardgame.InviteFriendActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddBoardGamesActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.bg.ro.boardgame.AddBoardGamesActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SelectPubActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.bg.ro.boardgame.SelectPubActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

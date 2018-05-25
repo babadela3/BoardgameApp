@@ -1,12 +1,16 @@
 package android.bg.ro.boardgame.models;
 
-public class Friend {
+import java.io.Serializable;
+
+public class Friend implements Serializable{
 
     private int id;
 
     private String name;
 
     private byte[] profilePicture;
+
+    private boolean hasInvited;
 
     public int getId() {
         return id;
@@ -30,5 +34,13 @@ public class Friend {
 
     public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public boolean isHasInvited() {
+        return hasInvited;
+    }
+
+    public void setHasInvited(boolean hasInvited) {
+        this.hasInvited = hasInvited;
     }
 }

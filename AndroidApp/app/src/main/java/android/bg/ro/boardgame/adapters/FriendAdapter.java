@@ -1,5 +1,6 @@
 package android.bg.ro.boardgame.adapters;
 
+import android.bg.ro.boardgame.InviteFriendActivity;
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.models.Friend;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,31 +49,58 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
     public static class ViewHolder {
         public TextView nameFriend;
         public ImageView pictureFriend;
+        public CheckBox checkBox;
 
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        final ViewHolder holder;
+        ViewHolder holder;
         try {
             if (convertView == null) {
-                vi = inflater.inflate(R.layout.list_item_friend, null);
+                if(context instanceof InviteFriendActivity) {
+                    vi = inflater.inflate(R.layout.list_item_invite_friend, null);
+                }
+                else {
+                    vi = inflater.inflate(R.layout.list_item_friend, null);
+                }
+            }
+            else {
+                holder = (ViewHolder) vi.getTag();
+            }
+
+            if(context instanceof InviteFriendActivity) {
                 holder = new ViewHolder();
 
                 holder.nameFriend = (TextView) vi.findViewById(R.id.friendName);
                 holder.pictureFriend = (ImageView) vi.findViewById(R.id.friendImg);
+                holder.checkBox = (CheckBox) vi.findViewById(R.id.checkBox);
 
+                holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                vi.setTag(holder);
-            } else {
-                holder = (ViewHolder) vi.getTag();
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                        if(isChecked) {
+                            ((InviteFriendActivity) context).getFriends().get(position).setHasInvited(true);
+                        }
+                        else {
+                            ((InviteFriendActivity) context).getFriends().get(position).setHasInvited(false);
+
+                        }
+                    }
+                });
+            }
+            else {
+                holder = new ViewHolder();
+
+                holder.nameFriend = (TextView) vi.findViewById(R.id.friendName);
+                holder.pictureFriend = (ImageView) vi.findViewById(R.id.friendImg);
             }
 
-
+            vi.setTag(holder);
 
             holder.nameFriend.setText(friends.get(position).getName());
             //holder.display_number.setText(lProducts.get(position).number);
-
 
         } catch (Exception e) {
 

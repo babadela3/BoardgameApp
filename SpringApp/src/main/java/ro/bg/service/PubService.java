@@ -22,4 +22,6 @@ public interface PubService {
     void deletePub(Pub pub);
 
     void resetPassword(String mail) throws BoardGameServiceException;
+
+    List<Pub> getPubs();
 }

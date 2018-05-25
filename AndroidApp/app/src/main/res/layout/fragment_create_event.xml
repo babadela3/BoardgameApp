@@ -102,12 +102,13 @@
             android:textSize="15dp"/>
 
         <LinearLayout
+            android:id="@+id/layoutPlayerNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/textName"
             android:layout_below="@+id/textNumberOfPlayers"
-            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <Button
@@ -116,19 +117,19 @@
                 android:layout_height="30dp"
                 android:background="@drawable/my_button_chat"
                 android:text="-"
+                android:textColor="#ffffff"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:textColor="#ffffff" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/numberPlayers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="15dp"
-                android:textColor="#ffffff"
+                android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingLeft="10dp"/>
+                android:text="0"
+                android:textColor="#ffffff"
+                android:textSize="15dp" />
 
             <Button
                 android:id="@+id/buttonPlus"
@@ -136,9 +137,242 @@
                 android:layout_height="30dp"
                 android:background="@drawable/my_button_chat"
                 android:text="+"
+                android:textColor="#ffffff"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:textColor="#ffffff" />
+                android:textStyle="bold" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textInviteFriends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/layoutPlayerNumber"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Invitations"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/buttonInviteFriends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textInviteFriends"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/my_button_chat"
+            android:text="Invite friends"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/textInvitedPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/buttonInviteFriends"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Invited Friends"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/invitedPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/textInvitedPeople"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:text="None"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:minLines="1"
+            android:layout_marginTop="5dp"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/textBoardGames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/invitedPeople"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Board Games"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/buttonAddBoardGames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textBoardGames"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/my_button_chat"
+            android:text="Add boardgames"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/textGames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/buttonAddBoardGames"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Selected Games"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/selectedGames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/textGames"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:minLines="1"
+            android:ems="10"
+            android:text="None"
+            android:layout_marginTop="5dp"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/textDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/selectedGames"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Date"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/textDate"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:hint="dd.mm.yyyy"
+            app:backgroundTint="#ffffff"
+            android:inputType="date"/>
+
+        <TextView
+            android:id="@+id/textPub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/date"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Pub"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/pubButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textPub"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/my_button_chat"
+            android:text="Add pub"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/textSelectedPub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/pubButton"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Selected Pub"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/selectedPub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/textSelectedPub"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:minLines="1"
+            android:ems="10"
+            android:text="None"
+            android:layout_marginTop="5dp"
+            android:textSize="15dp" />
+
     </RelativeLayout>
 </ScrollView>

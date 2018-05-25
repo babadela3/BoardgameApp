@@ -1,6 +1,8 @@
 package android.bg.ro.boardgame.models;
 
-public class BoardGame {
+import java.io.Serializable;
+
+public class BoardGame implements Serializable{
 
     private int id;
 
@@ -9,6 +11,8 @@ public class BoardGame {
     private String description;
 
     private String picture;
+
+    private boolean added;
 
     public BoardGame() {
     }
@@ -50,5 +54,13 @@ public class BoardGame {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public boolean isAdded() {
+        return added;
+    }
+
+    public void setAdded(boolean added) {
+        this.added = added;
     }
 }

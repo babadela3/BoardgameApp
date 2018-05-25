@@ -100,4 +100,17 @@ public class PubServiceImpl implements PubService{
         }
     }
 
+    @Override
+    public List<Pub> getPubs() {
+        List<Pub> pubs = pubDAO.findAll();
+        for(Pub pub : pubs) {
+            pub.setBoardGames(null);
+            pub.setGameReservations(null);
+            pub.setPubPictures(null);
+            pub.setPassword(null);
+            pub.setReservations(null);
+        }
+        return pubs;
+    }
+
 }
