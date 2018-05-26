@@ -5,6 +5,7 @@ import android.bg.ro.boardgame.MenuActivity;
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.models.BoardGame;
 import android.bg.ro.boardgame.models.Friend;
+import android.bg.ro.boardgame.models.Pub;
 import android.bg.ro.boardgame.models.User;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,9 +26,12 @@ public class CreateEventFragment extends Fragment {
     TextView numberOfPlayers;
     TextView invitedPeople;
     TextView selectedGames;
+    TextView selectedPub;
+    TextView selectedAddress;
     User user;
     ArrayList<Friend> invitedFriends;
     ArrayList<BoardGame> addedBoardGames;
+    Pub pub;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,10 +53,13 @@ public class CreateEventFragment extends Fragment {
 
         Button addGamesButton = (Button) getView().findViewById(R.id.buttonAddBoardGames);
         selectedGames = (TextView) getView().findViewById(R.id.selectedGames);
+        selectedPub = (TextView) getView().findViewById(R.id.selectedPub);
+        selectedAddress = (TextView) getView().findViewById(R.id.selectedAddress);
 
         EditText date = (EditText) getView().findViewById(R.id.date);
 
         Button pubButton = (Button) getView().findViewById(R.id.pubButton);
+        Button addressButton = (Button) getView().findViewById(R.id.addressButton);
 
 
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +119,15 @@ public class CreateEventFragment extends Fragment {
                 startActivityForResult(intent,10);
             }
         });
+
+        addressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent("android.bg.ro.boardgame.SelectAddressMapsActivity");
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -148,6 +164,24 @@ public class CreateEventFragment extends Fragment {
                         }
                     }
                     selectedGames.setText(textGames);
+                }
+            }
+            if(resultCode == 40) {
+                Bundle bundle = data.getExtras();
+                pub = (Pub) bundle.getSerializable("selectedPub");
+                if(pub != null){
+                    selectedPub.setText(pub.getName());
+                    selectedAddress.setText(pub.getAddress());
+                }
+                else {
+                    selectedPub.setText("None");
+                    selectedAddress.setText("None");
+                }
+            }
+            if(resultCode == 50) {
+                Bundle bundle = data.getExtras();
+                if(bundle.getString("address") != null) {
+                    selectedAddress.setText(bundle.getString("address"));
                 }
             }
         }

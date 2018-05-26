@@ -2,6 +2,7 @@ package android.bg.ro.boardgame.adapters;
 
 import android.bg.ro.boardgame.InviteFriendActivity;
 import android.bg.ro.boardgame.R;
+import android.bg.ro.boardgame.SelectPubActivity;
 import android.bg.ro.boardgame.models.Friend;
 import android.bg.ro.boardgame.models.Pub;
 import android.content.Context;
@@ -75,10 +76,10 @@ public class PubAdapter extends ArrayAdapter<Pub> {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                     if(isChecked) {
-                        ((InviteFriendActivity) context).getFriends().get(position).setHasInvited(true);
+                        ((SelectPubActivity) context).getPubs().get(position).setSelected(true);
                     }
                     else {
-                        ((InviteFriendActivity) context).getFriends().get(position).setHasInvited(false);
+                        ((SelectPubActivity) context).getPubs().get(position).setSelected(false);
 
                     }
             }});

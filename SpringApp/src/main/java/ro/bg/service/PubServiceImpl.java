@@ -109,6 +109,7 @@ public class PubServiceImpl implements PubService{
             pub.setPubPictures(null);
             pub.setPassword(null);
             pub.setReservations(null);
+            pub.setPicture(null);
         }
         return pubs;
     }

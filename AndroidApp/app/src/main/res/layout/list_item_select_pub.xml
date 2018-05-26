@@ -17,8 +17,8 @@
         android:id="@+id/pubName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/friendImg"
-        android:layout_toEndOf="@+id/friendImg"
+        android:layout_alignTop="@+id/pubImg"
+        android:layout_toEndOf="@+id/pubImg"
         android:textSize="20dp"
         android:text="Text" />
 
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/friendImg"
+        android:layout_alignTop="@+id/pubImg"
         android:theme="@style/MyCheckBox"/>
 
 </RelativeLayout>

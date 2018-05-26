@@ -3,6 +3,7 @@ package android.bg.ro.boardgame.services;
 import android.bg.ro.boardgame.models.BoardGame;
 import android.bg.ro.boardgame.models.Friend;
 import android.bg.ro.boardgame.models.Message;
+import android.bg.ro.boardgame.models.Pub;
 import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.models.constrants.AccountTypeEnum;
 import android.util.Base64;
@@ -104,5 +105,33 @@ public class CustomParser {
         }
 
         return messages;
+    }
+
+    public List<Pub> getPubs(String jsonString){
+        List<Pub> pubs = new ArrayList<>();
+        JSONArray json = null;
+        JSONParser parser = new JSONParser();
+        try {
+            json = (JSONArray) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Iterator iter = json.iterator();
+        while (iter.hasNext()) {
+            JSONObject pubObject = null;
+            try {
+                pubObject = (JSONObject) parser.parse(iter.next().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Pub pub = new Pub();
+            pub.setId(Integer.parseInt(pubObject.get("id").toString()));
+            pub.setName(pubObject.get("name").toString());
+            pub.setEmail(pubObject.get("email").toString());
+            pub.setAddress(pubObject.get("address").toString());
+            pub.setDescription(pubObject.get("description").toString());
+            pubs.add(pub);
+        }
+        return pubs;
     }
 }

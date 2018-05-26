@@ -233,7 +233,7 @@
             android:layout_below="@+id/textBoardGames"
             android:layout_marginTop="10dp"
             android:background="@drawable/my_button_chat"
-            android:text="Add boardgames"
+            android:text="Add board games"
             android:textAllCaps="false"
             android:textColor="#ffffff" />
 
@@ -373,6 +373,84 @@
             android:text="None"
             android:layout_marginTop="5dp"
             android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/textAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/selectedPub"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Address"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/addressButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textAddress"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/my_button_chat"
+            android:text="Add address"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/textSelectedAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/addressButton"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Selected Address"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/selectedAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/textSelectedAddress"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:minLines="1"
+            android:ems="10"
+            android:text="None"
+            android:layout_marginTop="5dp"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/finishButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selectedAddress"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/my_button_signup"
+            android:text="Finish"
+            android:textAllCaps="false"
+            android:textColor="#c64040" />
 
     </RelativeLayout>
 </ScrollView>
