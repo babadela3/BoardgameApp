@@ -36,10 +36,6 @@ public class AddBoardGamesActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listFriends);
         listView.setAdapter(adapter);
 
-        for(BoardGame boardGame : boardGames){
-            System.out.println(boardGame.getName());
-        }
-
         Button button = findViewById(R.id.button);
 
         button.setOnClickListener(new View.OnClickListener() {

@@ -7,31 +7,56 @@ import android.bg.ro.boardgame.models.BoardGame;
 import android.bg.ro.boardgame.models.Friend;
 import android.bg.ro.boardgame.models.Pub;
 import android.bg.ro.boardgame.models.User;
+import android.bg.ro.boardgame.services.CustomParser;
+import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.SocketClientConnection;
+import android.bg.ro.boardgame.services.TaskDelegate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-public class CreateEventFragment extends Fragment {
+public class CreateEventFragment extends Fragment implements TaskDelegate{
 
     TextView numberOfPlayers;
     TextView invitedPeople;
     TextView selectedGames;
     TextView selectedPub;
     TextView selectedAddress;
+    double latitude;
+    double longitude;
     User user;
     ArrayList<Friend> invitedFriends;
     ArrayList<BoardGame> addedBoardGames;
     Pub pub;
+
+    TaskDelegate taskDelegate;
+    private ReceiveData receiveData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +69,7 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         final MenuActivity activity = (MenuActivity) getActivity();
         user = activity.getUser();
+        taskDelegate = this;
 
         Button plusButton = (Button) getView().findViewById(R.id.buttonPlus);
         Button minusButton = (Button) getView().findViewById(R.id.buttonMinus);
@@ -60,6 +86,7 @@ public class CreateEventFragment extends Fragment {
 
         Button pubButton = (Button) getView().findViewById(R.id.pubButton);
         Button addressButton = (Button) getView().findViewById(R.id.addressButton);
+        Button finishButton = (Button) getView().findViewById(R.id.finishButton);
 
 
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -124,8 +151,115 @@ public class CreateEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent("android.bg.ro.boardgame.SelectAddressMapsActivity");
-                startActivity(intent);
+                if(selectedPub.getText().toString().equals("None")) {
+                    Intent intent = new Intent("android.bg.ro.boardgame.SelectAddressMapsActivity");
+                    startActivityForResult(intent,10);
+                }
+                else {
+                    Toast.makeText(getActivity(), "You already selected a pub.",
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Gson gson = new Gson();
+                boolean isOk = true;
+
+                String editName  = ((EditText) getView().findViewById(R.id.editName)).getText().toString();
+                String editDescription  = ((EditText) getView().findViewById(R.id.editDescription)).getText().toString();
+                String numberPlayers = numberOfPlayers.getText().toString();
+                String friends = gson.toJson(invitedFriends);
+                String games = gson.toJson(addedBoardGames);
+                String pubId = "";
+                String editAddrss = selectedAddress.getText().toString();
+                String editLatitude = String.valueOf(latitude);
+                String editLongitude = String.valueOf(longitude);
+
+                if(editName.equals("")) {
+                    isOk = false;
+                    Toast.makeText(getActivity(), "Please enter a name.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(editDescription.equals("")) {
+                    isOk = false;
+                    Toast.makeText(getActivity(), "Please enter a description.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(selectedGames.getText().toString().equals("None")) {
+                    isOk = false;
+                    Toast.makeText(getActivity(), "Please select games.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                DateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
+                String editDate = ((EditText) getView().findViewById(R.id.date)).getText().toString();
+                Date date = null;
+                try {
+                    date = format.parse(editDate);
+                } catch (ParseException e) {
+                    isOk = false;
+                    Toast.makeText(getActivity(), "Please respect date format.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Date current = new Date();
+                if(date.before(current)){
+                    isOk = false;
+                    Toast.makeText(getActivity(), "Please enter a future date.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(editAddrss.equals("None")) {
+                    isOk = false;
+                    Toast.makeText(getActivity(), "Please enter an address.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(pub != null){
+                    pubId = String.valueOf(pub.getId());
+                }
+
+                if(isOk) {
+                    URL url = null;
+                    try {
+                        url = new URL("http://" + getResources().getString(R.string.localhost) + "/createEvent");
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+
+                    List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
+                    params.add(new Pair<>("name",editName));
+                    params.add(new Pair<>("description",editDescription));
+                    params.add(new Pair<>("numberPlayers",numberPlayers));
+                    params.add(new Pair<>("friends",friends));
+                    params.add(new Pair<>("games",games));
+                    params.add(new Pair<>("date",editDate));
+                    params.add(new Pair<>("pubId",pubId));
+                    params.add(new Pair<>("address",editAddrss));
+                    params.add(new Pair<>("latitude",editLatitude));
+                    params.add(new Pair<>("longitude",editLongitude));
+                    params.add(new Pair<>("creatorId",String.valueOf(user.getId())));
+
+                    receiveData = (ReceiveData) new ReceiveData(getActivity(),"createEvent", params,taskDelegate).execute(url);
+                }
+
+            }
+        });
+
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int number = Integer.parseInt(numberOfPlayers.getText().toString());
+                if(number < 99) {
+                    numberOfPlayers.setText(String.valueOf(number + 1));
+                }
             }
         });
     }
@@ -180,11 +314,26 @@ public class CreateEventFragment extends Fragment {
             }
             if(resultCode == 50) {
                 Bundle bundle = data.getExtras();
-                if(bundle.getString("address") != null) {
-                    selectedAddress.setText(bundle.getString("address"));
+                if(bundle.getString("location") != null) {
+                    selectedAddress.setText(bundle.getString("location"));
+                    latitude = bundle.getDouble("latitude");
+                    longitude = bundle.getDouble("longitude");
                 }
             }
         }
     }
 
+    @Override
+    public void TaskCompletionResult(String result) {
+        switch (receiveData.getResponseCode()) {
+            case 200:
+                Toast.makeText(getActivity(), "Event successfully created.",
+                        Toast.LENGTH_LONG).show();
+                break;
+            default:
+                Toast.makeText(getActivity(), "Event unsuccessfully created.",
+                        Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
 }

@@ -4,7 +4,7 @@ import ro.bg.model.Reservation;
 
 public interface ReservationService {
 
-    void createReservation(Reservation reservation);
+    String createReservation(int eventId, int pubId);
 
     void deleteReservation(Reservation reservation);
 

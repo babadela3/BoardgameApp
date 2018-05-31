@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bgg-client">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../bgg-client.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -123,9 +123,20 @@
 
         <activity
             android:name=".SelectAddressMapsActivity"
+            android:screenOrientation="portrait">
             android:label="@string/title_activity_select_address_maps">
             <intent-filter>
                 <action android:name="android.bg.ro.boardgame.SelectAddressMapsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EventCreatorMapsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_event_creator_maps">
+            <intent-filter>
+                <action android:name="android.bg.ro.boardgame.EventCreatorMapsActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

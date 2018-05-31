@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/userImg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/profile_default_picture" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/userImg"
+        android:layout_toEndOf="@+id/userImg"
+        android:textSize="20dp"
+        android:text="Text" />
+
+    <Button
+        android:id="@+id/buttonEliminate"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/userImg"
+        android:layout_marginTop="5dp"
+        android:text="x"
+        android:textStyle="bold"
+        android:background="@drawable/my_button_chat"
+        android:textColor="#ffffff"
+        android:textSize="12dp"
+        android:layout_marginLeft="5dp"/>
+
+
+</RelativeLayout>

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class User {
+public class User implements Serializable{
 
     private int id;
 
@@ -28,6 +28,8 @@ public class User {
     private List<BoardGame> boardGames;
 
     private List<Friend> friends;
+
+    private String statusEvent;
 
     public int getId() {
         return id;
@@ -101,4 +103,11 @@ public class User {
         this.friends = friends;
     }
 
+    public String getStatusEvent() {
+        return statusEvent;
+    }
+
+    public void setStatusEvent(String statusEvent) {
+        this.statusEvent = statusEvent;
+    }
 }

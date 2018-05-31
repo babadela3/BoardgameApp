@@ -44,14 +44,6 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // TODO Auto-generated method stub
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("position",position);
-//                ChatFragment chatFragment = new ChatFragment();
-//                chatFragment.setArguments(bundle);
-//
-//                ProfileFragment parentFrag = ((ProfileFragment)getParentFragment());
-//                parentFrag.getFragmentManager().beginTransaction().replace(R.id.fragmentsMenu, chatFragment).addToBackStack(null).commit();
 
                 Gson gson = new Gson();
                 Bundle b = new Bundle();

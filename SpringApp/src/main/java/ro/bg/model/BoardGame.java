@@ -117,7 +117,7 @@ public class BoardGame {
 
     @Override
     public String toString() {
-        return "BoardGame{" +
+        return "BoardGameAndroidDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

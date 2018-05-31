@@ -39,6 +39,12 @@ public class Event {
     @Column(name = "max_seats")
     private int maxSeats;
 
+    @Column(name = "latitude")
+    private double latitude;
+
+    @Column(name = "longitude")
+    private double longitude;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "event_games",
@@ -49,7 +55,7 @@ public class Event {
     @OneToMany(mappedBy = "pk.event", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<EventUser> eventUserSet;
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "events",cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "events",cascade = CascadeType.MERGE)
     private Set<User> users;
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL)
@@ -160,5 +166,21 @@ public class Event {
 
     public void setReservations(Set<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

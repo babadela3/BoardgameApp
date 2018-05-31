@@ -304,9 +304,9 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="bottom"
             android:ems="10"
-            android:hint="dd.mm.yyyy"
+            android:hint="13:00 25.12.2020"
             app:backgroundTint="#ffffff"
-            android:inputType="date"/>
+            android:inputType="textPersonName"/>
 
         <TextView
             android:id="@+id/textPub"
@@ -445,7 +445,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/selectedAddress"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/my_button_signup"
             android:text="Finish"

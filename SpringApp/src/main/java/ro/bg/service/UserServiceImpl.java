@@ -115,8 +115,8 @@ public class UserServiceImpl implements UserService{
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(mail);
             message.setFrom("bgboardgame@gmail.com");
-            message.setSubject("BoardGame Password");
-            message.setText("Hi,\n\nWe got a request to send your BoardGame password.\n\nYour password is: " + user.getPassword() +
+            message.setSubject("BoardGameAndroidDTO Password");
+            message.setText("Hi,\n\nWe got a request to send your BoardGameAndroidDTO password.\n\nYour password is: " + user.getPassword() +
                     " .\n\nIf you ignore this message, your password will not be change.");
             javaMailSender.send(message);
         }
