@@ -8,11 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.Account;
+import ro.bg.model.Pub;
 import ro.bg.model.User;
 import ro.bg.model.constants.AccountTypeEnum;
 import ro.bg.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @Controller
@@ -80,5 +85,15 @@ public class UserController {
     @RequestMapping(value = "/user/getProfileImage", method = RequestMethod.POST)
     public ResponseEntity<Object> getProfileImage(@ModelAttribute("email") String email) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getProfileImage(email));
+    }
+
+    @RequestMapping(value = "/profilePhotoUser", method = RequestMethod.GET)
+    public void showProfilePhoto(@RequestParam("id") int id, HttpServletResponse response, HttpServletRequest request)
+            throws ServletException, IOException {
+        User user = userService.getUser(id);
+        response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+        response.getOutputStream().write(user.getProfilePicture());
+
+        response.getOutputStream().close();
     }
 }

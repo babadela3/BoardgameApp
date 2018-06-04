@@ -11,19 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ro.bg.exception.BoardGameServiceException;
-import ro.bg.model.Account;
-import ro.bg.model.BoardGame;
-import ro.bg.model.Pub;
-import ro.bg.model.PubPicture;
+import ro.bg.model.*;
 import ro.bg.service.BoardGameService;
 import ro.bg.service.PubPictureService;
 import ro.bg.service.PubService;
+import ro.bg.service.ReservationService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,6 +36,9 @@ public class PubController {
 
     @Autowired
     BoardGameService boardGameService;
+
+    @Autowired
+    ReservationService reservationService;
 
     @RequestMapping(value = "/")
     public String login() {
@@ -162,7 +164,27 @@ public class PubController {
     @RequestMapping(value = "/notifications", method = RequestMethod.GET)
     public String reservations(@ModelAttribute("email") String email, RedirectAttributes rm) {
         Pub pub = pubService.getPubByEmail(email);
+        List<Event> events = reservationService.getWaitingEvents(pub.getId());
+        List<Event> eventList = reservationService.getAcceptedEvents(pub.getId());
+        List<String> games = new ArrayList<>();
+        for(Event event : events) {
+            String game = "";
+            List<BoardGame> boardGames = new ArrayList<>();
+            boardGames.addAll(event.getBoardGames());
+            for(int i = 0; i < boardGames.size(); i++) {
+                if(i == 0) {
+                    game = boardGames.get(i).getName();
+                }
+                else {
+                    game = game + ", " + boardGames.get(i).getName();
+                }
+            }
+            games.add(game);
+        }
         rm.addFlashAttribute("pub", pub);
+        rm.addFlashAttribute("events", events);
+        rm.addFlashAttribute("reservations",eventList);
+        rm.addFlashAttribute("games", events);
         return "redirect:/reservations";
     }
 

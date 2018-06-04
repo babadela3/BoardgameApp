@@ -18,5 +18,4 @@ public interface PubDAO extends JpaRepository<Pub,Integer> {
 
     @Query(value = "SELECT * FROM PUBS WHERE ADDRESS = :address", nativeQuery = true)
     Pub findByAddress(@Param("address") String address);
-
 }

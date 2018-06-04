@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import ro.bg.model.Pub;
 import ro.bg.model.Reservation;
+import ro.bg.model.dto.ReservationDTO;
 import ro.bg.service.ReservationService;
 
 import java.util.Map;
@@ -28,8 +30,8 @@ public class ReservationController {
     }
 
     @RequestMapping(value = "/changeReservationStatus", method = RequestMethod.POST)
-    public String changeReservationStatus(@RequestBody Reservation reservation) {
-        reservationService.changeStatus(reservation);
+    public String changeReservationStatus(@RequestBody ReservationDTO reservationDTO) {
+        reservationService.changeStatus(reservationDTO);
         return "";
     }
 

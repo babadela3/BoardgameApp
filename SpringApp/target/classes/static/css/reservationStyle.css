@@ -230,7 +230,7 @@ html, body
     padding:40px;
 }
 
-#divUser{
+.divUser{
     border-bottom: thin solid #CDCECF;
     overflow:hidden;
 }

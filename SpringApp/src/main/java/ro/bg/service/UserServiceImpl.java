@@ -62,6 +62,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User getUser(int idUser) {
+        return userDAO.findOne(idUser);
+    }
+
+    @Override
     public User getUser(Account account) throws BoardGameServiceException {
         User user = userDAO.findByEmailAndPassword(account.getUsername(),account.getPassword());
         if(user == null){

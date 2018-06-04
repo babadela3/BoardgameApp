@@ -14,6 +14,8 @@ public interface UserService {
 
     void deleteUser(User user);
 
+    User getUser(int idUser);
+
     User getUser(Account account) throws BoardGameServiceException;
 
     void sendPassword(String mail) throws BoardGameServiceException;

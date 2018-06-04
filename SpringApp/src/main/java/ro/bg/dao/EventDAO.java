@@ -45,5 +45,9 @@ public interface EventDAO extends JpaRepository<Event,Integer> {
             "            where pk_event_id = :eventId );",nativeQuery = true)
     List<User> getUsers(@Param("eventId") int eventId);
 
+    @Query(value = "select pk_user_id from event_users\n" +
+            "where pk_event_id = :eventId ;",nativeQuery = true)
+    List<Integer> getUsersId(@Param("eventId") int eventId);
+
 
 }
