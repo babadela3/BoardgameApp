@@ -9,7 +9,7 @@ import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.services.CustomParser;
 import android.bg.ro.boardgame.services.GoogleMapsService;
 import android.bg.ro.boardgame.services.ImageLoader;
-import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskChangeStatus;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.bg.ro.boardgame.services.TaskGoogleMaps;
@@ -30,9 +30,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-
-import org.json.simple.parser.JSONParser;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -45,7 +42,7 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
     private TaskDelegate taskDelegate;
     private TaskGoogleMaps taskGoogleMaps;
     private TaskChangeStatus taskChangeStatus;
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
     private UserStatusService userStatusService;
 
     private int id;
@@ -158,7 +155,7 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
                     params.add(new Pair<>("eventId",String.valueOf(id)));
                     params.add(new Pair<>("pubId",String.valueOf(pub.getId())));
 
-                    receiveData = (ReceiveData) new ReceiveData(EventCreatorMapsActivity.this.getApplicationContext(),"createReservation", params,taskDelegate).execute(url);
+                    genericHttpService = (GenericHttpService) new GenericHttpService(EventCreatorMapsActivity.this.getApplicationContext(),"createReservation", params,taskDelegate).execute(url);
 
                 }
             });
@@ -208,7 +205,7 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
         List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
         params.add(new Pair<>("eventId",String.valueOf(id)));
 
-        receiveData = (ReceiveData) new ReceiveData(EventCreatorMapsActivity.this.getApplicationContext(),"getUsersStatus", params,taskDelegate).execute(url);
+        genericHttpService = (GenericHttpService) new GenericHttpService(EventCreatorMapsActivity.this.getApplicationContext(),"getUsersStatus", params,taskDelegate).execute(url);
 
 
         if(!picture.equals("null")){
@@ -311,9 +308,9 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
-                switch (receiveData.getResponse()) {
+                switch (genericHttpService.getResponse()) {
                     case "Reservation successfully":
                         Toast.makeText(EventCreatorMapsActivity.this, "Reservation created.",
                                 Toast.LENGTH_LONG).show();
@@ -328,7 +325,7 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
                         break;
                     default:
                         CustomParser customParser = new CustomParser();
-                        List<User> users = customParser.getEventUsers(receiveData.getResponse());
+                        List<User> users = customParser.getEventUsers(genericHttpService.getResponse());
                         userInvited = new ArrayList<>();
                         userParticipants = new ArrayList<>();
                         userRequests = new ArrayList<>();

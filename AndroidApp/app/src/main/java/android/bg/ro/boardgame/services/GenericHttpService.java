@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class ReceiveData extends AsyncTask<URL, Integer, Long> {
+public class GenericHttpService extends AsyncTask<URL, Integer, Long> {
 
     private String response = "";
     private String mapping;
@@ -32,7 +32,7 @@ public class ReceiveData extends AsyncTask<URL, Integer, Long> {
     private TaskDelegate delegate;
     private Context context;
 
-    public ReceiveData(Context context, String mapping, List<Pair<String, String>> parameters, TaskDelegate taskDelegate) {
+    public GenericHttpService(Context context, String mapping, List<Pair<String, String>> parameters, TaskDelegate taskDelegate) {
         this.context = context;
         this.mapping = mapping;
         this.parameters = parameters;

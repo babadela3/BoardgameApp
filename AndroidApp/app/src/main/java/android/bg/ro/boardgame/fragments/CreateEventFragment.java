@@ -7,13 +7,10 @@ import android.bg.ro.boardgame.models.BoardGame;
 import android.bg.ro.boardgame.models.Friend;
 import android.bg.ro.boardgame.models.Pub;
 import android.bg.ro.boardgame.models.User;
-import android.bg.ro.boardgame.services.CustomParser;
-import android.bg.ro.boardgame.services.ReceiveData;
-import android.bg.ro.boardgame.services.SocketClientConnection;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -24,11 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,7 +29,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +48,7 @@ public class CreateEventFragment extends Fragment implements TaskDelegate{
     Pub pub;
 
     TaskDelegate taskDelegate;
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -247,7 +239,7 @@ public class CreateEventFragment extends Fragment implements TaskDelegate{
                     params.add(new Pair<>("longitude",editLongitude));
                     params.add(new Pair<>("creatorId",String.valueOf(user.getId())));
 
-                    receiveData = (ReceiveData) new ReceiveData(getActivity(),"createEvent", params,taskDelegate).execute(url);
+                    genericHttpService = (GenericHttpService) new GenericHttpService(getActivity(),"createEvent", params,taskDelegate).execute(url);
                 }
 
             }
@@ -325,7 +317,7 @@ public class CreateEventFragment extends Fragment implements TaskDelegate{
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
                 Toast.makeText(getActivity(), "Event successfully created.",
                         Toast.LENGTH_LONG).show();

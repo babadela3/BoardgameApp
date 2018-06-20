@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.bg.dao.PubDAO;
 import ro.bg.dao.PubPictureDAO;
@@ -23,15 +25,21 @@ import java.util.List;
 public class PubServiceImpl implements PubService{
 
     @Autowired
-    PubDAO pubDAO;
+    public JavaMailSender javaMailSender;
 
     @Autowired
-    public JavaMailSender javaMailSender;
+    PubDAO pubDAO;
 
     @Override
     public Pub getPub(Account account) throws BoardGameServiceException {
-        Pub pub = pubDAO.findByEmailAndPassword(account.getUsername(),account.getPassword());
-        if(pub == null){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Pub pub = pubDAO.findByEmail(account.getUsername());
+        if(pub != null){
+            if(!passwordEncoder.matches(account.getPassword(),pub.getPassword())){
+                throw new BoardGameServiceException(ExceptionMessage.MISSING_PUB);
+            }
+        }
+        else {
             throw new BoardGameServiceException(ExceptionMessage.MISSING_PUB);
         }
 
@@ -55,6 +63,8 @@ public class PubServiceImpl implements PubService{
     @Override
     public void createPub(Pub pub) {
         if(EmailValidator.getInstance().isValid(pub.getEmail()) && pubDAO.findByEmail(pub.getEmail()) == null){
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            pub.setPassword(passwordEncoder.encode(pub.getPassword()));
             pubDAO.saveAndFlush(pub);
         };
     }

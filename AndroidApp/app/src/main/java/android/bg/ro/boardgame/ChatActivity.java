@@ -5,7 +5,7 @@ import android.bg.ro.boardgame.adapters.ChatMessage;
 import android.bg.ro.boardgame.models.Client;
 import android.bg.ro.boardgame.models.Message;
 import android.bg.ro.boardgame.services.CustomParser;
-import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.SocketClientConnection;
 import android.bg.ro.boardgame.services.SocketSendMessage;
 import android.bg.ro.boardgame.services.TaskClient;
@@ -19,16 +19,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,7 +42,7 @@ public class ChatActivity extends AppCompatActivity implements TaskClient, TaskD
     private TaskClient taskClient;
     private int position;
 
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
     private TaskDelegate taskDelegate;
 
     @Override
@@ -83,7 +76,7 @@ public class ChatActivity extends AppCompatActivity implements TaskClient, TaskD
         parameters.add(new Pair<>("friendOne",String.valueOf(userId)));
         parameters.add(new Pair<>("friendTwo",String.valueOf(friendId)));
 
-        receiveData = (ReceiveData) new ReceiveData(ChatActivity.this.getApplicationContext(),"allMessages", parameters,taskDelegate).execute(url);
+        genericHttpService = (GenericHttpService) new GenericHttpService(ChatActivity.this.getApplicationContext(),"allMessages", parameters,taskDelegate).execute(url);
 
         messagesContainer = (ListView) findViewById(R.id.messagesContainer);
         messageET = (EditText) findViewById(R.id.messageEdit);
@@ -154,8 +147,8 @@ public class ChatActivity extends AppCompatActivity implements TaskClient, TaskD
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         client.disconnect();
+        super.onBackPressed();
     }
 
     @Override
@@ -182,10 +175,10 @@ public class ChatActivity extends AppCompatActivity implements TaskClient, TaskD
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
                 CustomParser customParser = new CustomParser();
-                loadHistory(customParser.getMessages(receiveData.getResponse()));
+                loadHistory(customParser.getMessages(genericHttpService.getResponse()));
         }
     }
 }

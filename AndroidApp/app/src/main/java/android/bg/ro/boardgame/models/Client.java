@@ -151,7 +151,9 @@ public class Client {
 								Date date = new Date();
 								Calendar calendar = Calendar.getInstance();
 								calendar.setTime(date);
-								chatMessage.setDate(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+								chatMessage.setDate(String.format("%02d:%02d",
+										calendar.get(Calendar.HOUR_OF_DAY),
+										calendar.get(Calendar.MINUTE)));
 								chatMessage.setMe(true);
 								((ChatActivity) activity).displayMessage(chatMessage);
 							}

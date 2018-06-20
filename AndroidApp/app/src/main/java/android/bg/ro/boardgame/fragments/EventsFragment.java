@@ -1,16 +1,13 @@
 package android.bg.ro.boardgame.fragments;
 
 import android.app.Fragment;
-import android.bg.ro.boardgame.ChatActivity;
 import android.bg.ro.boardgame.MenuActivity;
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.adapters.EventAdapter;
-import android.bg.ro.boardgame.adapters.FriendAdapter;
 import android.bg.ro.boardgame.models.Event;
-import android.bg.ro.boardgame.models.Friend;
 import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.services.CustomParser;
-import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +29,7 @@ import java.util.List;
 public class EventsFragment extends Fragment implements TaskDelegate{
 
     TaskDelegate taskDelegate;
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
     private List<Event> events;
     private ListView listView;
 
@@ -61,26 +58,27 @@ public class EventsFragment extends Fragment implements TaskDelegate{
         parameters.add(new Pair<>("userId",String.valueOf(user.getId())));
 
         listView = (ListView) getView().findViewById(R.id.listview);
-        receiveData = (ReceiveData) new ReceiveData(getActivity(),"getUserEvents", parameters,taskDelegate).execute(url);
+        genericHttpService = (GenericHttpService) new GenericHttpService(getActivity(),"getUserEvents", parameters,taskDelegate).execute(url);
 
 
     }
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
+
                 CustomParser customParser = new CustomParser();
-                events = customParser.getEvents(receiveData.getResponse());
+                events = customParser.getEvents(genericHttpService.getResponse());
                 EventAdapter adapter = new EventAdapter(getActivity(), 0, events);
                 listView.setAdapter(adapter);
+
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
 
-                        Gson gson = new Gson();
                         Bundle b = new Bundle();
                         b.putInt("id",(events.get(position).getId()));
                         b.putString("title",events.get(position).getTitle());

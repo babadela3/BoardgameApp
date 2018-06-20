@@ -4,18 +4,17 @@ import android.app.Fragment;
 import android.bg.ro.boardgame.fragments.CreateEventFragment;
 import android.bg.ro.boardgame.fragments.HomeFragment;
 import android.bg.ro.boardgame.fragments.ProfileFragment;
+import android.bg.ro.boardgame.fragments.SearchFragment;
 import android.bg.ro.boardgame.models.Client;
 import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.services.CustomParser;
-import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.SocketClientConnection;
 import android.bg.ro.boardgame.services.TaskClient;
 import android.bg.ro.boardgame.services.TaskDelegate;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -35,7 +34,7 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
     private Client client;
     private TaskDelegate taskDelegate;
     private TaskClient taskClient;
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +58,11 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
             params.add(new Pair<>("email",extras.getString("email")));
             params.add(new Pair<>("password",extras.getString("password")));
 
-            receiveData = (ReceiveData) new ReceiveData(MenuActivity.this.getApplicationContext(),"getUser", params,taskDelegate).execute(url);
+            genericHttpService = (GenericHttpService) new GenericHttpService(MenuActivity.this.getApplicationContext(),"getUser", params,taskDelegate).execute(url);
         }
 
         ImageButton profileButton = (ImageButton) findViewById(R.id.imageButtonProfile);
+        ImageButton searchButton = (ImageButton) findViewById(R.id.imageButtonSearch);
         ImageButton homeButton = (ImageButton) findViewById(R.id.imageButtonHome);
         ImageButton createEventButton = (ImageButton) findViewById(R.id.imageButtonAdd);
 
@@ -76,6 +76,19 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
                     getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.fragmentForProfile)).commit();
                 }
                 getFragmentManager().beginTransaction().replace(R.id.fragmentsMenu, new ProfileFragment()).addToBackStack(null).commit();
+
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentsMenu);
+                if(!(fragment instanceof SearchFragment)){
+                    getFragmentManager().beginTransaction().replace(R.id.fragmentsMenu, new SearchFragment()).addToBackStack(null).commit();
+
+                }
 
             }
         });
@@ -117,12 +130,12 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
                 JSONParser parser = new JSONParser();
                 JSONObject json = null;
                 try {
-                    json = (JSONObject) parser.parse(receiveData.getResponse());
+                    json = (JSONObject) parser.parse(genericHttpService.getResponse());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

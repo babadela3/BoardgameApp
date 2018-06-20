@@ -43,13 +43,32 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getAllEvents() {
-        List<Event> events =  eventDAO.findAll();
+        List<Event> events =  eventDAO.findCurrentEvents();
         Collections.sort(events,new Comparator<Event>() {
             @Override
             public int compare(Event ev1, Event ev2) {
                 return ev1.getDate().compareTo(ev2.getDate());
             }
         });
+        for(Event event : events) {
+            event.setReservations(null);
+            event.setEventUserSet(null);
+            event.setUsers(null);
+            event.setNotifications(null);
+            User user = new User();
+            user.setId(event.getUserCreator().getId());
+            user.setName(event.getUserCreator().getName());
+            event.setUserCreator(user);
+
+            List<BoardGame> boardGames = new ArrayList<>(event.getBoardGames());
+            for(BoardGame boardGame : boardGames){
+                boardGame.setGameReservations(null);
+                boardGame.setPubs(null);
+                boardGame.setEvents(null);
+                boardGame.setUsers(null);
+            }
+            event.setBoardGames(new HashSet<>(boardGames));
+        }
         return events;
     }
 
@@ -137,6 +156,7 @@ public class EventServiceImpl implements EventService {
 
         List<User> users = new ArrayList<>();
         List<EventUser> eventUsers = new ArrayList<>();
+
         for(FriendAndroidDTO friendAndroidDTO : friends){
             User user = new User();
             user.setId(friendAndroidDTO.getId());

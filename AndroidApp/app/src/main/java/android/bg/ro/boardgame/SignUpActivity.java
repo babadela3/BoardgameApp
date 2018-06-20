@@ -1,6 +1,6 @@
 package android.bg.ro.boardgame;
 
-import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.content.Intent;
 import android.database.Cursor;
@@ -38,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity implements TaskDelegate{
     private TextView town;
 
     private TaskDelegate taskDelegate;
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity implements TaskDelegate{
                 params.add(new Pair<>("town",town.getText().toString()));
                 params.add(new Pair<>("photo", profilePhoto));
 
-                receiveData = (ReceiveData) new ReceiveData(SignUpActivity.this.getApplicationContext(),"createBgUser", params,taskDelegate).execute(url);
+                genericHttpService = (GenericHttpService) new GenericHttpService(SignUpActivity.this.getApplicationContext(),"createBgUser", params,taskDelegate).execute(url);
             }
         });
 
@@ -180,7 +180,7 @@ public class SignUpActivity extends AppCompatActivity implements TaskDelegate{
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
                 Toast.makeText(SignUpActivity.this, "Account successfully created.",
                         Toast.LENGTH_LONG).show();

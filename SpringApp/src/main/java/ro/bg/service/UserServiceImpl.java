@@ -4,6 +4,7 @@ package ro.bg.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.bg.dao.UserDAO;
 import ro.bg.exception.BoardGameServiceException;
@@ -29,13 +30,15 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void createUser(User user) throws BoardGameServiceException {
-        if(EmailValidator.getInstance().isValid(user.getEmail()) && userDAO.findByEmail(user.getEmail()) == null){
+        if(EmailValidator.getInstance().isValid(user.getEmail()) &&
+                userDAO.findByEmail(user.getEmail()) == null){
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             userDAO.saveAndFlush(user);
         }
         else {
             throw new BoardGameServiceException(ExceptionMessage.USER_ALREADY_EXISTS);
         }
-
     }
 
     @Override

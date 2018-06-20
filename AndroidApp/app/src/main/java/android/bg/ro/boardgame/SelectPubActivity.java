@@ -3,7 +3,7 @@ package android.bg.ro.boardgame;
 import android.bg.ro.boardgame.adapters.PubAdapter;
 import android.bg.ro.boardgame.models.Pub;
 import android.bg.ro.boardgame.services.CustomParser;
-import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +25,7 @@ public class SelectPubActivity extends AppCompatActivity implements TaskDelegate
     private ArrayList<Pub> pubs;
     Pub selectedPub;
     private TaskDelegate taskDelegate;
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class SelectPubActivity extends AppCompatActivity implements TaskDelegate
         }
 
         List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
-        receiveData = (ReceiveData) new ReceiveData(SelectPubActivity.this.getApplicationContext(),"getPubs", params,taskDelegate).execute(url);
+        genericHttpService = (GenericHttpService) new GenericHttpService(SelectPubActivity.this.getApplicationContext(),"getPubs", params,taskDelegate).execute(url);
 
         TextView title = (TextView) findViewById(R.id.createEvent_title);
         title.setText("Select Pub");
@@ -99,10 +99,10 @@ public class SelectPubActivity extends AppCompatActivity implements TaskDelegate
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
                 CustomParser customParser = new CustomParser();
-                pubs = new ArrayList<>(customParser.getPubs(receiveData.getResponse()));
+                pubs = new ArrayList<>(customParser.getPubs(genericHttpService.getResponse()));
 
                 PubAdapter adapter = new PubAdapter(SelectPubActivity.this, 0, pubs);
                 ListView listView = (ListView) findViewById(R.id.listFriends);

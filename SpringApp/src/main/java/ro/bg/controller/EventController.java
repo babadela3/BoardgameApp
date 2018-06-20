@@ -103,11 +103,11 @@ public class EventController {
         return "";
     }
 
-    @RequestMapping(value = "/allEvents", method = RequestMethod.GET)
-    public String getAllEvents(){
+    @RequestMapping(value = "/allEvents", method = RequestMethod.POST)
+    public ResponseEntity<Object> getAllEvents(){
         List<Event> events = eventService.getAllEvents();
         System.out.println(events);
-        return "";
+        return ResponseEntity.status(HttpStatus.OK).body(events);
     }
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)

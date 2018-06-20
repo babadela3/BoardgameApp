@@ -101,10 +101,8 @@ public class SelectAddressMapsActivity extends FragmentActivity implements OnMap
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
+        // Add a marker in Bucharest and move the camera
         LatLng bucharest = new LatLng(44.426767,26.102538);
-        //mMap.addMarker(new MarkerOptions().position(bucharest).title("Marker in Bucharest"));
         mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( bucharest, 14.0f) );
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
     }

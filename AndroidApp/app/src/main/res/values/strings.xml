@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">BoardGame</string>
-    <string name="localhost">192.168.1.104:8182</string>
+    <string name="localhost">10.11.20.237:8182</string>
     <string name="title_activity_select_address_maps">Map</string>
     <string name="title_activity_event_creator_maps">Map</string>
+    <string name="title_activity_select_address_map">Map</string>
 </resources>

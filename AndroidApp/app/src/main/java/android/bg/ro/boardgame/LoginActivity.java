@@ -1,6 +1,6 @@
 package android.bg.ro.boardgame;
 
-import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity implements TaskDelegate {
     private TextView password;
     private TextView forgotPassword;
     private TaskDelegate taskDelegate;
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements TaskDelegate {
                 params.add(new Pair<>("email",email.getText().toString()));
                 params.add(new Pair<>("password",password.getText().toString()));
 
-                receiveData = (ReceiveData) new ReceiveData(LoginActivity.this.getApplicationContext(),"getUser", params,taskDelegate).execute(url);
+                genericHttpService = (GenericHttpService) new GenericHttpService(LoginActivity.this.getApplicationContext(),"getUser", params,taskDelegate).execute(url);
             }
         });
 
@@ -72,12 +72,12 @@ public class LoginActivity extends AppCompatActivity implements TaskDelegate {
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
                 JSONParser parser = new JSONParser();
                 JSONObject json = null;
                 try {
-                    json = (JSONObject) parser.parse(receiveData.getResponse());
+                    json = (JSONObject) parser.parse(genericHttpService.getResponse());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

@@ -1,6 +1,6 @@
 package android.bg.ro.boardgame;
 
-import android.bg.ro.boardgame.services.ReceiveData;
+import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +20,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements TaskDel
 
     private TextView email;
     private TaskDelegate taskDelegate;
-    private ReceiveData receiveData;
+    private GenericHttpService genericHttpService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements TaskDel
                 List<Pair<String, String>> params = new ArrayList<Pair<String, String>>();
                 params.add(new Pair<>("email",email.getText().toString()));
 
-                receiveData = (ReceiveData) new ReceiveData(ForgotPasswordActivity.this.getApplicationContext(),"user/sendPassword", params,taskDelegate).execute(url);
+                genericHttpService = (GenericHttpService) new GenericHttpService(ForgotPasswordActivity.this.getApplicationContext(),"user/sendPassword", params,taskDelegate).execute(url);
             }
         });
 
@@ -55,7 +55,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements TaskDel
 
     @Override
     public void TaskCompletionResult(String result) {
-        switch (receiveData.getResponseCode()) {
+        switch (genericHttpService.getResponseCode()) {
             case 200:
                 Toast.makeText(ForgotPasswordActivity.this, "We sent an email with your password.",
                         Toast.LENGTH_LONG).show();

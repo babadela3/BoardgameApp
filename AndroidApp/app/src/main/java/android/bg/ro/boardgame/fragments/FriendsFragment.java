@@ -45,15 +45,14 @@ public class FriendsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Gson gson = new Gson();
-                Bundle b = new Bundle();
-                b.putInt("idFriend",((MenuActivity) getActivity()).getUser().getFriends().get(position).getId());
-                b.putInt("idUser",((MenuActivity) getActivity()).getUser().getId());
-                b.putString("nameFriend",((MenuActivity) getActivity()).getUser().getFriends().get(position).getName());
-                b.putInt("position",position);
+                Bundle bundle = new Bundle();
+                bundle.putInt("idFriend",((MenuActivity) getActivity()).getUser().getFriends().get(position).getId());
+                bundle.putInt("idUser",((MenuActivity) getActivity()).getUser().getId());
+                bundle.putString("nameFriend",((MenuActivity) getActivity()).getUser().getFriends().get(position).getName());
+                bundle.putInt("position",position);
 
                 Intent intent = new Intent("android.bg.ro.boardgame.ChatActivity");
-                intent.putExtras(b);
+                intent.putExtras(bundle);
 
                 startActivity(intent);
 

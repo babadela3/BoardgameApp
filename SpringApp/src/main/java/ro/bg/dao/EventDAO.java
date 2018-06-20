@@ -15,7 +15,9 @@ import java.util.List;
 public interface EventDAO extends JpaRepository<Event,Integer> {
 
     @Query(value = "select * from events\n" +
-                    "where data - sysdate() > 0", nativeQuery = true)
+                    "where data - sysdate() > 0\n" +
+                    "order by data\n" +
+                    "limit 20;", nativeQuery = true)
     List<Event> findCurrentEvents();
 
     @Query(value = "select max_seats - (select count(*)\n" +

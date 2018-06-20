@@ -1,7 +1,5 @@
 package android.bg.ro.boardgame.services;
 
-import android.app.Activity;
-import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.models.Client;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -48,7 +46,7 @@ public class SocketSendMessage extends AsyncTask<String, Void, String> implement
 
         URL url = null;
         try {
-            url = new URL("http://192.168.1.104:8182/sendMessage");
+            url = new URL("http://10.11.20.237:8182/sendMessage");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -59,7 +57,7 @@ public class SocketSendMessage extends AsyncTask<String, Void, String> implement
         parameters.add(new Pair<>("message",message));
         taskDelegate = this;
 
-        new ReceiveData(context,"sendMessage", parameters,taskDelegate).execute(url);
+        new GenericHttpService(context,"sendMessage", parameters,taskDelegate).execute(url);
         return finalMessage;
     }
 
