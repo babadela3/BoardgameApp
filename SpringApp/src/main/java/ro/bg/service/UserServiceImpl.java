@@ -2,18 +2,17 @@ package ro.bg.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.bg.dao.FriendshipDAO;
+import ro.bg.dao.FriendshipRequestDAO;
 import ro.bg.dao.UserDAO;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.exception.ExceptionMessage;
-import ro.bg.model.Account;
-import ro.bg.model.BoardGame;
-import ro.bg.model.Friendship;
-import ro.bg.model.User;
+import ro.bg.model.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +28,12 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     FriendshipDAO friendshipDAO;
+
+    @Autowired
+    FriendshipRequestDAO friendshipRequestDAO;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     @Autowired
     public JavaMailSender javaMailSender;
@@ -173,6 +178,52 @@ public class UserServiceImpl implements UserService{
         else {
             userDTO.setFriend(false);
         }
+        if(friendshipRequestDAO.getRequest(userId,myId) != null) {
+            userDTO.setRequest(true);
+        }
+        else {
+            userDTO.setRequest(false);
+        }
         return userDTO;
+    }
+
+    @Override
+    public String sendFriendshipRequest(int senderId, int receiverId) {
+        FriendshipRequest friendshipRequestDB = friendshipRequestDAO.findRequest(senderId,receiverId);
+        if(friendshipRequestDB == null){
+            FriendshipRequest friendshipRequest = new FriendshipRequest();
+            friendshipRequest.setSender(userDAO.findOne(senderId));
+            friendshipRequest.setReceiver(userDAO.findOne(receiverId));
+            friendshipRequestDAO.saveAndFlush(friendshipRequest);
+            return "Send request";
+        }
+        else {
+            return "Send already request";
+        }
+    }
+
+    @Override
+    public String deleteFriendship(int senderId, int receiverId) {
+        Friendship friendship = friendshipDAO.getFriendship(senderId,receiverId);
+        friendshipDAO.delete(friendship);
+        return "Request deleted";
+    }
+
+    @Override
+    public String acceptRequest(int senderId, int receiverId) {
+        FriendshipRequest friendshipRequestDB = friendshipRequestDAO.findRequest(senderId,receiverId);
+        friendshipRequestDAO.delete(friendshipRequestDB);
+        Friendship friendship = new Friendship();
+        friendship.setFriendOne(userDAO.findOne(senderId));
+        friendship.setFriendTwo(userDAO.findOne(receiverId));
+        friendshipDAO.saveAndFlush(friendship);
+        return "Accept request";
+    }
+
+    @Override
+    public String deleteRequest(int senderId, int receiverId) {
+        FriendshipRequest friendshipRequestDB = friendshipRequestDAO.findRequest(senderId,receiverId);
+        friendshipRequestDAO.delete(friendshipRequestDB);
+        return "Delete request";
     }
 }

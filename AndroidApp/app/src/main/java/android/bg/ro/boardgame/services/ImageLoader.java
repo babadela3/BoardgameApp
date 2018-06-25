@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import java.util.concurrent.Executors;
 
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.models.BoardGame;
+import android.bg.ro.boardgame.models.User;
 import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -34,11 +36,12 @@ import co.yellowbricks.bggclient.common.ThingType;
 import co.yellowbricks.bggclient.fetch.FetchException;
 import co.yellowbricks.bggclient.fetch.domain.FetchItem;
 
-public class ImageLoader implements TaskBoardGame{
+public class ImageLoader implements TaskBoardGame, TaskDelegate{
 
     // Initialize MemoryCache
     MemoryCache memoryCache = new MemoryCache();
     TaskBoardGame taskBoardGame;
+    TaskDelegate taskDelegate;
     ImageView imageView;
     FileCache fileCache;
 
@@ -46,6 +49,7 @@ public class ImageLoader implements TaskBoardGame{
     private Map<ImageView, String> imageViews = Collections.synchronizedMap(
             new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
+    GenericHttpService genericHttpService;
 
     //handler to display images in UI thread
     Handler handler = new Handler();
@@ -107,6 +111,26 @@ public class ImageLoader implements TaskBoardGame{
 
     }
 
+    public void DisplayUser(Context context, int id, ImageView imageView)
+    {
+        taskDelegate = this;
+        URL url = null;
+        try {
+            url = new URL("http://192.168.1.100/searchUser");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        List<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
+        parameters.add(new Pair<>("userId",String.valueOf(id)));
+        parameters.add(new Pair<>("searchUserId",String.valueOf(id)));
+
+        genericHttpService = (GenericHttpService) new GenericHttpService(context,"searchUser", parameters,taskDelegate).execute(url);
+
+    }
+
+
+
     private void queuePhoto(String url, ImageView imageView)
     {
         // Store image and url in PhotoToLoad object
@@ -117,6 +141,17 @@ public class ImageLoader implements TaskBoardGame{
         // Submits a PhotosLoader runnable task for execution
 
         executorService.submit(new PhotosLoader(p));
+    }
+
+    @Override
+    public void TaskCompletionResult(String result) {
+        CustomParser customParser = new CustomParser();
+        User searchUser = customParser.getSearchUser(genericHttpService.getResponse());
+
+        BitmapFactory.Options options = new BitmapFactory.Options();// Create object of bitmapfactory's option method for further option use
+        options.inPurgeable = true; // inPurgeable is used to free up memory while required
+        Bitmap songImage = BitmapFactory.decodeByteArray(searchUser.getProfilePicture(), 0, searchUser.getProfilePicture().length, options);//Decode image, "thumbnail" is the object of image file
+        imageView.setImageBitmap(songImage);
     }
 
 

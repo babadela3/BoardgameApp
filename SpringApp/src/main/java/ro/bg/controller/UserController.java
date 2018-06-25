@@ -112,4 +112,27 @@ public class UserController {
         UserDTO userDTO = userService.getSearchUser(Integer.parseInt(searchUserId),Integer.parseInt(userId));
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
+
+    @RequestMapping(value = "/sendUserRequest", method = RequestMethod.POST)
+    public ResponseEntity<Object> sendUserRequest(@ModelAttribute("senderId") String senderId,
+                                                  @ModelAttribute("receiverId") String receiverId,
+                                                  @ModelAttribute("option") String option) {
+        if(option.equals("Add friend")) {
+            String result = userService.sendFriendshipRequest(Integer.parseInt(senderId),Integer.parseInt(receiverId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        if(option.equals("Remove friend")) {
+            String result = userService.deleteFriendship(Integer.parseInt(senderId),Integer.parseInt(receiverId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        if(option.equals("Accept request")) {
+            String result = userService.acceptRequest(Integer.parseInt(senderId),Integer.parseInt(receiverId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        if(option.equals("Delete request")) {
+            String result = userService.deleteRequest(Integer.parseInt(senderId),Integer.parseInt(receiverId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 }

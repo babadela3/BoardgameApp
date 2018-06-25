@@ -357,6 +357,7 @@ public class CustomParser {
         user.setTown(userObject.get("town").toString());
         user.setProfilePicture(Base64.decode(userObject.get("profilePicture").toString().getBytes(), Base64.DEFAULT));
         boolean isFriend = Boolean.parseBoolean(userObject.get("friend").toString());
+        boolean isRequest = Boolean.parseBoolean(userObject.get("request").toString());
         if(isFriend) {
             Friend friend = new Friend();
             List<Friend> friends = new ArrayList<>();
@@ -365,6 +366,12 @@ public class CustomParser {
         }
         else {
             user.setFriends(null);
+        }
+        if(isRequest) {
+            user.setStatusEvent("true");
+        }
+        else {
+            user.setStatusEvent("false");
         }
         return user;
     }

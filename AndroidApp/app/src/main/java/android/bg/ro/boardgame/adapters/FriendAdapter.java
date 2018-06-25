@@ -3,6 +3,7 @@ package android.bg.ro.boardgame.adapters;
 import android.bg.ro.boardgame.InviteFriendActivity;
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.models.Friend;
+import android.bg.ro.boardgame.services.ImageLoader;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,6 +101,9 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
             vi.setTag(holder);
 
             holder.nameFriend.setText(friends.get(position).getName());
+            ImageView imageView = (ImageView) vi.findViewById(R.id.friendImg);
+            ImageLoader imageLoader = new ImageLoader(context,holder.pictureFriend);
+            imageLoader.DisplayUser(context,friends.get(position).getId(), holder.pictureFriend);
             //holder.display_number.setText(lProducts.get(position).number);
 
         } catch (Exception e) {

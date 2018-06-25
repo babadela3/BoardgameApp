@@ -14,6 +14,8 @@ public class UserDTO {
 
     private boolean isFriend;
 
+    private boolean isRequest;
+
     public int getId() {
         return id;
     }
@@ -60,5 +62,13 @@ public class UserDTO {
 
     public void setFriend(boolean friend) {
         isFriend = friend;
+    }
+
+    public boolean isRequest() {
+        return isRequest;
+    }
+
+    public void setRequest(boolean request) {
+        isRequest = request;
     }
 }

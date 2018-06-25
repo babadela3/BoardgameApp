@@ -28,4 +28,12 @@ public interface UserService {
     List<User> getUsersByName(String name);
 
     UserDTO getSearchUser(int userId, int myId);
+
+    String sendFriendshipRequest(int senderId, int receiverId);
+
+    String deleteFriendship(int senderId, int receiverId);
+
+    String acceptRequest(int senderId, int receiverId);
+
+    String deleteRequest(int senderId, int receiverId);
 }
