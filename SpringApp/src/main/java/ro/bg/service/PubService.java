@@ -24,4 +24,6 @@ public interface PubService {
     void resetPassword(String mail) throws BoardGameServiceException;
 
     List<Pub> getPubs();
+
+    List<Pub> getPubsByName(String name);
 }

@@ -455,7 +455,12 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
                                             userStatusService = (UserStatusService) new UserStatusService(EventCreatorMapsActivity.this.getApplicationContext(),"changeUserStatus", paramsDecline,taskChangeStatus).execute(url);
                                             break;
                                         case "Unfollow":
-                                            onBackPressed();
+                                            List<Pair<String, String>> paramsCancel = new ArrayList<Pair<String, String>>();
+                                            paramsCancel.add(new Pair<>("eventId",String.valueOf(id)));
+                                            paramsCancel.add(new Pair<>("userId",String.valueOf(userId)));
+                                            paramsCancel.add(new Pair<>("option","Cancel"));
+
+                                            userStatusService = (UserStatusService) new UserStatusService(EventCreatorMapsActivity.this.getApplicationContext(),"changeUserStatus", paramsCancel,taskChangeStatus).execute(url);
                                             break;
                                     }
                                 }

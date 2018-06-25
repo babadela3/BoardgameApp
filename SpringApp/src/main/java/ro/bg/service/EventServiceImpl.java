@@ -236,6 +236,95 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public EventDTO getEvent(int eventId) {
+        Event event = eventDAO.findOne(eventId);
+        EventDTO eventDTO = new EventDTO();
+
+        eventDTO.setId(event.getId());
+        eventDTO.setTitle(event.getTitle());
+        eventDTO.setDescription(event.getDescription());
+        eventDTO.setAddress(event.getAddress());
+        eventDTO.setDate(new SimpleDateFormat("HH:mm dd.MM.yyyy").format(event.getDate()));
+
+        User userCreator = new User();
+        userCreator.setId(event.getUserCreator().getId());
+        userCreator.setName(event.getUserCreator().getName());
+        eventDTO.setUserCreator(userCreator);
+
+        eventDTO.setPicture(event.getPicture());
+        eventDTO.setMaxSeats(event.getMaxSeats());
+        eventDTO.setLatitude(event.getLatitude());
+        eventDTO.setLongitude(event.getLongitude());
+
+        List<BoardGame> boardGames = new ArrayList<>();
+        for(BoardGame boardGame : event.getBoardGames()){
+            BoardGame boardGameDTO = new BoardGame();
+            boardGameDTO.setId(boardGame.getId());
+            boardGameDTO.setName(boardGame.getName());
+            boardGameDTO.setDescription(boardGame.getDescription());
+            boardGameDTO.setPicture(boardGame.getPicture());
+            boardGames.add(boardGameDTO);
+        }
+        eventDTO.setBoardGames(boardGames);
+
+        Pub pub = pubDAO.findByAddress(event.getAddress());
+        Pub pubDTO = new Pub();
+        if(pub != null) {
+            pubDTO.setId(pub.getId());
+            pubDTO.setName(pub.getName());
+            eventDTO.setPub(pubDTO);
+        }
+        return eventDTO;
+    }
+
+    @Override
+    public List<EventDTO> getEventsByName(String name) {
+        List<EventDTO> eventDTOS = new ArrayList<>();
+        List<Event> events = eventDAO.findByTitleContaining(name);
+        for(Event event : events) {
+            EventDTO eventDTO = new EventDTO();
+
+            eventDTO.setId(event.getId());
+            eventDTO.setTitle(event.getTitle());
+            eventDTO.setDescription(event.getDescription());
+            eventDTO.setAddress(event.getAddress());
+            eventDTO.setDate(new SimpleDateFormat("HH:mm dd.MM.yyyy").format(event.getDate()));
+
+            User userCreator = new User();
+            userCreator.setId(event.getUserCreator().getId());
+            userCreator.setName(event.getUserCreator().getName());
+            eventDTO.setUserCreator(userCreator);
+
+            eventDTO.setPicture(event.getPicture());
+            eventDTO.setMaxSeats(event.getMaxSeats());
+            eventDTO.setLatitude(event.getLatitude());
+            eventDTO.setLongitude(event.getLongitude());
+
+            List<BoardGame> boardGames = new ArrayList<>();
+            for(BoardGame boardGame : event.getBoardGames()){
+                BoardGame boardGameDTO = new BoardGame();
+                boardGameDTO.setId(boardGame.getId());
+                boardGameDTO.setName(boardGame.getName());
+                boardGameDTO.setDescription(boardGame.getDescription());
+                boardGameDTO.setPicture(boardGame.getPicture());
+                boardGames.add(boardGameDTO);
+            }
+            eventDTO.setBoardGames(boardGames);
+
+            Pub pub = pubDAO.findByAddress(event.getAddress());
+            Pub pubDTO = new Pub();
+            if(pub != null) {
+                pubDTO.setId(pub.getId());
+                pubDTO.setName(pub.getName());
+                eventDTO.setPub(pubDTO);
+            }
+
+            eventDTOS.add(eventDTO);
+        }
+        return eventDTOS;
+    }
+
+    @Override
     public List<UserParticipantDTO> getUsers(int eventId) {
         List<UserParticipantDTO> participantDTOS = new ArrayList<>();
         List<User> userList = userDAO.findAll();
@@ -290,6 +379,11 @@ public class EventServiceImpl implements EventService {
                         "delete from event_users where pk_event_id = ? and pk_user_id = ?",
                         eventId,userId);
                 return "Decline Successfully";
+            case "Interested" :
+                jdbcTemplate.update(
+                        "insert into event_users values (?,?,?)",
+                        eventId, userId, StatusUserEnum.INTERESTED.toString());
+                return "Interested Successfully";
             case "Reject" :
                 jdbcTemplate.update(
                         "delete from event_users where pk_event_id = ? and pk_user_id = ?",

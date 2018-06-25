@@ -197,4 +197,11 @@ public class PubController {
     public ResponseEntity<Object> getPubs() {
         return ResponseEntity.status(HttpStatus.OK).body(pubService.getPubs());
     }
+
+    @RequestMapping(value = "/getPubsByName", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubsByName(@ModelAttribute("name") String name){
+        List<Pub> pubs = pubService.getPubsByName(name);
+        return ResponseEntity.status(HttpStatus.OK).body(pubs);
+    }
+
 }

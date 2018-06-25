@@ -9,7 +9,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
@@ -17,17 +21,25 @@ import java.util.concurrent.Executors;
 
 
 import android.bg.ro.boardgame.R;
+import android.bg.ro.boardgame.models.BoardGame;
 import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Pair;
 import android.widget.ImageView;
 
-public class ImageLoader {
+import co.yellowbricks.bggclient.BGG;
+import co.yellowbricks.bggclient.common.ThingType;
+import co.yellowbricks.bggclient.fetch.FetchException;
+import co.yellowbricks.bggclient.fetch.domain.FetchItem;
+
+public class ImageLoader implements TaskBoardGame{
 
     // Initialize MemoryCache
     MemoryCache memoryCache = new MemoryCache();
-
+    TaskBoardGame taskBoardGame;
+    ImageView imageView;
     FileCache fileCache;
 
     //Create Map (collection) to store image and image url in key value pair
@@ -41,12 +53,23 @@ public class ImageLoader {
     public ImageLoader(Context context){
 
         fileCache = new FileCache(context);
-
         // Creates a thread pool that reuses a fixed number of
         // threads operating off a shared unbounded queue.
         executorService=Executors.newFixedThreadPool(5);
 
     }
+
+    public ImageLoader(Context context, ImageView imageView){
+
+        fileCache = new FileCache(context);
+        this.imageView = imageView;
+        // Creates a thread pool that reuses a fixed number of
+        // threads operating off a shared unbounded queue.
+        executorService=Executors.newFixedThreadPool(5);
+
+    }
+
+
 
     // default image show in list (Before online image download)
     final int stub_id= R.drawable.logored;
@@ -74,6 +97,16 @@ public class ImageLoader {
         }
     }
 
+    public void Display(Context context, int id, ImageView imageView)
+    {
+        taskBoardGame = this;
+        List<Pair<String, String>> params = new ArrayList<>();
+        params.add(new Pair<>("id", String.valueOf(id)));
+        BoardGameDetailsService boardGameService = (BoardGameDetailsService) new BoardGameDetailsService(context, params,taskBoardGame).execute();
+        //Store image and url in Map
+
+    }
+
     private void queuePhoto(String url, ImageView imageView)
     {
         // Store image and url in PhotoToLoad object
@@ -85,6 +118,7 @@ public class ImageLoader {
 
         executorService.submit(new PhotosLoader(p));
     }
+
 
     //Task for the queue
     private class PhotoToLoad
@@ -255,6 +289,30 @@ public class ImageLoader {
         //Clear cache directory downloaded images and stored data in maps
         memoryCache.clear();
         fileCache.clear();
+    }
+
+    @Override
+    public void searchGame(List<BoardGame> boardGames) {
+        for(BoardGame game : boardGames) {
+            imageViews.put(imageView, game.getPicture());
+
+            //Check image is stored in MemoryCache Map or not (see MemoryCache.java)
+            Bitmap bitmap = memoryCache.get(game.getPicture());
+
+            if(bitmap!=null){
+                // if image is stored in MemoryCache Map then
+                // Show image in listview row
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 100, 100, false));
+            }
+            else
+            {
+                //queue Photo to download from url
+                queuePhoto(game.getPicture(), imageView);
+
+                //Before downloading image show default image
+                imageView.setImageResource(stub_id);
+            }
+        }
     }
 
 }

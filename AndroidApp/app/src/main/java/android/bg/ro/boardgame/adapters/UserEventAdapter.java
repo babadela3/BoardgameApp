@@ -131,7 +131,7 @@ public class UserEventAdapter extends ArrayAdapter<User> implements TaskChangeSt
                             public void onClick(View v) {
                                 URL url = null;
                                 try {
-                                    url = new URL("http://10.11.20.237:8182/changeUserStatus");
+                                    url = new URL("http://192.168.1.100:8182/changeUserStatus");
                                 } catch (MalformedURLException e) {
                                     e.printStackTrace();
                                 }
@@ -173,7 +173,7 @@ public class UserEventAdapter extends ArrayAdapter<User> implements TaskChangeSt
                     public void onClick(View v) {
                         URL url = null;
                         try {
-                            url = new URL("http://10.11.20.237:8182/changeUserStatus");
+                            url = new URL("http://192.168.1.100:8182/changeUserStatus");
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         }
@@ -191,7 +191,7 @@ public class UserEventAdapter extends ArrayAdapter<User> implements TaskChangeSt
                     public void onClick(View v) {
                         URL url = null;
                         try {
-                            url = new URL("http://10.11.20.237:8182/changeUserStatus");
+                            url = new URL("http://192.168.1.100:8182/changeUserStatus");
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         }

@@ -38,6 +38,10 @@ public interface EventService {
 
     List<EventDTO> getEventsByUserId(int userId);
 
+    EventDTO getEvent(int eventId);
+
+    List<EventDTO> getEventsByName(String name);
+
     List<UserParticipantDTO> getUsers(int eventId);
 
     String changeStatus(int eventId, int userId, String option);

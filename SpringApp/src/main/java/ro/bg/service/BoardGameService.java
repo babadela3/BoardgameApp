@@ -16,6 +16,10 @@ public interface BoardGameService {
 
     void insertBoardGame(List<Integer> ids, String email) throws FetchException;
 
+    void deleteGame(int idGame, int idUser) throws FetchException;
+
+    void addGame(int idGame, int idUser) throws FetchException;
+
     void updateBoardGame(BoardGame boardGame);
 
     void deleteBoardGame(List<Integer> ids);

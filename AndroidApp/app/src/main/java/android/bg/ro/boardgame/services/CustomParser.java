@@ -218,7 +218,77 @@ public class CustomParser {
         return events;
     }
 
-        public List<User> getEventUsers(String jsonString) {
+    public Event getEvent(String jsonString) {
+        JSONObject eventObject = null;
+        JSONParser parser = new JSONParser();
+        try {
+            eventObject = (JSONObject) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Event event = new Event();
+        event.setId(Integer.parseInt(eventObject.get("id").toString()));
+        event.setTitle(eventObject.get("title").toString());
+        event.setDate(eventObject.get("date").toString());
+        event.setAddress(eventObject.get("address").toString());
+        event.setDescription(eventObject.get("description").toString());
+        event.setPicture(eventObject.get("picture").toString());
+        event.setMaxSeats(Integer.parseInt(eventObject.get("maxSeats").toString()));
+        event.setLatitude(Double.parseDouble(eventObject.get("latitude").toString()));
+        event.setLongitude(Double.parseDouble(eventObject.get("longitude").toString()));
+
+        JSONObject userCreator = null;
+        try {
+            userCreator = (JSONObject) parser.parse(eventObject.get("userCreator").toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        User user = new User();
+        user.setId(Integer.parseInt(userCreator.get("id").toString()));
+        user.setName(userCreator.get("name").toString());
+        event.setUserCreator(user);
+
+        JSONArray arrayGames = null;
+        try {
+            arrayGames = (JSONArray) parser.parse(eventObject.get("boardGames").toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Iterator iter2 = arrayGames.iterator();
+        ArrayList<BoardGame> boardGames = new ArrayList<>();
+        while (iter2.hasNext()) {
+            BoardGame game = new BoardGame();
+            JSONObject gameObject = null;
+            try {
+                gameObject = (JSONObject) parser.parse(iter2.next().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            game.setId(Integer.parseInt(gameObject.get("id").toString()));
+            game.setName(gameObject.get("name").toString());
+            game.setDescription(gameObject.get("description").toString());
+            game.setPicture(gameObject.get("picture").toString());
+            boardGames.add(game);
+        }
+        event.setBoardGames(boardGames);
+
+        JSONObject pubObject = null;
+        if(eventObject.get("pub") != null) {
+            try {
+                pubObject = (JSONObject) parser.parse(eventObject.get("pub").toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Pub pub = new Pub();
+            pub.setId(Integer.parseInt(pubObject.get("id").toString()));
+            pub.setName(pubObject.get("name").toString());
+            event.setPub(pub);
+        }
+
+        return event;
+    }
+
+    public List<User> getEventUsers(String jsonString) {
             List<User> users = new ArrayList<>();
             JSONArray jsonArray = null;
             JSONParser parser = new JSONParser();
@@ -242,5 +312,60 @@ public class CustomParser {
                 users.add(user);
             }
         return users;
+    }
+
+    public List<User> getUsers(String jsonString) {
+        List<User> users = new ArrayList<>();
+        JSONArray jsonArray = null;
+        JSONParser parser = new JSONParser();
+        try {
+            jsonArray = (JSONArray) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Iterator iter1 = jsonArray.iterator();
+        while (iter1.hasNext()) {
+            JSONObject eventObject = null;
+            try {
+                eventObject = (JSONObject) parser.parse(iter1.next().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            User user = new User();
+            user.setId(Integer.parseInt(eventObject.get("id").toString()));
+            user.setName(eventObject.get("name").toString());
+            users.add(user);
+        }
+
+        return users;
+    }
+
+    public User getSearchUser(String jsonString) {
+
+        JSONObject userObject = null;
+        JSONParser parser = new JSONParser();
+        try {
+            userObject = (JSONObject) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        User user = new User();
+
+        user.setId(Integer.parseInt(userObject.get("id").toString()));
+        user.setName(userObject.get("name").toString());
+        user.setEmail((userObject.get("email").toString()));
+        user.setTown(userObject.get("town").toString());
+        user.setProfilePicture(Base64.decode(userObject.get("profilePicture").toString().getBytes(), Base64.DEFAULT));
+        boolean isFriend = Boolean.parseBoolean(userObject.get("friend").toString());
+        if(isFriend) {
+            Friend friend = new Friend();
+            List<Friend> friends = new ArrayList<>();
+            friends.add(friend);
+            user.setFriends(friends);
+        }
+        else {
+            user.setFriends(null);
+        }
+        return user;
     }
 }

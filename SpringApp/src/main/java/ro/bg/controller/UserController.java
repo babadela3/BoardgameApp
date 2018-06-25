@@ -11,6 +11,8 @@ import ro.bg.model.Account;
 import ro.bg.model.Pub;
 import ro.bg.model.User;
 import ro.bg.model.constants.AccountTypeEnum;
+import ro.bg.model.dto.EventDTO;
+import ro.bg.model.dto.UserDTO;
 import ro.bg.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -87,6 +90,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getProfileImage(email));
     }
 
+    @RequestMapping(value = "/getUsersByName", method = RequestMethod.POST)
+    public ResponseEntity<Object> getUsersByName(@ModelAttribute("name") String name){
+        List<User> users = userService.getUsersByName(name);
+        return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
     @RequestMapping(value = "/profilePhotoUser", method = RequestMethod.GET)
     public void showProfilePhoto(@RequestParam("id") int id, HttpServletResponse response, HttpServletRequest request)
             throws ServletException, IOException {
@@ -95,5 +104,12 @@ public class UserController {
         response.getOutputStream().write(user.getProfilePicture());
 
         response.getOutputStream().close();
+    }
+
+    @RequestMapping(value = "/searchUser", method = RequestMethod.POST)
+    public ResponseEntity<Object> searchUser(@ModelAttribute("searchUserId") String searchUserId,
+                                             @ModelAttribute("userId") String userId) {
+        UserDTO userDTO = userService.getSearchUser(Integer.parseInt(searchUserId),Integer.parseInt(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 }

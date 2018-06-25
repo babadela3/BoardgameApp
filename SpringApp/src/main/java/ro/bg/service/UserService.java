@@ -3,6 +3,9 @@ package ro.bg.service;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.Account;
 import ro.bg.model.User;
+import ro.bg.model.dto.UserDTO;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -21,4 +24,8 @@ public interface UserService {
     void sendPassword(String mail) throws BoardGameServiceException;
 
     byte[] getProfileImage(String email);
+
+    List<User> getUsersByName(String name);
+
+    UserDTO getSearchUser(int userId, int myId);
 }

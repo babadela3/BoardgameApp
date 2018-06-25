@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:hint="Address"
+        android:hint="Search"
         android:textSize="15dp"
         app:backgroundTint="#ffffff" />
 
@@ -84,10 +84,18 @@
         android:layout_height="match_parent"
         android:layout_alignStart="@+id/textSearch"
         android:layout_below="@+id/linearLayout2"
-        android:id="@+id/fragment_view_map"
+        android:id="@+id/fragment_map"
         android:layout_marginBottom="50dp"
-        class="com.google.android.gms.maps.MapFragment"></fragment>
+        class="com.google.android.gms.maps.MapFragment"/>
 
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignStart="@+id/textSearch"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/edittext_bg"/>
 
 
 </RelativeLayout>

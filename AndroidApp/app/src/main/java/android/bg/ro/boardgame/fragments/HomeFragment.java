@@ -8,12 +8,14 @@ import android.bg.ro.boardgame.models.Event;
 import android.bg.ro.boardgame.services.CustomParser;
 import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.net.MalformedURLException;
@@ -62,6 +64,21 @@ public class HomeFragment extends Fragment implements TaskDelegate {
                 events = customParser.getEvents(genericHttpService.getResponse());
                 EventAdapter adapter = new EventAdapter(getActivity(), 0, events);
                 listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+
+                        Intent intent = new Intent("android.bg.ro.boardgame.EventActivity");
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("userId",((MenuActivity) getActivity()).getUser().getId());
+                        bundle.putInt("eventId",events.get(position).getId());
+                        bundle.putString("name",events.get(position).getTitle());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
                 break;
         }
     }

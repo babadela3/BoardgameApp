@@ -124,4 +124,18 @@ public class PubServiceImpl implements PubService{
         return pubs;
     }
 
+    @Override
+    public List<Pub> getPubsByName(String name) {
+        List<Pub> pubsDB = pubDAO.findByNameContaining(name);
+        for(Pub pub : pubsDB) {
+            pub.setBoardGames(null);
+            pub.setGameReservations(null);
+            pub.setPubPictures(null);
+            pub.setPassword(null);
+            pub.setReservations(null);
+            pub.setPicture(null);
+        }
+        return pubsDB;
+    }
+
 }

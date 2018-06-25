@@ -3,8 +3,9 @@ package android.bg.ro.boardgame.fragments;
 import android.app.Fragment;
 import android.bg.ro.boardgame.MenuActivity;
 import android.bg.ro.boardgame.R;
-import android.bg.ro.boardgame.adapters.BoardGameAdapter;
+import android.bg.ro.boardgame.adapters.BoardGameSelectAdapter;
 import android.bg.ro.boardgame.models.User;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -25,24 +26,26 @@ public class BoardgamesFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         MenuActivity activity = (MenuActivity) getActivity();
-        User user = activity.getUser();
+        final User user = activity.getUser();
 
         GridView gridView = (GridView)getView().findViewById(R.id.gridview);
-        BoardGameAdapter boardGameAdapter = new BoardGameAdapter(getActivity(), user.getBoardGames());
-        gridView.setAdapter(boardGameAdapter);
+        BoardGameSelectAdapter boardGameSelectAdapter = new BoardGameSelectAdapter(getActivity(), user.getBoardGames());
+        gridView.setAdapter(boardGameSelectAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Intent intent = new Intent("android.bg.ro.boardgame.BoardGameActivity");
                 Bundle bundle = new Bundle();
                 bundle.putInt("position",position);
-                BoardgameFragment boardgameFragment = new BoardgameFragment();
-                boardgameFragment.setArguments(bundle);
-
-                ProfileFragment parentFrag = ((ProfileFragment)getParentFragment());
-                parentFrag.getFragmentManager().beginTransaction().replace(R.id.fragmentsMenu, boardgameFragment).addToBackStack(null).commit();
-                //Toast.makeText(getActivity(), "Selected Position: " + position, Toast.LENGTH_SHORT).show();
+                bundle.putInt("userId",user.getId());
+                bundle.putInt("gameId",user.getBoardGames().get(position).getId());
+                bundle.putString("name",user.getBoardGames().get(position).getName());
+                bundle.putString("description",user.getBoardGames().get(position).getDescription());
+                bundle.putString("picture",user.getBoardGames().get(position).getPicture());
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }

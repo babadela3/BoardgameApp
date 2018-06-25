@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ro.bg.model.User;
 
+import java.util.List;
+
 @Repository
 public interface UserDAO extends JpaRepository<User,Integer> {
 
@@ -14,4 +16,6 @@ public interface UserDAO extends JpaRepository<User,Integer> {
 
     @Query(value = "SELECT * FROM USERS WHERE EMAIL = :email AND PASSWORD = :password ;", nativeQuery = true)
     User findByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
+    List<User> findByNameContaining(String name);
 }

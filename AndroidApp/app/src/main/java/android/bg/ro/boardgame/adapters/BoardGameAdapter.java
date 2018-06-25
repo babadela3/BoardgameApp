@@ -1,75 +1,98 @@
 package android.bg.ro.boardgame.adapters;
 
 import android.bg.ro.boardgame.R;
-import android.bg.ro.boardgame.models.BoardGame;
-import android.bg.ro.boardgame.services.ImageLoader;
 import android.bg.ro.boardgame.forms.SquareImageView;
+import android.bg.ro.boardgame.models.BoardGame;
+import android.bg.ro.boardgame.services.BoardGameDetailsService;
+import android.bg.ro.boardgame.services.ImageLoader;
+import android.bg.ro.boardgame.services.TaskBoardGame;
 import android.content.Context;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class BoardGameAdapter extends BaseAdapter {
+public class BoardGameAdapter extends ArrayAdapter<BoardGame> implements TaskBoardGame{
 
-    private final Context context;
-    private final List<BoardGame> boardGames;
-    public ImageLoader imageLoader;
+    TaskBoardGame taskBoardGame;
+    private Context context;
+    private List<BoardGame> boardGames;
+    private static LayoutInflater inflater = null;
 
-    public BoardGameAdapter(Context context, List<BoardGame> boardGames) {
-        this.context = context;
-        this.boardGames = boardGames;
-        this.imageLoader = new ImageLoader(context);
+    public BoardGameAdapter(Context context, int textViewResourceId,List<BoardGame> boardGames) {
+        super(context, textViewResourceId, boardGames);
+        try {
+            this.context = context;
+            this.boardGames = boardGames;
+            this.taskBoardGame = this;
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        } catch (Exception e) {
+
+        }
     }
 
-    @Override
     public int getCount() {
         return boardGames.size();
     }
 
-    @Override
-    public Object getItem(int position) {
+    public BoardGame getItem(int position) {
         return boardGames.get(position);
     }
 
-    @Override
     public long getItemId(int position) {
         return position;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public static class ViewHolder {
+        public TextView nameGame;
+        public ImageView pictureGame;
+    }
 
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        View vi = convertView;
+        ViewHolder holder;
+        try {
+            if (convertView == null) {
+                vi = inflater.inflate(R.layout.list_item_event, null);
 
-        View gridView;
+            } else {
+                holder = (ViewHolder) vi.getTag();
+            }
+            holder = new ViewHolder();
+            vi.setTag(holder);
 
-        if (convertView == null) {
+            holder.nameGame = (TextView) vi.findViewById(R.id.eventName);
+            holder.nameGame.setText(boardGames.get(position).getName());
+            SquareImageView imageView = (SquareImageView) vi
+                    .findViewById(R.id.eventImg);
 
-            gridView = new View(context);
+            ImageLoader imageLoader = new ImageLoader(context,imageView);
+            imageLoader.Display(context,boardGames.get(position).getId(), imageView);
 
-            // get layout from mobile.xml
-            gridView = inflater.inflate(R.layout.grid_item_boardgame, null);
 
-            // set value into textview
-            //TextView textView = (TextView) gridView
-             //       .findViewById(R.id.grid_item_label);
-            //textView.setText(boardGames.get(position).getName());
+        } catch (Exception e) {
 
-            // set image based on selected text
-            SquareImageView imageView = (SquareImageView) gridView
-                    .findViewById(R.id.grid_item_image);
-
-            //DisplayImage function from ImageLoader Class
-            imageLoader.DisplayImage(boardGames.get(position).getPicture(), imageView);
-
-        } else {
-            gridView = (View) convertView;
         }
+        return vi;
+    }
 
-        return gridView;
+    @Override
+    public void searchGame(List<BoardGame> games) {
+        for(BoardGame game : games) {
+            for(BoardGame boardGame: boardGames) {
+                if(game.getId() == boardGame.getId()){
+                    boardGame.setPicture(game.getPicture());
+                    this.notify();
+                    break;
+                }
+            }
+        }
     }
 }

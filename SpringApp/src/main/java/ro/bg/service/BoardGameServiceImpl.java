@@ -5,6 +5,7 @@ import co.yellowbricks.bggclient.common.ThingType;
 import co.yellowbricks.bggclient.fetch.FetchException;
 import co.yellowbricks.bggclient.fetch.domain.FetchItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ro.bg.dao.BoardGameDAO;
 import ro.bg.dao.PubDAO;
@@ -21,6 +22,9 @@ public class BoardGameServiceImpl implements BoardGameService {
 
     @Autowired
     PubDAO pubDAO;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     @Override
     public List<BoardGame> getAllById(int id) {
@@ -77,6 +81,27 @@ public class BoardGameServiceImpl implements BoardGameService {
                 }
             }
         }
+    }
+
+    @Override
+    public void deleteGame(int idGame, int idUser) throws FetchException {
+        jdbcTemplate.update(
+                "delete from user_games where pk_board_game_id = ? and pk_user_id = ?",
+                idGame,idUser);
+    }
+
+    @Override
+    public void addGame(int idGame, int idUser) throws FetchException {
+        if(findById(idGame) == null){
+            Collection<FetchItem> boardGames = BGG.fetch(Arrays.asList(idGame), ThingType.BOARDGAME);
+            for(FetchItem bg : boardGames){
+                BoardGame boardGame = new BoardGame(bg.getId(),bg.getName(),bg.getDescription(),bg.getImageUrl());
+                boardGameDAO.saveAndFlush(boardGame);
+            }
+        }
+        jdbcTemplate.update(
+                "insert into user_games values (?,?)",
+                idGame, idUser);
     }
 
     @Override

@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ro.bg.model.Pub;
 
+import java.util.List;
+
 
 @Repository
 public interface PubDAO extends JpaRepository<Pub,Integer> {
@@ -18,4 +20,6 @@ public interface PubDAO extends JpaRepository<Pub,Integer> {
 
     @Query(value = "SELECT * FROM PUBS WHERE ADDRESS = :address", nativeQuery = true)
     Pub findByAddress(@Param("address") String address);
+
+    List<Pub> findByNameContaining(String name);
 }

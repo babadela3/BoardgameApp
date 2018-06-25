@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ro.bg.dao.FriendshipDAO;
 import ro.bg.dao.UserDAO;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.exception.ExceptionMessage;
@@ -18,12 +19,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.validator.routines.EmailValidator;
+import ro.bg.model.dto.UserDTO;
 
 @Service
 public class UserServiceImpl implements UserService{
 
     @Autowired
     UserDAO userDAO;
+
+    @Autowired
+    FriendshipDAO friendshipDAO;
 
     @Autowired
     public JavaMailSender javaMailSender;
@@ -137,5 +142,37 @@ public class UserServiceImpl implements UserService{
     public byte[] getProfileImage(String email) {
         User user = userDAO.findByEmail(email);
         return user.getProfilePicture();
+    }
+
+    @Override
+    public List<User> getUsersByName(String name) {
+        List<User> usersDB = userDAO.findByNameContaining(name);
+        List<User> users = new ArrayList<>();
+        for(User userDB : usersDB) {
+            User user = new User();
+            user.setId(userDB.getId());
+            user.setName(userDB.getName());
+            users.add(user);
+        }
+        return users;
+    }
+
+    @Override
+    public UserDTO getSearchUser(int userId,int myId) {
+        User user = userDAO.findOne(userId);
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setName(user.getName());
+        userDTO.setTown(user.getTown());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setProfilePicture(user.getProfilePicture());
+        Friendship friendship = friendshipDAO.getFriendship(userId,myId);
+        if(friendship != null){
+            userDTO.setFriend(true);
+        }
+        else {
+            userDTO.setFriend(false);
+        }
+        return userDTO;
     }
 }

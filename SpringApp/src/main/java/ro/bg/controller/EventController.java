@@ -78,6 +78,12 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.OK).body(eventDTOS);
     }
 
+    @RequestMapping(value = "/getEvent", method = RequestMethod.POST)
+    public ResponseEntity<Object> getEvent(@ModelAttribute("eventId") String eventId) {
+        EventDTO eventDTO = eventService.getEvent(Integer.parseInt(eventId));
+        return ResponseEntity.status(HttpStatus.OK).body(eventDTO);
+    }
+
     @RequestMapping(value = "/changeUserStatus", method = RequestMethod.POST)
     public ResponseEntity<Object> changeUserStatus(@ModelAttribute("eventId") String eventId,
                                                    @ModelAttribute("userId") String userId,
@@ -106,7 +112,12 @@ public class EventController {
     @RequestMapping(value = "/allEvents", method = RequestMethod.POST)
     public ResponseEntity<Object> getAllEvents(){
         List<Event> events = eventService.getAllEvents();
-        System.out.println(events);
+        return ResponseEntity.status(HttpStatus.OK).body(events);
+    }
+
+    @RequestMapping(value = "/getEventsByName", method = RequestMethod.POST)
+    public ResponseEntity<Object> getEventsByName(@ModelAttribute("name") String name){
+        List<EventDTO> events = eventService.getEventsByName(name);
         return ResponseEntity.status(HttpStatus.OK).body(events);
     }
 

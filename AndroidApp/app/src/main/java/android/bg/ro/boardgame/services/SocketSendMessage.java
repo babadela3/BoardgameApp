@@ -46,7 +46,7 @@ public class SocketSendMessage extends AsyncTask<String, Void, String> implement
 
         URL url = null;
         try {
-            url = new URL("http://10.11.20.237:8182/sendMessage");
+            url = new URL("http://192.168.1.100:8182/sendMessage");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

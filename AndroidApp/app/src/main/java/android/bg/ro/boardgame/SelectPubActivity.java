@@ -1,6 +1,6 @@
 package android.bg.ro.boardgame;
 
-import android.bg.ro.boardgame.adapters.PubAdapter;
+import android.bg.ro.boardgame.adapters.PubSelectAdapter;
 import android.bg.ro.boardgame.models.Pub;
 import android.bg.ro.boardgame.services.CustomParser;
 import android.bg.ro.boardgame.services.GenericHttpService;
@@ -104,7 +104,7 @@ public class SelectPubActivity extends AppCompatActivity implements TaskDelegate
                 CustomParser customParser = new CustomParser();
                 pubs = new ArrayList<>(customParser.getPubs(genericHttpService.getResponse()));
 
-                PubAdapter adapter = new PubAdapter(SelectPubActivity.this, 0, pubs);
+                PubSelectAdapter adapter = new PubSelectAdapter(SelectPubActivity.this, 0, pubs);
                 ListView listView = (ListView) findViewById(R.id.listFriends);
                 listView.setAdapter(adapter);
 
