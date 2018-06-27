@@ -1,11 +1,11 @@
-package android.bg.ro.boardgame.models;
+package ro.bg.model.dto;
 
-import java.io.Serializable;
+
 import java.util.List;
 
-public class Pub implements Serializable{
+public class PubDTO {
 
-    int id;
+    private int id;
 
     private String email;
 
@@ -15,11 +15,9 @@ public class Pub implements Serializable{
 
     private String description;
 
-    private boolean selected;
+    private byte[] picture;
 
-    private List<Integer> picturesId;
-
-    private byte[] profilePicture;
+    private List<Integer> photoIds;
 
     public int getId() {
         return id;
@@ -61,27 +59,19 @@ public class Pub implements Serializable{
         this.description = description;
     }
 
-    public boolean isSelected() {
-        return selected;
+    public byte[] getPicture() {
+        return picture;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 
-    public List<Integer> getPicturesId() {
-        return picturesId;
+    public List<Integer> getPhotoIds() {
+        return photoIds;
     }
 
-    public void setPicturesId(List<Integer> picturesId) {
-        this.picturesId = picturesId;
-    }
-
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setPhotoIds(List<Integer> photoIds) {
+        this.photoIds = photoIds;
     }
 }

@@ -30,9 +30,9 @@ public class ReservationController {
     }
 
     @RequestMapping(value = "/changeReservationStatus", method = RequestMethod.POST)
-    public String changeReservationStatus(@RequestBody ReservationDTO reservationDTO) {
+    public ResponseEntity<Object> changeReservationStatus(@RequestBody ReservationDTO reservationDTO) {
         reservationService.changeStatus(reservationDTO);
-        return "";
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @RequestMapping(value = "/deleteReservation", method = RequestMethod.POST)

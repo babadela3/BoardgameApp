@@ -6,11 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import ro.bg.dao.BoardGameDAO;
-import ro.bg.dao.EventDAO;
-import ro.bg.dao.PubDAO;
-import ro.bg.dao.UserDAO;
+import ro.bg.dao.*;
 import ro.bg.model.*;
+import ro.bg.model.constants.NotificationTypeEnum;
 import ro.bg.model.constants.StatusUserEnum;
 import ro.bg.model.dto.BoardGameAndroidDTO;
 import ro.bg.model.dto.EventDTO;
@@ -39,6 +37,9 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    NotificationDAO notificationDAO;
 
 
     @Override
@@ -169,6 +170,13 @@ public class EventServiceImpl implements EventService {
             eventUser.setPk(eventUserId);
             eventUser.setStatusUserEnum(StatusUserEnum.INVITED);
             eventUsers.add(eventUser);
+
+            Notification notification = new Notification();
+            notification.setNotificationTypeEnum(NotificationTypeEnum.INVITATION_EVENT);
+            notification.setUser(userDAO.findOne(friendAndroidDTO.getId()));
+            notification.setDate(new Date());
+            notification.setMessage("You have been invited to " + name + " by " + userDAO.findOne(userCreator.getId()).getName());
+            notificationDAO.saveAndFlush(notification);
         }
         User user = new User();
         user.setId(userCreator.getId());
@@ -350,6 +358,15 @@ public class EventServiceImpl implements EventService {
                 jdbcTemplate.update(
                         "update event_users set status = ? where pk_event_id = ? and pk_user_id = ?",
                         StatusUserEnum.PARTICIPANT.toString(), eventId,userId);
+
+                Notification notification = new Notification();
+                notification.setNotificationTypeEnum(NotificationTypeEnum.REQUEST_EVENT_ACCEPTED);
+                Event event = eventDAO.findOne(eventId);
+                notification.setUser(event.getUserCreator());
+                notification.setDate(new Date());
+                notification.setMessage(userDAO.findOne(userId).getName() + " has accepted the invitation for " + event.getTitle());
+                notificationDAO.saveAndFlush(notification);
+
                 return "Accept Successfully";
             case "Cancel" :
                 jdbcTemplate.update(

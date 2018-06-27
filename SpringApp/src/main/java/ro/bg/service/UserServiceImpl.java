@@ -7,17 +7,18 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ro.bg.dao.FriendshipDAO;
-import ro.bg.dao.FriendshipRequestDAO;
-import ro.bg.dao.UserDAO;
+import ro.bg.dao.*;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.exception.ExceptionMessage;
 import ro.bg.model.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.validator.routines.EmailValidator;
+import ro.bg.model.constants.NotificationTypeEnum;
+import ro.bg.model.dto.NotificationDTO;
 import ro.bg.model.dto.UserDTO;
 
 @Service
@@ -27,13 +28,16 @@ public class UserServiceImpl implements UserService{
     UserDAO userDAO;
 
     @Autowired
+    EventDAO eventDAO;
+
+    @Autowired
     FriendshipDAO friendshipDAO;
 
     @Autowired
     FriendshipRequestDAO friendshipRequestDAO;
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    NotificationDAO notificationDAO;
 
     @Autowired
     public JavaMailSender javaMailSender;
@@ -195,6 +199,15 @@ public class UserServiceImpl implements UserService{
             friendshipRequest.setSender(userDAO.findOne(senderId));
             friendshipRequest.setReceiver(userDAO.findOne(receiverId));
             friendshipRequestDAO.saveAndFlush(friendshipRequest);
+
+            User sender = userDAO.findOne(senderId);
+            Notification notification = new Notification();
+            notification.setNotificationTypeEnum(NotificationTypeEnum.REQUEST_FRIENDSHIP);
+            notification.setUser(userDAO.findOne(receiverId));
+            notification.setDate(new Date());
+            notification.setFriendshipRequest(friendshipRequest);
+            notification.setMessage(sender.getName() + " sent you a friend request");
+            notificationDAO.saveAndFlush(notification);
             return "Send request";
         }
         else {
@@ -217,6 +230,14 @@ public class UserServiceImpl implements UserService{
         friendship.setFriendOne(userDAO.findOne(senderId));
         friendship.setFriendTwo(userDAO.findOne(receiverId));
         friendshipDAO.saveAndFlush(friendship);
+
+        User sender = userDAO.findOne(senderId);
+        Notification notification = new Notification();
+        notification.setNotificationTypeEnum(NotificationTypeEnum.REQUEST_FRIENDSHIP_ACCEPTED);
+        notification.setUser(userDAO.findOne(receiverId));
+        notification.setDate(new Date());
+        notification.setMessage(sender.getName() + " has accepted your friend request");
+        notificationDAO.saveAndFlush(notification);
         return "Accept request";
     }
 
@@ -225,5 +246,54 @@ public class UserServiceImpl implements UserService{
         FriendshipRequest friendshipRequestDB = friendshipRequestDAO.findRequest(senderId,receiverId);
         friendshipRequestDAO.delete(friendshipRequestDB);
         return "Delete request";
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userDAO.save(user);
+    }
+
+    @Override
+    public List<NotificationDTO> getAllNotifications(int id) {
+        List<Notification> notifications = notificationDAO.getNotifications(id);
+        List<NotificationDTO> notificationDTOs = new ArrayList<>();
+        for(Notification notification : notifications){
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setId(notification.getId());
+            notificationDTO.setMessage(notification.getMessage());
+            notificationDTO.setNotificationTypeEnum(notification.getNotificationTypeEnum().toString());
+            notificationDTO.setDate(notification.getDate().toString());
+            if(notificationDTO.getNotificationTypeEnum().equals("INVITATION_EVENT")){
+                System.out.println(notificationDTO.getMessage());
+            }
+            if(notificationDTO.getNotificationTypeEnum().equals("REQUEST_FRIENDSHIP")){
+                System.out.println(notificationDTO.getMessage());
+            }
+            if(notificationDTO.getNotificationTypeEnum().equals("REQUEST_FRIENDSHIP_ACCEPTED")){
+                int endIndex = notificationDTO.getMessage().indexOf("has accepted your friend request");
+                String link = notificationDTO.getMessage().substring(0,endIndex - 1);
+                List<User> users = userDAO.findByNameContaining(link);
+                if(users.size() != 0){
+                    notificationDTO.setUserId(users.get(0).getId());
+                }
+            }
+            if(notificationDTO.getNotificationTypeEnum().equals("REQUEST_EVENT_ACCEPTED")){
+                int startIndex = notificationDTO.getMessage().indexOf("reservation for ");
+                int endIndex = notificationDTO.getMessage().indexOf(" ", startIndex);
+                if (endIndex == -1) {
+                    endIndex = notificationDTO.getMessage().length();
+                }
+                String link = notificationDTO.getMessage().substring(endIndex + 5);
+                List<Event> events = eventDAO.findByTitleContaining(link);
+                if(events.size() != 0){
+                    notificationDTO.setEventId(events.get(0).getId());
+                }
+            }
+            if(notificationDTO.getNotificationTypeEnum().equals("REQUEST_EVENT_PARTICIPATION")){
+                System.out.println(notificationDTO.getMessage());
+            }
+            notificationDTOs.add(notificationDTO);
+        }
+        return notificationDTOs;
     }
 }

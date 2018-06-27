@@ -16,6 +16,7 @@ import ro.bg.model.BoardGame;
 import ro.bg.model.Pub;
 import org.apache.commons.validator.routines.EmailValidator;
 import ro.bg.model.PubPicture;
+import ro.bg.model.dto.PubDTO;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +30,9 @@ public class PubServiceImpl implements PubService{
 
     @Autowired
     PubDAO pubDAO;
+
+    @Autowired
+    PubPictureDAO pubPictureDAO;
 
     @Override
     public Pub getPub(Account account) throws BoardGameServiceException {
@@ -136,6 +140,31 @@ public class PubServiceImpl implements PubService{
             pub.setPicture(null);
         }
         return pubsDB;
+    }
+
+    @Override
+    public PubDTO getPubInfo(int id) {
+        PubDTO pubDTO = new PubDTO();
+        Pub pub = pubDAO.findOne(id);
+        pubDTO.setId(pub.getId());
+        pubDTO.setName(pub.getName());
+        pubDTO.setEmail(pub.getEmail());
+        pubDTO.setAddress(pub.getAddress());
+        pubDTO.setDescription(pub.getDescription());
+        pubDTO.setPicture(pub.getPicture());
+        List<Integer> picturesId = new ArrayList<>();
+        for(PubPicture pubPicture : pub.getPubPictures()){
+            picturesId.add(pubPicture.getId());
+        }
+        pubDTO.setPhotoIds(picturesId);
+        return pubDTO;
+    }
+
+    @Override
+    public PubPicture getPubPicture(int id) {
+        PubPicture pubPicture = pubPictureDAO.findOne(id);
+        pubPicture.setPub(null);
+        return pubPicture;
     }
 
 }

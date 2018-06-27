@@ -26,6 +26,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -67,6 +68,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.fragment_map);
         mapFragment.getMapAsync(this);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
 
         taskDelegate = this;
         taskBoardGame = this;
@@ -224,6 +227,19 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
                     pubs = customParser.getPubs(genericHttpService.getResponse());
                     PubAdapter adapter = new PubAdapter(getActivity(),0,pubs);
                     listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view,
+                                                int position, long id) {
+
+                            Intent intent = new Intent("android.bg.ro.boardgame.PubActivity");
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("pubId",pubs.get(position).getId());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    });
                 }
                 break;
         }

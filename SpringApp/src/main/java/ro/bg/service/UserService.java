@@ -3,6 +3,7 @@ package ro.bg.service;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.Account;
 import ro.bg.model.User;
+import ro.bg.model.dto.NotificationDTO;
 import ro.bg.model.dto.UserDTO;
 
 import java.util.List;
@@ -36,4 +37,8 @@ public interface UserService {
     String acceptRequest(int senderId, int receiverId);
 
     String deleteRequest(int senderId, int receiverId);
+
+    void updateUser(User user);
+
+    List<NotificationDTO> getAllNotifications(int id);
 }

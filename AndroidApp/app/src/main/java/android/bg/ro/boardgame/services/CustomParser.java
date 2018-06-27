@@ -4,7 +4,9 @@ import android.bg.ro.boardgame.models.BoardGame;
 import android.bg.ro.boardgame.models.Event;
 import android.bg.ro.boardgame.models.Friend;
 import android.bg.ro.boardgame.models.Message;
+import android.bg.ro.boardgame.models.Notification;
 import android.bg.ro.boardgame.models.Pub;
+import android.bg.ro.boardgame.models.PubPicture;
 import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.models.constrants.AccountTypeEnum;
 import android.util.Base64;
@@ -374,5 +376,85 @@ public class CustomParser {
             user.setStatusEvent("false");
         }
         return user;
+    }
+
+    public Pub getPub(String jsonString){
+        JSONParser parser = new JSONParser();
+        JSONObject pubObject = null;
+        try {
+            pubObject = (JSONObject) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Pub pub = new Pub();
+        pub.setId(Integer.parseInt(pubObject.get("id").toString()));
+        pub.setName(pubObject.get("name").toString());
+        pub.setEmail(pubObject.get("email").toString());
+        pub.setAddress(pubObject.get("address").toString());
+        pub.setDescription(pubObject.get("description").toString());
+        pub.setProfilePicture(Base64.decode(pubObject.get("picture").toString().getBytes(), Base64.DEFAULT));
+
+        JSONArray arrayPubPictures = null;
+        try {
+            arrayPubPictures = (JSONArray) parser.parse(pubObject.get("photoIds").toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        List<Integer> ids = new ArrayList<>();
+        Iterator iter1 = arrayPubPictures.iterator();
+        while (iter1.hasNext()) {
+            ids.add(Integer.parseInt(iter1.next().toString()));
+        }
+        pub.setPicturesId(ids);
+        return pub;
+    }
+
+    public PubPicture getPubPicture(String jsonString) {
+
+        JSONObject pubPictureObject = null;
+        JSONParser parser = new JSONParser();
+        try {
+            pubPictureObject = (JSONObject) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        PubPicture pubPicture = new PubPicture();
+        pubPicture.setId(Integer.parseInt(pubPictureObject.get("id").toString()));
+        pubPicture.setPicture(Base64.decode(pubPictureObject.get("picture").toString().getBytes(), Base64.DEFAULT));
+
+        return pubPicture;
+    }
+
+    public List<Notification> getNotifications(String jsonString){
+        List<Notification> notifications = new ArrayList<>();
+        JSONArray json = null;
+        JSONParser parser = new JSONParser();
+        try {
+            json = (JSONArray) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Iterator iter = json.iterator();
+        while (iter.hasNext()) {
+            JSONObject notificationObject = null;
+            try {
+                notificationObject = (JSONObject) parser.parse(iter.next().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Notification notification = new Notification();
+            notification.setId(Integer.parseInt(notificationObject.get("id").toString()));
+            notification.setNotificationTypeEnum(notificationObject.get("notificationTypeEnum").toString());
+            notification.setEventId(Integer.parseInt(notificationObject.get("eventId").toString()));
+            notification.setUserId(Integer.parseInt(notificationObject.get("userId").toString()));
+            notification.setDate(notificationObject.get("date").toString());
+            notification.setMessage(notificationObject.get("message").toString());
+
+            notifications.add(notification);
+        }
+
+        return notifications;
     }
 }

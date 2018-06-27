@@ -2,17 +2,15 @@ package ro.bg.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ro.bg.dao.EventDAO;
-import ro.bg.dao.ReservationDAO;
-import ro.bg.dao.UserDAO;
-import ro.bg.model.Event;
-import ro.bg.model.Pub;
-import ro.bg.model.Reservation;
-import ro.bg.model.User;
+import ro.bg.dao.*;
+import ro.bg.model.*;
+import ro.bg.model.constants.NotificationTypeEnum;
 import ro.bg.model.constants.ReservationStatusEnum;
 import ro.bg.model.dto.ReservationDTO;
+import ro.bg.model.dto.UserParticipantDTO;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,12 +26,29 @@ public class ReservationServiceImpl implements ReservationService{
     @Autowired
     UserDAO userDAO;
 
+    @Autowired
+    EventService eventService;
+
+    @Autowired
+    NotificationDAO notificationDAO;
+
     @Override
     public void changeStatus(ReservationDTO reservation) {
         Reservation oldReservation = reservationDAO.getEventReservation(reservation.getId());
         oldReservation.setMessage(reservation.getMessage());
         oldReservation.setReservationStatusEnum(ReservationStatusEnum.valueOf(reservation.getOption()));
         reservationDAO.save(oldReservation);
+
+        Pub pub = oldReservation.getPub();
+        List<UserParticipantDTO> users = eventService.getUsers(oldReservation.getEvent().getId());
+        for(UserParticipantDTO user : users) {
+            Notification notification = new Notification();
+            notification.setNotificationTypeEnum(NotificationTypeEnum.REQUEST_EVENT_ACCEPTED);
+            notification.setUser(userDAO.findOne(user.getUserId()));
+            notification.setDate(new Date());
+            notification.setMessage(pub.getName() + " has accepted the reservation for " + oldReservation.getEvent().getTitle());
+            notificationDAO.saveAndFlush(notification);
+        }
     }
 
     @Override

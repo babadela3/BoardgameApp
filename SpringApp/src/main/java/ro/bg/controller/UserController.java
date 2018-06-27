@@ -8,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.Account;
+import ro.bg.model.Notification;
 import ro.bg.model.Pub;
 import ro.bg.model.User;
 import ro.bg.model.constants.AccountTypeEnum;
 import ro.bg.model.dto.EventDTO;
+import ro.bg.model.dto.NotificationDTO;
 import ro.bg.model.dto.UserDTO;
 import ro.bg.service.UserService;
 import org.apache.commons.codec.binary.Base64;
@@ -134,5 +136,25 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @RequestMapping(value = "/updateBgUser", method = RequestMethod.POST)
+    public ResponseEntity<Object> updateUser(@ModelAttribute("id") String id,
+                                             @ModelAttribute("email") String email,
+                                             @ModelAttribute("name") String name,
+                                             @ModelAttribute("town") String town,
+                                             @ModelAttribute("photo") String photo) {
+        User user = userService.getUser(Integer.parseInt(id));
+        user.setTown(town);
+        user.setName(name);
+        user.setProfilePicture(Base64.decodeBase64(photo));
+        userService.updateUser(user);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
+
+    @RequestMapping(value = "/allNotifications", method = RequestMethod.POST)
+    public ResponseEntity<Object> getNotifications(@ModelAttribute("id") String id) {
+        List<NotificationDTO> notificationList = userService.getAllNotifications(Integer.parseInt(id));
+        return ResponseEntity.status(HttpStatus.OK).body(notificationList);
     }
 }

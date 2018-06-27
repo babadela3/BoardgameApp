@@ -35,6 +35,9 @@ public class Notification {
     @Column(name = "data")
     private Date date;
 
+    @Column(name = "message")
+    private String message;
+
     public int getId() {
         return id;
     }
@@ -81,5 +84,13 @@ public class Notification {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

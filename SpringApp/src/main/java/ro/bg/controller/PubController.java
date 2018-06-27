@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ro.bg.exception.BoardGameServiceException;
 import ro.bg.model.*;
+import ro.bg.model.dto.PubDTO;
 import ro.bg.service.BoardGameService;
 import ro.bg.service.PubPictureService;
 import ro.bg.service.PubService;
@@ -202,6 +203,18 @@ public class PubController {
     public ResponseEntity<Object> getPubsByName(@ModelAttribute("name") String name){
         List<Pub> pubs = pubService.getPubsByName(name);
         return ResponseEntity.status(HttpStatus.OK).body(pubs);
+    }
+
+    @RequestMapping(value = "/getPubInfo", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubInfo(@ModelAttribute("id") String id){
+        PubDTO pub = pubService.getPubInfo(Integer.parseInt(id));
+        return ResponseEntity.status(HttpStatus.OK).body(pub);
+    }
+
+    @RequestMapping(value = "/getPubPicture", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubPicture(@ModelAttribute("id") String id){
+        PubPicture pubPicture = pubService.getPubPicture(Integer.parseInt(id));
+        return ResponseEntity.status(HttpStatus.OK).body(pubPicture);
     }
 
 }
