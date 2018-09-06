@@ -204,7 +204,7 @@ html, body
     color: black;
 }
 
-#optionPhotos, #optionAlbums:hover, #optionUpload:hover, #optionPhotos:hover, #optionCreate:hover {
+#optionAlbums:hover, #optionUpload:hover, #optionPhotos:hover, #optionCreate:hover {
     font-weight: bold;
     cursor: pointer;
     color: black;

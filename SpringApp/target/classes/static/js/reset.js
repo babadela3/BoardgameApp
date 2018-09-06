@@ -2,7 +2,7 @@ function logIn(){
     window.location.href = "http://localhost:8181";
 }
 
-function resetPassword(){
+function sendEmail(){
     var email = document.getElementById("resetEmailText").value;
     $.ajax({
                 url: "/pub/resetPassword",

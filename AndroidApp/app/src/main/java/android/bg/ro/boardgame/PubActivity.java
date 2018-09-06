@@ -8,6 +8,7 @@ import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.GoogleMapsService;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.bg.ro.boardgame.services.TaskGoogleMaps;
+import android.bg.ro.boardgame.utils.Constant;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ public class PubActivity extends AppCompatActivity implements TaskDelegate, OnMa
 
         URL url = null;
         try {
-            url = new URL("http://" + getResources().getString(R.string.localhost) + "/getPubInfo");
+            url = new URL("http://" + Constant.IP + "/getPubInfo");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -108,7 +109,7 @@ public class PubActivity extends AppCompatActivity implements TaskDelegate, OnMa
                         for (int id : pub.getPicturesId()) {
                             URL url = null;
                             try {
-                                url = new URL("http://" + getResources().getString(R.string.localhost) + "/getPubPicture");
+                                url = new URL("http://" + Constant.IP + "/getPubPicture");
                             } catch (MalformedURLException e) {
                                 e.printStackTrace();
                             }

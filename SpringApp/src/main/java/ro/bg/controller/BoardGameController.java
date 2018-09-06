@@ -14,10 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ro.bg.model.BoardGame;
 import ro.bg.model.Pub;
-import ro.bg.model.User;
+import ro.bg.model.dto.BoardGameDTO;
 import ro.bg.service.BoardGameService;
 import ro.bg.service.PubService;
-import ro.bg.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -116,5 +115,11 @@ public class BoardGameController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @RequestMapping(value = "/getUserGames", method = RequestMethod.POST)
+    public ResponseEntity<Object> getGamesByUser(@ModelAttribute("userId") String userId) {
+        BoardGameDTO boardGameDTOs = boardGameService.getGamesByUserId(Integer.parseInt(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(boardGameDTOs);
     }
 }

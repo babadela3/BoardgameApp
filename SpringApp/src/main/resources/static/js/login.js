@@ -39,29 +39,27 @@ function createAccount(){
 }
 
 function resetPassword(){
-    window.location.href = "http://localhost:8181/accounts/password/reset";
+    window.location.href = "http://localhost:8182/accounts/password/reset";
 }
 
 function signUp(){
-    document.getElementById("divAddress").style.display = "block";
-    document.getElementById("divName").style.display = "block";
-    document.getElementById("divDescription").style.display = "block";
     document.getElementById("divMenu").style.height = "430px";
     document.getElementById("divButtonSignUp").style.display = "block";
     document.getElementById("divButton").style.display = "none";
     document.getElementById("divForgetPassword").style.display = "none";
     document.getElementById("divEnterAccount").style.display = "flex";
     document.getElementById("divCreateAccount").style.display = "none";
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("signUpForm").style.display = "block";
 }
 
 function loginInRedirect(){
-    document.getElementById("divAddress").style.display = "none";
-    document.getElementById("divName").style.display = "none";
-    document.getElementById("divDescription").style.display = "none";
     document.getElementById("divMenu").style.height = "400px";
     document.getElementById("divButtonSignUp").style.display = "none";
     document.getElementById("divButton").style.display = "block";
     document.getElementById("divForgetPassword").style.display = "block";
     document.getElementById("divEnterAccount").style.display = "none";
     document.getElementById("divCreateAccount").style.display = "flex";
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("signUpForm").style.display = "none";
 }

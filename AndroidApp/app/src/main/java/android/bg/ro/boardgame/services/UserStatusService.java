@@ -1,6 +1,7 @@
 package android.bg.ro.boardgame.services;
 
 import android.bg.ro.boardgame.R;
+import android.bg.ro.boardgame.utils.Constant;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Pair;
@@ -96,7 +97,7 @@ public class UserStatusService extends AsyncTask<URL, Integer, Long> {
             params.put(pair.first,pair.second);
         }
 
-        URL url = new URL("http://" + context.getResources().getString(R.string.localhost) + "/" + mapping);
+        URL url = new URL("http://" + Constant.IP + "/" + mapping);
         HttpURLConnection client = null;
         try {
             client = (HttpURLConnection) url.openConnection();

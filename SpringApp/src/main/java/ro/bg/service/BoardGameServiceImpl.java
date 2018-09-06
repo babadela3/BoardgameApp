@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
 import ro.bg.dao.BoardGameDAO;
 import ro.bg.dao.PubDAO;
 import ro.bg.model.BoardGame;
+import ro.bg.model.Event;
 import ro.bg.model.Pub;
+import ro.bg.model.User;
+import ro.bg.model.dto.BoardGameDTO;
+import ro.bg.model.dto.EventDTO;
+import ro.bg.model.dto.GameDTO;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -118,5 +124,17 @@ public class BoardGameServiceImpl implements BoardGameService {
         for(int id : ids){
             boardGameDAO.delete(id);
         }
+    }
+
+    @Override
+    public BoardGameDTO getGamesByUserId(int userId) {
+        List<BoardGame> boardGames = boardGameDAO.getUserBoardGameById(userId);
+        List<Integer> ids = new ArrayList<>();
+        for(BoardGame boardGame : boardGames) {
+            ids.add(boardGame.getId());
+        }
+        BoardGameDTO boardGameDTO = new BoardGameDTO();
+        boardGameDTO.setBoardGamesIds(ids);
+        return boardGameDTO;
     }
 }

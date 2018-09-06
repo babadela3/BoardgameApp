@@ -17,6 +17,7 @@ import android.bg.ro.boardgame.services.CustomParser;
 import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskBoardGame;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -37,7 +38,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.net.MalformedURLException;
@@ -70,7 +73,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
         mapFragment.getMapAsync(this);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-
         taskDelegate = this;
         taskBoardGame = this;
         MenuActivity activity = (MenuActivity) getActivity();
@@ -78,7 +80,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
 
         URL url = null;
         try {
-            url = new URL("http://" + getResources().getString(R.string.localhost) + "/allEvents");
+            url = new URL("http://" + Constant.IP + "/allEvents");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -117,7 +119,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
 
                     URL url = null;
                     try {
-                        url = new URL("http://" + getResources().getString(R.string.localhost) + mapping);
+                        url = new URL("http://" + Constant.IP + mapping);
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
@@ -165,7 +167,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
     public void TaskCompletionResult(String result) {
         switch (genericHttpService.getResponseCode()) {
             case 200:
-                if(genericHttpService.getMapping().equals("allEvent")) {
+                if(genericHttpService.getMapping().equals("allEvents")) {
                     CustomParser customParser = new CustomParser();
                     events = customParser.getEvents(genericHttpService.getResponse());
                     for(Event event : events) {

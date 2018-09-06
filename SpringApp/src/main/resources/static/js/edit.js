@@ -39,7 +39,11 @@ function addBoardgames(){
                 email: emailUser
             },
         success : function(response) {
-           alert("Success");
+            alert("The game was successfully added");
+            $('input[type=checkbox]').each(function () {
+                $(this).attr("checked", false);
+            });
+            boardGameId = 0;
         },
         error : function(e) {
            alert('Error');
@@ -67,7 +71,7 @@ function deleteBoardgames(){
                 email: emailUser
             },
         success : function(response) {
-           alert("Success");
+           alert("The game was successfully deleted.");
            location.reload(false);
         },
         error : function(e) {
@@ -96,7 +100,7 @@ function deletePhotos(){
                 email: emailUser
             },
         success : function(response) {
-           alert("Success");
+           alert("The photo was successfully deleted");
            location.reload(false);
         },
         error : function(e) {
@@ -115,6 +119,10 @@ function photo(){
     document.getElementById("deleteBoardGameForm").style.display = "none";
     document.getElementById("deletePhotoForm").style.display = "none";
 
+    $('input[type=checkbox]').each(function () {
+        $(this).attr("checked", false);
+    });
+    boardGameId = 0;
 }
 
 function deletePhoto(){
@@ -207,6 +215,10 @@ $.ajax({
          }
     });
 
+    $('input[type=checkbox]').each(function () {
+        $(this).attr("checked", false);
+    });
+    boardGameId = 0;
 }
 
 function edit(){
@@ -218,6 +230,11 @@ function edit(){
     document.getElementById("addBoardGameForm").style.display = "none";
     document.getElementById("deleteBoardGameForm").style.display = "none";
     document.getElementById("deletePhotoForm").style.display = "none";
+
+    $('input[type=checkbox]').each(function () {
+        $(this).attr("checked", false);
+    });
+    boardGameId = 0;
 }
 
 function addBoardGameMenu(){
@@ -230,6 +247,10 @@ function addBoardGameMenu(){
     document.getElementById("deleteBoardGameForm").style.display = "none";
     document.getElementById("deletePhotoForm").style.display = "none";
 
+    $('input[type=checkbox]').each(function () {
+        $(this).attr("checked", false);
+    });
+    boardGameId = 0;
 }
 
 function deleteBoardGameMenu(){
@@ -331,6 +352,10 @@ function deleteBoardGameMenu(){
          }
     });
 
+    $('input[type=checkbox]').each(function () {
+        $(this).attr("checked", false);
+    });
+    boardGameId = 0;
 }
 
 
@@ -355,12 +380,15 @@ function keyPressListener(e) {
             table.appendChild(tbody);
             divTable.appendChild(table);
 
+            document.getElementById("loader").style.display = "block";
+
             $.ajax({
               url: "/getBoardGamesAll?search=" + search,
               type: "GET",
               data: search,
               success: function(data) {
                 var table = document.getElementById("theadAddBoardGame");
+                document.getElementById("loader").style.display = "none";
 
                 var tr = document.createElement("TR");
                 var th = document.createElement("TH");
@@ -420,7 +448,8 @@ function keyPressListener(e) {
               },
               error: function(data) {
                 //Do Something to handle error
-                alert("Fail");
+                document.getElementById("loader").style.display = "none";
+                alert("No results found");
               }
             });
     }

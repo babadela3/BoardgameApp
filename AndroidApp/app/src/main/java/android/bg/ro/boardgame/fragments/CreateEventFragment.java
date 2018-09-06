@@ -9,6 +9,7 @@ import android.bg.ro.boardgame.models.Pub;
 import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -222,7 +223,7 @@ public class CreateEventFragment extends Fragment implements TaskDelegate{
                 if(isOk) {
                     URL url = null;
                     try {
-                        url = new URL("http://" + getResources().getString(R.string.localhost) + "/createEvent");
+                        url = new URL("http://" + Constant.IP + "/createEvent");
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }

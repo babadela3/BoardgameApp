@@ -131,6 +131,15 @@
         app:layout_constraintStart_toStartOf="@+id/textConnect"
         app:layout_constraintTop_toBottomOf="@+id/imageLogo" />
 
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/authButton"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:text="  connect_with_facebook" />
+
     <ImageView
         android:id="@+id/imageLogo"
         android:layout_width="118dp"

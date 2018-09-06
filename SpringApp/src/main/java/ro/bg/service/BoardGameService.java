@@ -4,6 +4,7 @@ package ro.bg.service;
 import co.yellowbricks.bggclient.fetch.FetchException;
 import org.springframework.transaction.annotation.Transactional;
 import ro.bg.model.BoardGame;
+import ro.bg.model.dto.BoardGameDTO;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface BoardGameService {
     void updateBoardGame(BoardGame boardGame);
 
     void deleteBoardGame(List<Integer> ids);
+
+    BoardGameDTO getGamesByUserId(int userId);
 }

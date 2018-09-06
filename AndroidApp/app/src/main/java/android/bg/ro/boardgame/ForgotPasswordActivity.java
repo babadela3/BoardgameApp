@@ -2,6 +2,7 @@ package android.bg.ro.boardgame;
 
 import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
@@ -38,7 +39,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements TaskDel
             public void onClick(View v) {
                 URL url = null;
                 try {
-                    url = new URL("http://" + getResources().getString(R.string.localhost) + "/user/sendPassword");
+                    url = new URL("http://" + Constant.IP + "/user/sendPassword");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }

@@ -4,6 +4,7 @@ import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.services.CustomParser;
 import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -46,7 +47,7 @@ public class UserActivity extends AppCompatActivity implements TaskDelegate{
 
         URL url = null;
         try {
-            url = new URL("http://" + getResources().getString(R.string.localhost) + "/searchUser");
+            url = new URL("http://" + Constant.IP + "/searchUser");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -96,7 +97,7 @@ public class UserActivity extends AppCompatActivity implements TaskDelegate{
                         public void onClick(View v) {
                             URL url = null;
                             try {
-                                url = new URL("http://" + getResources().getString(R.string.localhost) + "/sendUserRequest");
+                                url = new URL("http://" + Constant.IP + "/sendUserRequest");
                             } catch (MalformedURLException e) {
                                 e.printStackTrace();
                             }
@@ -114,7 +115,7 @@ public class UserActivity extends AppCompatActivity implements TaskDelegate{
                         public void onClick(View v) {
                             URL url = null;
                             try {
-                                url = new URL("http://" + getResources().getString(R.string.localhost) + "/sendUserRequest");
+                                url = new URL("http://" + Constant.IP + "/sendUserRequest");
                             } catch (MalformedURLException e) {
                                 e.printStackTrace();
                             }

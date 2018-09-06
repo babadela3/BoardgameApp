@@ -61,6 +61,17 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
+    @RequestMapping(value = "/getUserInformation", method = RequestMethod.POST)
+    public ResponseEntity<Object> getUserInformation(@ModelAttribute("userId") String userId) {
+        User user = null;
+        try {
+            user = userService.getUserInformation(Integer.parseInt(userId));
+        } catch (BoardGameServiceException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
     @RequestMapping(value = "/createBgUser", method = RequestMethod.POST)
     public ResponseEntity<Object> createUser(@ModelAttribute("email") String email,
                                              @ModelAttribute("password") String password,

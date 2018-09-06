@@ -4,7 +4,8 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/backgroundwhite">
 
-    <fragment
+    <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/fragmentsMenu"
         android:name="android.bg.ro.boardgame.fragments.HomeFragment"
         android:layout_width="match_parent"

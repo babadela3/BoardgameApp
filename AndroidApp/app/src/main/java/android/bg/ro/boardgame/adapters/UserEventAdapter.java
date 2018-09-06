@@ -6,6 +6,7 @@ import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.services.TaskChangeStatus;
 import android.bg.ro.boardgame.services.UserStatusService;
+import android.bg.ro.boardgame.utils.Constant;
 import android.content.Context;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -131,7 +132,7 @@ public class UserEventAdapter extends ArrayAdapter<User> implements TaskChangeSt
                             public void onClick(View v) {
                                 URL url = null;
                                 try {
-                                    url = new URL("http://192.168.1.101:8182/changeUserStatus");
+                                    url = new URL(Constant.IP + "/changeUserStatus");
                                 } catch (MalformedURLException e) {
                                     e.printStackTrace();
                                 }
@@ -173,7 +174,7 @@ public class UserEventAdapter extends ArrayAdapter<User> implements TaskChangeSt
                     public void onClick(View v) {
                         URL url = null;
                         try {
-                            url = new URL("http://192.168.1.101:8182/changeUserStatus");
+                            url = new URL(Constant.IP + "/changeUserStatus");
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         }
@@ -191,7 +192,7 @@ public class UserEventAdapter extends ArrayAdapter<User> implements TaskChangeSt
                     public void onClick(View v) {
                         URL url = null;
                         try {
-                            url = new URL("http://192.168.1.101:8182/changeUserStatus");
+                            url = new URL(Constant.IP + "/changeUserStatus");
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         }

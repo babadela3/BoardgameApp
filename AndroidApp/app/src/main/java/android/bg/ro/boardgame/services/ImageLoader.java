@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.models.BoardGame;
 import android.bg.ro.boardgame.models.User;
+import android.bg.ro.boardgame.utils.Constant;
 import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -116,7 +117,7 @@ public class ImageLoader implements TaskBoardGame, TaskDelegate{
         taskDelegate = this;
         URL url = null;
         try {
-            url = new URL("http://192.168.1.101/searchUser");
+            url = new URL("http://" + Constant.IP +"/searchUser");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

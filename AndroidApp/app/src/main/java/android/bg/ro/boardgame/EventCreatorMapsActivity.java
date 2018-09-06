@@ -14,6 +14,7 @@ import android.bg.ro.boardgame.services.TaskChangeStatus;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.bg.ro.boardgame.services.TaskGoogleMaps;
 import android.bg.ro.boardgame.services.UserStatusService;
+import android.bg.ro.boardgame.utils.Constant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -146,7 +147,7 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
                 public void onClick(View v) {
                     URL url = null;
                     try {
-                        url = new URL("http://" + getResources().getString(R.string.localhost) + "/createReservation");
+                        url = new URL("http://" + Constant.IP + "/createReservation");
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
@@ -197,7 +198,7 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
 
         URL url = null;
         try {
-            url = new URL("http://" + getResources().getString(R.string.localhost) + "/getUsersStatus");
+            url = new URL("http://" + Constant.IP + "/getUsersStatus");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -402,7 +403,7 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
 
                                     URL url = null;
                                     try {
-                                        url = new URL("http://" + getResources().getString(R.string.localhost) + "/changeUserStatus");
+                                        url = new URL("http://" + Constant.IP + "/changeUserStatus");
                                     } catch (MalformedURLException e) {
                                         e.printStackTrace();
                                     }
@@ -440,7 +441,7 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
                                 public void onClick(View v) {
                                     URL url = null;
                                     try {
-                                        url = new URL("http://" + getResources().getString(R.string.localhost) + "/changeUserStatus");
+                                        url = new URL("http://" + Constant.IP + "/changeUserStatus");
                                     } catch (MalformedURLException e) {
                                         e.printStackTrace();
                                     }
@@ -475,7 +476,14 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
 
     @Override
     public void getLocation(LatLng latLng) {
-        if(latLng != null){
+        if(latLng != null && latitude == 0 && longitude == 0){
+            mMap.addMarker(new MarkerOptions().position(latLng));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            latitude = latLng.latitude ;
+            longitude = latLng.longitude;
+        }
+        if(latitude != 0 || longitude != 0) {
+            latLng = new LatLng(latitude,longitude);
             mMap.addMarker(new MarkerOptions().position(latLng));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             latitude = latLng.latitude ;

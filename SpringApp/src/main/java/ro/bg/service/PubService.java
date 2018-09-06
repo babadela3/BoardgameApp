@@ -15,11 +15,11 @@ public interface PubService {
 
     Pub getPubByEmail(String email);
 
-    void createPub(Pub pub);
+    void createPub(Pub pub) throws BoardGameServiceException;
 
     void updatePubInformation(Pub pub);
 
-    void changePassword(Pub pub);
+    void changePassword(Pub pub) throws BoardGameServiceException;
 
     void deletePub(Pub pub);
 

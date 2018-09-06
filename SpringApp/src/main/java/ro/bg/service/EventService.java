@@ -1,9 +1,5 @@
 package ro.bg.service;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import ro.bg.model.Event;
 import ro.bg.model.EventUser;
 import ro.bg.model.Pub;

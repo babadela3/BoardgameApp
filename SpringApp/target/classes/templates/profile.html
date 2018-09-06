@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/profileStyles.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/profile.css"/>
     <script src="/js/profile.js"></script>
 </head>
 <body>
@@ -50,17 +50,6 @@
                         <input id="profileButton" type="submit" value="Edit profile"/>
                     </div>
                 </form>
-            <div id="divProfileDetails">
-                <div id="divProfilePhotos">
-                    <label id="profilePhotos">63 photos</label>
-                </div>
-                <div id="divProfileAlbums">
-                    <label id="profileAlbums">23 reservations</label>
-                </div>
-                <div id="divProfileComments">
-                    <label id="profileComments">102 events</label>
-                </div>
-            </div>
             <div id="divProfileEmail">
                 <label id="profileEmail" th:text="${pub.getEmail()}"/>
             </div>

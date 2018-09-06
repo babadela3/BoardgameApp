@@ -158,25 +158,28 @@ public class EventServiceImpl implements EventService {
         List<User> users = new ArrayList<>();
         List<EventUser> eventUsers = new ArrayList<>();
 
-        for(FriendAndroidDTO friendAndroidDTO : friends){
-            User user = new User();
-            user.setId(friendAndroidDTO.getId());
-            users.add(user);
+        if(friends != null) {
+            for (FriendAndroidDTO friendAndroidDTO : friends) {
+                User user = new User();
+                user.setId(friendAndroidDTO.getId());
+                users.add(user);
 
-            EventUserId eventUserId = new EventUserId();
-            eventUserId.setEvent(event);
-            eventUserId.setUser(user);
-            EventUser eventUser = new EventUser();
-            eventUser.setPk(eventUserId);
-            eventUser.setStatusUserEnum(StatusUserEnum.INVITED);
-            eventUsers.add(eventUser);
+                EventUserId eventUserId = new EventUserId();
+                eventUserId.setEvent(event);
+                eventUserId.setUser(user);
+                EventUser eventUser = new EventUser();
+                eventUser.setPk(eventUserId);
+                eventUser.setStatusUserEnum(StatusUserEnum.INVITED);
+                eventUsers.add(eventUser);
 
-            Notification notification = new Notification();
-            notification.setNotificationTypeEnum(NotificationTypeEnum.INVITATION_EVENT);
-            notification.setUser(userDAO.findOne(friendAndroidDTO.getId()));
-            notification.setDate(new Date());
-            notification.setMessage("You have been invited to " + name + " by " + userDAO.findOne(userCreator.getId()).getName());
-            notificationDAO.saveAndFlush(notification);
+                Notification notification = new Notification();
+                notification.setNotificationTypeEnum(NotificationTypeEnum.INVITATION_EVENT);
+                notification.setUser(userDAO.findOne(friendAndroidDTO.getId()));
+                notification.setDate(new Date());
+                notification.setMessage("You have been invited to " + name + " by " + userDAO.findOne(userCreator.getId()).getName());
+                notificationDAO.saveAndFlush(notification);
+            }
+
         }
         User user = new User();
         user.setId(userCreator.getId());

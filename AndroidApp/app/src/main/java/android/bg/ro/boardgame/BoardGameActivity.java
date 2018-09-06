@@ -8,6 +8,7 @@ import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.ImageLoader;
 import android.bg.ro.boardgame.services.TaskBoardGame;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
@@ -66,7 +67,7 @@ public class BoardGameActivity extends AppCompatActivity implements TaskBoardGam
         else {
             URL url = null;
             try {
-                url = new URL("http://" + getResources().getString(R.string.localhost) + "/hasGame");
+                url = new URL("http://" + Constant.IP + "/hasGame");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -85,7 +86,7 @@ public class BoardGameActivity extends AppCompatActivity implements TaskBoardGam
                 public void onClick(View v) {
                     URL url = null;
                     try {
-                        url = new URL("http://" + getResources().getString(R.string.localhost) + "/modifyGame");
+                        url = new URL("http://" + Constant.IP + "/modifyGame");
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
@@ -126,10 +127,14 @@ public class BoardGameActivity extends AppCompatActivity implements TaskBoardGam
         if(genericHttpService.getResponse().equals("Add")){
             Toast.makeText(BoardGameActivity.this, "The game was added to your collection.",
                     Toast.LENGTH_LONG).show();
+            Button buttonOption = findViewById(R.id.buttonOption1);
+            buttonOption.setText("Delete");
         }
         if(genericHttpService.getResponse().equals("Delete")){
             Toast.makeText(BoardGameActivity.this, "The game was removed to your collection.",
                     Toast.LENGTH_LONG).show();
+            Button buttonOption = findViewById(R.id.buttonOption1);
+            buttonOption.setText("Add");
         }
     }
 }

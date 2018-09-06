@@ -13,6 +13,8 @@ import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.SocketClientConnection;
 import android.bg.ro.boardgame.services.TaskClient;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
@@ -40,7 +42,7 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acitivity_menu);
+        setContentView(R.layout.activity_menu);
         getSupportActionBar().hide();
 
         taskDelegate = this;
@@ -50,7 +52,7 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
 
             URL url = null;
             try {
-                url = new URL("http://" + getResources().getString(R.string.localhost) + "/getUser");
+                url = new URL("http://" + Constant.IP + "/getUser");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -67,6 +69,12 @@ public class MenuActivity extends AppCompatActivity implements TaskDelegate, Tas
         ImageButton homeButton = (ImageButton) findViewById(R.id.imageButtonHome);
         ImageButton createEventButton = (ImageButton) findViewById(R.id.imageButtonAdd);
         ImageButton notificationButton = (ImageButton) findViewById(R.id.imageButtonNotification);
+
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragmentsMenu);
+        if(!(fragment instanceof HomeFragment)){
+            getFragmentManager().beginTransaction().replace(R.id.fragmentsMenu, new HomeFragment()).addToBackStack(null).commit();
+
+        }
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override

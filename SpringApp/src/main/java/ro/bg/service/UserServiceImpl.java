@@ -84,11 +84,66 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUser(Account account) throws BoardGameServiceException {
-        User user = userDAO.findByEmailAndPassword(account.getUsername(),account.getPassword());
+    public User getUserInformation(int idUser) throws BoardGameServiceException {
+        User user = userDAO.findOne(idUser);
         if(user == null){
             throw new BoardGameServiceException(ExceptionMessage.MISSING_USER);
         }
+
+        List<BoardGame> boardGames = new ArrayList<>(user.getBoardGames());
+        for(BoardGame boardGame: boardGames){
+            boardGame.setEvents(null);
+            boardGame.setUsers(null);
+            boardGame.setPubs(null);
+            boardGame.setGameReservations(null);
+        }
+
+        List<Friendship> friendshipList = new ArrayList<>();
+        List<Friendship> friendships = new ArrayList<>(user.getFriendshipsSetOne());
+        for(Friendship friendship: friendships){
+            if(friendship.getFriendTwo().getId() != user.getId()){
+                User user1 = new User();
+                user1.setName(friendship.getFriendTwo().getName());
+                user1.setId(friendship.getFriendTwo().getId());
+                friendshipList.add(new Friendship(user1,null));
+            };
+        }
+        friendships = new ArrayList<>(user.getFriendshipsSetTwo());
+        for(Friendship friendship: friendships){
+            if(friendship.getFriendOne().getId() != user.getId()){
+                User user1 = new User();
+                user1.setName(friendship.getFriendOne().getName());
+                user1.setId(friendship.getFriendOne().getId());
+                // user1.setProfilePicture(friendship.getFriendOne().getProfilePicture());
+                friendshipList.add(new Friendship(user1,null));
+            };
+        }
+        user.setBoardGames(new HashSet<BoardGame>(boardGames));
+        user.setCreatedEvents(null);
+        user.setEventUserSet(null);
+        user.setEvents(null);
+        user.setFriendshipsSetOne(new HashSet<Friendship>(friendshipList));
+        user.setFriendshipsSetTwo(null);
+        user.setSenders(null);
+        user.setReceivers(null);
+        user.setGameReservations(null);
+        user.setNotifications(null);
+        return user;
+    }
+
+    @Override
+    public User getUser(Account account) throws BoardGameServiceException {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        User user = userDAO.findByEmail(account.getUsername());
+        if(user == null){
+            throw new BoardGameServiceException(ExceptionMessage.MISSING_USER);
+        }
+        else {
+            if(!passwordEncoder.matches(account.getPassword(),user.getPassword())){
+                throw new BoardGameServiceException(ExceptionMessage.MISSING_USER);
+            }
+        }
+
         List<BoardGame> boardGames = new ArrayList<>(user.getBoardGames());
         for(BoardGame boardGame: boardGames){
             boardGame.setEvents(null);

@@ -4,6 +4,7 @@ import android.bg.ro.boardgame.models.User;
 import android.bg.ro.boardgame.services.CustomParser;
 import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -62,7 +63,7 @@ public class EditProfileActivity extends AppCompatActivity implements TaskDelega
 
         URL url = null;
         try {
-            url = new URL("http://" + getResources().getString(R.string.localhost) + "/searchUser");
+            url = new URL("http://" + Constant.IP + "/searchUser");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -122,7 +123,7 @@ public class EditProfileActivity extends AppCompatActivity implements TaskDelega
 
                 URL url = null;
                 try {
-                    url = new URL("http://" + getResources().getString(R.string.localhost) + "/updateBgUser");
+                    url = new URL("http://" + Constant.IP + "/updateBgUser");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }

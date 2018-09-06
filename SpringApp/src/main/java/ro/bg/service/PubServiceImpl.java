@@ -21,6 +21,7 @@ import ro.bg.model.dto.PubDTO;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PubServiceImpl implements PubService{
@@ -58,18 +59,20 @@ public class PubServiceImpl implements PubService{
     public Pub getPubByEmail(String email) {
         Pub pub = pubDAO.findByEmail(email);
         pub.setPubPictures(null);
-        pub.setPassword(null);
         pub.setReservations(null);
         pub.setBoardGames(null);
         return pub;
     }
 
     @Override
-    public void createPub(Pub pub) {
+    public void createPub(Pub pub) throws BoardGameServiceException {
         if(EmailValidator.getInstance().isValid(pub.getEmail()) && pubDAO.findByEmail(pub.getEmail()) == null){
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             pub.setPassword(passwordEncoder.encode(pub.getPassword()));
             pubDAO.saveAndFlush(pub);
+        }
+        else {
+            throw new BoardGameServiceException(ExceptionMessage.PUB_ALREADY_EXISTS);
         };
     }
 
@@ -85,10 +88,16 @@ public class PubServiceImpl implements PubService{
     }
 
     @Override
-    public void changePassword(Pub pub) {
-        Pub oldPub = pubDAO.findOne(pub.getId());
-        oldPub.setPassword(pub.getPassword());
-        pubDAO.save(oldPub);
+    public void changePassword(Pub pub) throws BoardGameServiceException {
+        Pub oldPub = pubDAO.findByEmail(pub.getEmail());
+        if(pub != null){
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            oldPub.setPassword(passwordEncoder.encode(pub.getPassword()));
+            pubDAO.save(oldPub);
+        }
+        else{
+            throw new BoardGameServiceException(ExceptionMessage.EMAIL_NOT_EXISTING);
+        }
     }
 
     @Override
@@ -100,13 +109,18 @@ public class PubServiceImpl implements PubService{
     public void resetPassword(String mail) throws MailException, BoardGameServiceException {
         Pub pub = pubDAO.findByEmail(mail);
         if(pub != null){
+            UUID uuid = UUID.randomUUID();
+            pub.setToken(uuid.toString());
+            pubDAO.save(pub);
+
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(mail);
             message.setFrom("bgboardgame@gmail.com");
             message.setSubject("Reset Password");
-            message.setText("Hi,\n\nWe got a request to reset your BoardGameAndroidDTO password\n\nYour password is: " + pub.getPassword() + "\n\nIf you want to change the password, " +
-                    "click to follow link to change your password: http://localhost:8081/accounts/password/change/" + pub.getEmail() +"\n\nIf you ignore this message, " +
-                    "your password will not be change");
+            message.setText("Hi,\n\nWe got a request to reset your password\n\nYou receive a token which will help you to insert a new password." +
+                    " Your token is: " + uuid.toString() + "\n\nIf you want to change the password, " +
+                    "go to login page, click on Forgot Password?. After you do that complete the blank " +
+                    "spaces.\n\nIf you ignore this message, your password will not be change.");
             javaMailSender.send(message);
         }
         else{

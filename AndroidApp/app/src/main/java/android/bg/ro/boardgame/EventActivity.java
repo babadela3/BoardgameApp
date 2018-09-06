@@ -12,6 +12,7 @@ import android.bg.ro.boardgame.services.TaskChangeStatus;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.bg.ro.boardgame.services.TaskGoogleMaps;
 import android.bg.ro.boardgame.services.UserStatusService;
+import android.bg.ro.boardgame.utils.Constant;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Pair;
@@ -72,7 +73,7 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
 
         URL url = null;
         try {
-            url = new URL("http://" + getResources().getString(R.string.localhost) + "/getEvent");
+            url = new URL("http://" + Constant.IP + "/getEvent");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -97,6 +98,14 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
                 if(!genericHttpService.getMapping().equals("getUsersStatus")) {
                     CustomParser customParser = new CustomParser();
                     event = customParser.getEvent(genericHttpService.getResponse());
+
+                    if(event.getLatitude() != 0 || event.getLongitude() != 0) {
+                        LatLng latLng = new LatLng(event.getLatitude(),event.getLongitude());
+                        mMap.addMarker(new MarkerOptions().position(latLng));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                        latitude = latLng.latitude ;
+                        longitude = latLng.longitude;
+                    }
 
                     TextView pubEvent = findViewById(R.id.pub);
 
@@ -126,7 +135,7 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
 
                     URL url = null;
                     try {
-                        url = new URL("http://" + getResources().getString(R.string.localhost) + "/getUsersStatus");
+                        url = new URL("http://" + Constant.IP + "/getUsersStatus");
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
@@ -228,7 +237,7 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
 
                                 URL url = null;
                                 try {
-                                    url = new URL("http://" + getResources().getString(R.string.localhost) + "/changeUserStatus");
+                                    url = new URL("http://" + Constant.IP + "/changeUserStatus");
                                 } catch (MalformedURLException e) {
                                     e.printStackTrace();
                                 }
@@ -266,7 +275,7 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
                             public void onClick(View v) {
                                 URL url = null;
                                 try {
-                                    url = new URL("http://" + getResources().getString(R.string.localhost) + "/changeUserStatus");
+                                    url = new URL("http://" + Constant.IP + "/changeUserStatus");
                                 } catch (MalformedURLException e) {
                                     e.printStackTrace();
                                 }

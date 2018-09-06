@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,30 @@ import android.widget.TextView;
 public class ProfileFragment extends Fragment {
 
     private User user;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        //return inflater.inflate(R.layout.fragment_profile, container, false);
+
+        if(view != null)
+        {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if(parent != null)
+            {
+                parent.removeView(view);
+            }
+        }
+        try
+        {
+            view = inflater.inflate(R.layout.fragment_profile, container, false);
+        }
+        catch(InflateException e){
+            // map is already there, just return view as it is
+        }
+        return view;
     }
 
 
@@ -93,6 +112,7 @@ public class ProfileFragment extends Fragment {
                 bundle.putString("town",user.getTown());
                 bundle.putString("name",user.getName());
                 intent.putExtras(bundle);
+                //startActivity(intent);
                 startActivityForResult(intent,10);
             }
         });

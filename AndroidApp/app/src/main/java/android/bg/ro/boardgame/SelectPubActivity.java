@@ -5,6 +5,7 @@ import android.bg.ro.boardgame.models.Pub;
 import android.bg.ro.boardgame.services.CustomParser;
 import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +37,7 @@ public class SelectPubActivity extends AppCompatActivity implements TaskDelegate
         taskDelegate = this;
         URL url = null;
         try {
-            url = new URL("http://" + getResources().getString(R.string.localhost) + "/getPubs");
+            url = new URL("http://" + Constant.IP + "/getPubs");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

@@ -457,4 +457,23 @@ public class CustomParser {
 
         return notifications;
     }
+
+    public List<Integer> getBoardGameIds(String jsonString) {
+        List<Integer> ids = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        JSONObject json = null;
+        try {
+            json = (JSONObject) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        JSONArray array = (JSONArray) json.get("boardGamesIds");
+        Iterator iter = array.iterator();
+
+        while (iter.hasNext()) {
+            ids.add(Integer.parseInt(iter.next().toString()));
+        }
+        return ids;
+    }
 }

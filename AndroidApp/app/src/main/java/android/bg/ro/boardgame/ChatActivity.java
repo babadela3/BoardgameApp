@@ -10,6 +10,7 @@ import android.bg.ro.boardgame.services.SocketClientConnection;
 import android.bg.ro.boardgame.services.SocketSendMessage;
 import android.bg.ro.boardgame.services.TaskClient;
 import android.bg.ro.boardgame.services.TaskDelegate;
+import android.bg.ro.boardgame.utils.Constant;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -66,7 +67,7 @@ public class ChatActivity extends AppCompatActivity implements TaskClient, TaskD
 
         URL url = null;
         try {
-            url = new URL("http://" + getResources().getString(R.string.localhost) + "/allMessages");
+            url = new URL("http://" + Constant.IP + "/allMessages");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

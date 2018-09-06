@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">BoardGame</string>
-    <string name="localhost">192.168.1.101:8182</string>
+    <string name="localhost">172.20.10.3:8182</string>
     <string name="title_activity_select_address_maps">Map</string>
     <string name="title_activity_event_creator_maps">Map</string>
     <string name="title_activity_select_address_map">Map</string>
+
+    <string name="facebook_app_id">2098213140423661</string>
+    <string name="fb_login_protocol_scheme">fb2098213140423661</string>
 </resources>

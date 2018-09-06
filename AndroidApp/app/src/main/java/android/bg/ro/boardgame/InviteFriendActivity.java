@@ -4,6 +4,7 @@ import android.bg.ro.boardgame.adapters.FriendAdapter;
 import android.bg.ro.boardgame.models.Friend;
 import android.bg.ro.boardgame.services.TaskChangeStatus;
 import android.bg.ro.boardgame.services.UserStatusService;
+import android.bg.ro.boardgame.utils.Constant;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -88,7 +89,7 @@ public class InviteFriendActivity  extends AppCompatActivity implements TaskChan
                         else {
                             URL url = null;
                             try {
-                                url = new URL("http://" + getResources().getString(R.string.localhost) + "/changeUserStatus");
+                                url = new URL("http://" + Constant.IP + "/changeUserStatus");
                             } catch (MalformedURLException e) {
                                 e.printStackTrace();
                             }
