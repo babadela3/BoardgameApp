@@ -14,7 +14,12 @@ function approve(id){
                     data: JSON.stringify(reservationDTO),
                     dataType: 'json',
                     contentType: "application/json",
-                    success : function(data) {},
+                    success : function(data) {
+                        document.getElementById("approve" + id).style.display = "none";
+                        document.getElementById("reject" + id).style.display = "none";
+                        document.getElementById("message" + id).style.disabled = true;
+                        alert("The reservation has been approved");
+                     },
                     error: function(jqXHR, textStatus) {
                         document.getElementById("approve" + id).style.display = "none";
                         document.getElementById("reject" + id).style.display = "none";

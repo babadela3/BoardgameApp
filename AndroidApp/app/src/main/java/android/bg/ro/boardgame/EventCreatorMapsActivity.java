@@ -493,6 +493,10 @@ public class EventCreatorMapsActivity extends FragmentActivity implements OnMapR
 
     @Override
     public void onBackPressed() {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        intent.putExtras(bundle);
+        setResult(20, intent);
         super.onBackPressed();
     }
 

@@ -304,9 +304,43 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="bottom"
             android:ems="10"
-            android:hint="13:00 25.12.2020"
+            android:hint="25.12.2020"
             app:backgroundTint="#ffffff"
-            android:inputType="textPersonName"/>
+            android:inputType="date"/>
+
+        <TextView
+            android:id="@+id/textTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/date"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Time"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_alignStart="@+id/textName"
+            android:layout_alignRight="@+id/textName"
+            android:layout_alignEnd="@+id/textName"
+            android:layout_below="@+id/textTime"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:ems="10"
+            android:hint="13:00"
+            app:backgroundTint="#ffffff"
+            android:inputType="time"/>
 
         <TextView
             android:id="@+id/textPub"
@@ -316,7 +350,7 @@
             android:layout_alignStart="@+id/textName"
             android:layout_alignRight="@+id/textName"
             android:layout_alignEnd="@+id/textName"
-            android:layout_below="@+id/date"
+            android:layout_below="@+id/time"
             android:layout_centerHorizontal="true"
             android:layout_gravity="bottom"
             android:ems="10"

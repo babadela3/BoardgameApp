@@ -116,17 +116,18 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
                     BoardGameService boardGameService = (BoardGameService) new BoardGameService(getActivity(), parameters,taskBoardGame).execute();
                 }
                 else {
+                    if(!mapping.isEmpty()) {
+                        URL url = null;
+                        try {
+                            url = new URL("http://" + Constant.IP + mapping);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
 
-                    URL url = null;
-                    try {
-                        url = new URL("http://" + Constant.IP + mapping);
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                        List<Pair<String, String>> parameters = new ArrayList<>();
+                        parameters.add(new Pair<>("name", search.getText().toString()));
+                        genericHttpService = (GenericHttpService) new GenericHttpService(getActivity(), mapping.substring(1), parameters, taskDelegate).execute(url);
                     }
-
-                    List<Pair<String, String>> parameters = new ArrayList<>();
-                    parameters.add(new Pair<>("name", search.getText().toString()));
-                    genericHttpService = (GenericHttpService) new GenericHttpService(getActivity(), mapping.substring(1), parameters, taskDelegate).execute(url);
                 }
             }
         });

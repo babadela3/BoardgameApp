@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:text="Forgot Password?"
         android:textColor="#FFFFFF"
-        android:textSize="10dp"
+        android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="@+id/textPassword"
         app:layout_constraintTop_toBottomOf="@+id/textPassword" />
 
@@ -73,72 +73,14 @@
         android:id="@+id/buttonLogin"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/my_button_signup"
         android:text="Login"
         android:textAllCaps="false"
         android:textColor="#c64040"
         app:layout_constraintEnd_toEndOf="@+id/textPassword"
         app:layout_constraintStart_toStartOf="@+id/textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/textForgotPassword" />
-
-    <TextView
-        android:id="@+id/textConnect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:text="or connect with"
-        android:textColor="#ffffff"
-        android:textSize="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
-        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
-
-    <View
-        android:id="@+id/viewLeft"
-        android:layout_width="70dp"
-        android:layout_height="1dp"
-        android:layout_marginRight="170dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
-        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
-
-    <View
-        android:id="@+id/viewRight"
-        android:layout_width="70dp"
-        android:layout_height="1dp"
-        android:layout_marginLeft="170dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
-        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
-
-    <Button
-        android:id="@+id/buttonFacebook"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="85dp"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/my_button_facebook"
-        android:text="Facebook"
-        android:textAllCaps="false"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textConnect"
-        app:layout_constraintStart_toStartOf="@+id/textConnect"
-        app:layout_constraintTop_toBottomOf="@+id/imageLogo" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/authButton"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center_horizontal"
-        android:text="  connect_with_facebook" />
+        app:layout_constraintTop_toBottomOf="@+id/textForgotPassword"/>
 
     <ImageView
         android:id="@+id/imageLogo"
@@ -150,7 +92,7 @@
         android:layout_marginTop="110dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/buttonFacebook"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

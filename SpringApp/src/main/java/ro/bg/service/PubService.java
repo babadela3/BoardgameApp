@@ -32,4 +32,6 @@ public interface PubService {
     PubDTO getPubInfo(int id);
 
     PubPicture getPubPicture(int id);
+
+    List<BoardGame> getPubGames(int pubId);
 }

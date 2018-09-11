@@ -476,4 +476,33 @@ public class CustomParser {
         }
         return ids;
     }
+
+    public List<BoardGame> getBoardgames(String jsonString){
+        List<BoardGame> boardGames = new ArrayList<>();
+        JSONArray json = null;
+        JSONParser parser = new JSONParser();
+        try {
+            json = (JSONArray) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Iterator iter = json.iterator();
+        while (iter.hasNext()) {
+            JSONObject gameObject = null;
+            try {
+                gameObject = (JSONObject) parser.parse(iter.next().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            BoardGame boardGame = new BoardGame();
+            boardGame.setId(Integer.parseInt(gameObject.get("id").toString()));
+            boardGame.setName(gameObject.get("name").toString());
+            boardGame.setDescription(gameObject.get("description").toString());
+            boardGame.setPicture(gameObject.get("picture").toString());
+            boardGames.add(boardGame);
+        }
+
+        return boardGames;
+    }
 }

@@ -271,4 +271,10 @@ public class PubController {
         return ResponseEntity.status(HttpStatus.OK).body(pubPicture);
     }
 
+    @RequestMapping(value = "/getPubGames", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubGames(@ModelAttribute("pubId") String id){
+        List<BoardGame> boardGames = pubService.getPubGames(Integer.parseInt(id));
+        return ResponseEntity.status(HttpStatus.OK).body(boardGames);
+    }
+
 }

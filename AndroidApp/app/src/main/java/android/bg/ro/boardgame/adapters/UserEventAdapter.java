@@ -1,5 +1,6 @@
 package android.bg.ro.boardgame.adapters;
 
+import android.bg.ro.boardgame.EventActivity;
 import android.bg.ro.boardgame.EventCreatorMapsActivity;
 import android.bg.ro.boardgame.InviteFriendActivity;
 import android.bg.ro.boardgame.R;
@@ -119,6 +120,10 @@ public class UserEventAdapter extends ArrayAdapter<User> implements TaskChangeSt
 
                 vi.setTag(holder);
 
+                if(context instanceof EventActivity) {
+                    holder.rejectButton.setVisibility(View.GONE);
+                }
+
                 if(((EventCreatorMapsActivity) context).getUserId() != ((EventCreatorMapsActivity) context).getUserCreator().getId()){
                     holder.rejectButton.setVisibility(View.GONE);
                 }
@@ -202,12 +207,6 @@ public class UserEventAdapter extends ArrayAdapter<User> implements TaskChangeSt
                         paramsAccept.add(new Pair<>("option","Reject"));
 
                         userStatusService = (UserStatusService) new UserStatusService(context,"changeUserStatus", paramsAccept,taskChangeStatus).execute(url);
-
-
-                        Toast.makeText(context, "You removed " + users.get(position).getName() + ".",
-                                Toast.LENGTH_LONG).show();
-                        users.remove(position);
-                        notifyDataSetChanged();
                     }
                 });
 

@@ -68,6 +68,9 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "users",cascade = CascadeType.ALL)
     private Set<BoardGame> boardGames;
 
+    @Column(name = "token")
+    private String token;
+
     public User(String email, String password, String name, String town, AccountTypeEnum accountType, byte[] profilePicture) {
         this.email = email;
         this.password = password;
@@ -218,6 +221,14 @@ public class User {
 
     public void setBoardGames(Set<BoardGame> boardGames) {
         this.boardGames = boardGames;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

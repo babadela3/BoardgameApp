@@ -171,13 +171,6 @@ public class EventServiceImpl implements EventService {
                 eventUser.setPk(eventUserId);
                 eventUser.setStatusUserEnum(StatusUserEnum.INVITED);
                 eventUsers.add(eventUser);
-
-                Notification notification = new Notification();
-                notification.setNotificationTypeEnum(NotificationTypeEnum.INVITATION_EVENT);
-                notification.setUser(userDAO.findOne(friendAndroidDTO.getId()));
-                notification.setDate(new Date());
-                notification.setMessage("You have been invited to " + name + " by " + userDAO.findOne(userCreator.getId()).getName());
-                notificationDAO.saveAndFlush(notification);
             }
 
         }
@@ -196,6 +189,19 @@ public class EventServiceImpl implements EventService {
 
         event.setEventUserSet(new HashSet<>(eventUsers));
         eventDAO.saveAndFlush(event);
+
+        if(friends != null) {
+            for (FriendAndroidDTO friendAndroidDTO : friends) {
+                Notification notification = new Notification();
+                notification.setNotificationTypeEnum(NotificationTypeEnum.INVITATION_EVENT);
+                notification.setUser(userDAO.findOne(friendAndroidDTO.getId()));
+                notification.setDate(new Date());
+                notification.setEvent(event);
+                notification.setMessage("You have been invited to " + name + " by " + userDAO.findOne(userCreator.getId()).getName());
+                notificationDAO.saveAndFlush(notification);
+            }
+
+        }
     }
 
     @Override
@@ -367,6 +373,7 @@ public class EventServiceImpl implements EventService {
                 Event event = eventDAO.findOne(eventId);
                 notification.setUser(event.getUserCreator());
                 notification.setDate(new Date());
+                notification.setEvent(event);
                 notification.setMessage(userDAO.findOne(userId).getName() + " has accepted the invitation for " + event.getTitle());
                 notificationDAO.saveAndFlush(notification);
 
@@ -379,18 +386,32 @@ public class EventServiceImpl implements EventService {
             case "Invite" :
                 freeSeats = eventDAO.getFreeSeats(eventId);
                 if(freeSeats > 0) {
-                    jdbcTemplate.update(
-                            "insert into event_users values (?,?,?)",
-                            eventId, userId, StatusUserEnum.INVITED.toString());
+                    if(eventDAO.getUserStatus(eventId,userId) == null) {
+                        jdbcTemplate.update(
+                                "insert into event_users values (?,?,?)",
+                                eventId, userId, StatusUserEnum.INVITED.toString());
+                    }
+                    else {
+                        jdbcTemplate.update(
+                                "insert into event_users values (?,?,?)",
+                                eventId, userId, StatusUserEnum.INVITED.toString());
+                    }
                     return "Invite Successfully";
                 }
                 return "Invite Fail";
             case "Join" :
                 freeSeats = eventDAO.getFreeSeats(eventId);
                 if(freeSeats > 0) {
-                    jdbcTemplate.update(
-                            "insert into event_users values (?,?,?)",
-                            eventId, userId, StatusUserEnum.WAITING.toString());
+                    if(eventDAO.getUserStatus(eventId,userId) == null) {
+                        jdbcTemplate.update(
+                                "insert into event_users values (?,?,?)",
+                                eventId, userId, StatusUserEnum.WAITING.toString());
+                    }
+                    else {
+                        jdbcTemplate.update(
+                                "update event_users set status = ? where pk_event_id = ? and pk_user_id = ?",
+                                StatusUserEnum.WAITING.toString(), eventId,userId);
+                    }
                     return "Join Successfully";
                 }
                 return "Join Fail";

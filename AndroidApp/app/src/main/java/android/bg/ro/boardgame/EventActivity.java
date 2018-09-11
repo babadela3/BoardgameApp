@@ -53,6 +53,7 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
     private double longitude;
     private String title;
     private int userId;
+    private int creatorId;
     private ArrayList<User> userParticipants;
     private ArrayList<User> userInvited;
     private ArrayList<User> userRequests;
@@ -144,7 +145,7 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
                     params.add(new Pair<>("eventId", String.valueOf(event.getId())));
 
                     genericHttpService = (GenericHttpService) new GenericHttpService(this, "getUsersStatus", params, taskDelegate).execute(url);
-
+                    creatorId = event.getUserCreator().getId();
 
                     if (!event.getPicture().equals("null")) {
                         ImageLoader imageLoader = new ImageLoader(this);
@@ -377,5 +378,13 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions().position(bucharest).title(title));
         mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( bucharest, 15.0f) );
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getCreatorId() {
+        return creatorId;
     }
 }

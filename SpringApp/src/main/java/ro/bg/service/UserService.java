@@ -43,4 +43,6 @@ public interface UserService {
     void updateUser(User user);
 
     List<NotificationDTO> getAllNotifications(int id);
+
+    void resetPassword(String email, String token, String password) throws BoardGameServiceException;
 }

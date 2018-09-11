@@ -98,6 +98,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    @RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
+    public ResponseEntity<Object> resetPassword(@ModelAttribute("email") String email,
+                                                @ModelAttribute("token") String token,
+                                                @ModelAttribute("password") String password) {
+        try {
+            userService.resetPassword(email,token,password);
+        } catch (BoardGameServiceException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
     @RequestMapping(value = "/user/getProfileImage", method = RequestMethod.POST)
     public ResponseEntity<Object> getProfileImage(@ModelAttribute("email") String email) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getProfileImage(email));

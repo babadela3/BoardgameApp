@@ -73,7 +73,8 @@ public class BoardGameActivity extends AppCompatActivity implements TaskBoardGam
             }
 
             List<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
-            parameters.add(new Pair<>("id", String.valueOf(gameId).toString()));
+            parameters.add(new Pair<>("gameId", String.valueOf(gameId)));
+            parameters.add(new Pair<>("userId", String.valueOf(userId)));
             genericHttpService = (GenericHttpService) new GenericHttpService(activity,"hasGame", parameters,taskDelegate).execute(url);
 
             List<Pair<String, String>> params = new ArrayList<>();

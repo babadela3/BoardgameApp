@@ -77,6 +77,7 @@ public class CreateEventFragment extends Fragment implements TaskDelegate{
         selectedAddress = (TextView) getView().findViewById(R.id.selectedAddress);
 
         EditText date = (EditText) getView().findViewById(R.id.date);
+        EditText time = (EditText) getView().findViewById(R.id.time);
 
         Button pubButton = (Button) getView().findViewById(R.id.pubButton);
         Button addressButton = (Button) getView().findViewById(R.id.addressButton);
@@ -125,7 +126,7 @@ public class CreateEventFragment extends Fragment implements TaskDelegate{
                 Intent intent = new Intent("android.bg.ro.boardgame.AddBoardGamesActivity");
                 Bundle bundle = new Bundle();
                 ArrayList<BoardGame> boardGames = new ArrayList<>(user.getBoardGames());
-                bundle.putSerializable("boardGames",boardGames);
+                bundle.putInt("userId",user.getId());
                 intent.putExtras(bundle);
 
                 startActivityForResult(intent,10);
@@ -194,9 +195,10 @@ public class CreateEventFragment extends Fragment implements TaskDelegate{
                 }
                 DateFormat format = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.ENGLISH);
                 String editDate = ((EditText) getView().findViewById(R.id.date)).getText().toString();
+                String editTime = ((EditText) getView().findViewById(R.id.time)).getText().toString();
                 Date date = null;
                 try {
-                    date = format.parse(editDate);
+                    date = format.parse(editTime + " " + editDate);
                 } catch (ParseException e) {
                     isOk = false;
                     Toast.makeText(getActivity(), "Please respect date format.",
@@ -234,7 +236,7 @@ public class CreateEventFragment extends Fragment implements TaskDelegate{
                     params.add(new Pair<>("numberPlayers",numberPlayers));
                     params.add(new Pair<>("friends",friends));
                     params.add(new Pair<>("games",games));
-                    params.add(new Pair<>("date",editDate));
+                    params.add(new Pair<>("date",editTime + " " + editDate));
                     params.add(new Pair<>("pubId",pubId));
                     params.add(new Pair<>("address",editAddrss));
                     params.add(new Pair<>("latitude",editLatitude));

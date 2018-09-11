@@ -83,12 +83,15 @@ public class BoardGameController {
     }
 
     @RequestMapping(value = "/hasGame", method = RequestMethod.POST)
-    public ResponseEntity<Object> hasGame(@ModelAttribute("id") String id){
-        BoardGame boardGame = boardGameService.findById(Integer.parseInt(id));
-        if(boardGame == null){
+    public ResponseEntity<Object> hasGame(@ModelAttribute("gameId") String gameId,
+                                          @ModelAttribute("userId") String userId){
+        BoardGameDTO boardGameDTO = boardGameService.getGamesByUserId(Integer.parseInt(userId));
+        if(boardGameDTO.getBoardGamesIds().contains(Integer.valueOf(gameId))) {
+            return ResponseEntity.status(HttpStatus.OK).body("Yes");
+        }
+        else {
             return ResponseEntity.status(HttpStatus.OK).body("No");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Yes");
     }
 
     @RequestMapping(value = "/modifyGame", method = RequestMethod.POST)

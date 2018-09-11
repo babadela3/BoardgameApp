@@ -43,9 +43,10 @@ public class ReservationServiceImpl implements ReservationService{
         List<UserParticipantDTO> users = eventService.getUsers(oldReservation.getEvent().getId());
         for(UserParticipantDTO user : users) {
             Notification notification = new Notification();
-            notification.setNotificationTypeEnum(NotificationTypeEnum.REQUEST_EVENT_ACCEPTED);
+            notification.setNotificationTypeEnum(NotificationTypeEnum.RESERVATION_ACCEPTED);
             notification.setUser(userDAO.findOne(user.getUserId()));
             notification.setDate(new Date());
+            notification.setEvent(oldReservation.getEvent());
             notification.setMessage(pub.getName() + " has accepted the reservation for " + oldReservation.getEvent().getTitle());
             notificationDAO.saveAndFlush(notification);
         }

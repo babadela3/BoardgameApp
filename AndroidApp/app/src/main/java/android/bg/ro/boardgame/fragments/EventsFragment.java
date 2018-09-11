@@ -20,8 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,6 +31,7 @@ public class EventsFragment extends Fragment implements TaskDelegate{
     private GenericHttpService genericHttpService;
     private List<Event> events;
     private ListView listView;
+    private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +44,7 @@ public class EventsFragment extends Fragment implements TaskDelegate{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         final MenuActivity activity = (MenuActivity) getActivity();
-        User user = activity.getUser();
+        user = activity.getUser();
         taskDelegate = this;
 
         URL url = null;
@@ -99,10 +98,32 @@ public class EventsFragment extends Fragment implements TaskDelegate{
                         Intent intent = new Intent("android.bg.ro.boardgame.EventCreatorMapsActivity");
                         intent.putExtras(b);
 
-                        startActivity(intent);
+                        startActivityForResult(intent,10);
 
                     }
                 });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10) {
+            if (resultCode == 20) {
+                listView.setAdapter(null);
+                URL url = null;
+                try {
+                    url = new URL("http://" + Constant.IP + "/getUserEvents");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+
+                List<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
+                parameters.add(new Pair<>("userId",String.valueOf(user.getId())));
+
+                listView = (ListView) getView().findViewById(R.id.listview);
+                genericHttpService = (GenericHttpService) new GenericHttpService(getActivity(),"getUserEvents", parameters,taskDelegate).execute(url);
+            }
         }
     }
 }

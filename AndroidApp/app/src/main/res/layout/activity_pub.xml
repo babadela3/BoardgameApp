@@ -120,21 +120,15 @@
             android:id="@+id/textLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textTitle"
-            android:layout_alignStart="@+id/textTitle"
-            android:layout_alignRight="@+id/textTitle"
-            android:layout_alignEnd="@+id/textTitle"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/address"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="bottom"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:singleLine="false"
-            android:minLines="1"
-            android:layout_marginTop="20dp"
-            android:textSize="18dp"
+            android:layout_marginTop="30dp"
             android:text="Location"
-            android:textColor="#ffffff"/>
+            android:textColor="#ffffff"
+            android:textSize="18dp"/>
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -180,7 +174,7 @@
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/textGallery"
+            android:id="@+id/textGames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -188,6 +182,38 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/description"
+            android:layout_marginTop="30dp"
+            android:text="Board games"
+            android:textColor="#ffffff"
+            android:textSize="18dp"/>
+
+        <LinearLayout
+            android:id="@+id/listGames"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/textGames"
+            android:layout_marginTop="5dp">
+
+            <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/gridview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:verticalSpacing="0dp"
+                android:horizontalSpacing="0dp"
+                android:stretchMode="columnWidth"
+                android:numColumns="3"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/listGames"
             android:layout_marginTop="30dp"
             android:text="Gallery"
             android:textColor="#ffffff"

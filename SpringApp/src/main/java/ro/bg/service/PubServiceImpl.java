@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ro.bg.dao.BoardGameDAO;
 import ro.bg.dao.PubDAO;
 import ro.bg.dao.PubPictureDAO;
 import ro.bg.exception.BoardGameServiceException;
@@ -31,6 +32,9 @@ public class PubServiceImpl implements PubService{
 
     @Autowired
     PubDAO pubDAO;
+
+    @Autowired
+    BoardGameDAO boardGameDAO;
 
     @Autowired
     PubPictureDAO pubPictureDAO;
@@ -179,6 +183,18 @@ public class PubServiceImpl implements PubService{
         PubPicture pubPicture = pubPictureDAO.findOne(id);
         pubPicture.setPub(null);
         return pubPicture;
+    }
+
+    @Override
+    public List<BoardGame> getPubGames(int pubId) {
+        List<BoardGame> boardGames = boardGameDAO.getAllById(pubId);
+        for(BoardGame boardGame : boardGames) {
+            boardGame.setEvents(null);
+            boardGame.setUsers(null);
+            boardGame.setPubs(null);
+            boardGame.setGameReservations(null);
+        }
+        return boardGames;
     }
 
 }

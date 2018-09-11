@@ -3,6 +3,7 @@ package ro.bg.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,10 +13,8 @@ import ro.bg.exception.BoardGameServiceException;
 import ro.bg.exception.ExceptionMessage;
 import ro.bg.model.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+
 import org.apache.commons.validator.routines.EmailValidator;
 import ro.bg.model.constants.NotificationTypeEnum;
 import ro.bg.model.dto.NotificationDTO;
@@ -189,12 +188,18 @@ public class UserServiceImpl implements UserService{
     public void sendPassword(String mail) throws BoardGameServiceException {
         User user = userDAO.findByEmail(mail);
         if(user != null){
+            UUID uuid = UUID.randomUUID();
+            user.setToken(uuid.toString());
+            userDAO.save(user);
+
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(mail);
             message.setFrom("bgboardgame@gmail.com");
-            message.setSubject("BoardGameAndroidDTO Password");
-            message.setText("Hi,\n\nWe got a request to send your BoardGameAndroidDTO password.\n\nYour password is: " + user.getPassword() +
-                    " .\n\nIf you ignore this message, your password will not be change.");
+            message.setSubject("Reset Password");
+            message.setText("Hi,\n\nWe got a request to reset your password\n\nYou receive a token which will help you to insert a new password." +
+                    " Your token is: " + uuid.toString() + "\n\nIf you want to change the password, " +
+                    "go to login page, click on Forgot Password?. Then click on Insert Token. After you do that complete the blank " +
+                    "spaces.\n\nIf you ignore this message, your password will not be change.");
             javaMailSender.send(message);
         }
         else{
@@ -319,10 +324,12 @@ public class UserServiceImpl implements UserService{
             notificationDTO.setNotificationTypeEnum(notification.getNotificationTypeEnum().toString());
             notificationDTO.setDate(notification.getDate().toString());
             if(notificationDTO.getNotificationTypeEnum().equals("INVITATION_EVENT")){
-                System.out.println(notificationDTO.getMessage());
+                notificationDTO.setEventId(notification.getEvent().getId());
+            }
+            if(notificationDTO.getNotificationTypeEnum().equals("RESERVATION_ACCEPTED")){
+                notificationDTO.setEventId(notification.getEvent().getId());
             }
             if(notificationDTO.getNotificationTypeEnum().equals("REQUEST_FRIENDSHIP")){
-                System.out.println(notificationDTO.getMessage());
             }
             if(notificationDTO.getNotificationTypeEnum().equals("REQUEST_FRIENDSHIP_ACCEPTED")){
                 int endIndex = notificationDTO.getMessage().indexOf("has accepted your friend request");
@@ -333,22 +340,30 @@ public class UserServiceImpl implements UserService{
                 }
             }
             if(notificationDTO.getNotificationTypeEnum().equals("REQUEST_EVENT_ACCEPTED")){
-                int startIndex = notificationDTO.getMessage().indexOf("reservation for ");
-                int endIndex = notificationDTO.getMessage().indexOf(" ", startIndex);
-                if (endIndex == -1) {
-                    endIndex = notificationDTO.getMessage().length();
-                }
-                String link = notificationDTO.getMessage().substring(endIndex + 5);
-                List<Event> events = eventDAO.findByTitleContaining(link);
-                if(events.size() != 0){
-                    notificationDTO.setEventId(events.get(0).getId());
-                }
+                notificationDTO.setEventId(notification.getEvent().getId());
             }
             if(notificationDTO.getNotificationTypeEnum().equals("REQUEST_EVENT_PARTICIPATION")){
-                System.out.println(notificationDTO.getMessage());
+                notificationDTO.setEventId(notification.getEvent().getId());
             }
             notificationDTOs.add(notificationDTO);
         }
         return notificationDTOs;
+    }
+
+    @Override
+    public void resetPassword(String email, String token, String password) throws BoardGameServiceException {
+        User user = userDAO.findByEmail(email);
+        if(user != null){
+            if(token.equals(user.getToken())) {
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                user.setPassword(passwordEncoder.encode(password));
+            }
+            else {
+                throw new BoardGameServiceException(ExceptionMessage.INVALID_TOKEN);
+            }
+        }
+        else{
+            throw new BoardGameServiceException(ExceptionMessage.EMAIL_NOT_EXISTING);
+        }
     }
 }
