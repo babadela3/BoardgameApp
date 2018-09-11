@@ -12,6 +12,6 @@ import java.util.List;
 public interface MessageDAO extends JpaRepository<Message,Integer>{
     @Query(value = "select * from messages\n" +
             "where fk_friendship_id = :friendshipId " +
-            "order by data desc;",nativeQuery = true)
+            "order by data asc;",nativeQuery = true)
     List<Message> getMessages(@Param("friendshipId") int friendshipId);
 }

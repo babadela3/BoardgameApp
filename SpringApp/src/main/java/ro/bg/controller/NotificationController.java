@@ -23,12 +23,5 @@ public class NotificationController {
         return "";
     }
 
-    @RequestMapping(value = "/allNotifications", method = RequestMethod.POST)
-    public String getNotifications(@RequestBody User user) {
-        List<Notification> notificationList = notificationService.getAllNotifications(user);
-        for(Notification notification : notificationList){
-            System.out.println(notification);
-        }
-        return "";
-    }
+
 }

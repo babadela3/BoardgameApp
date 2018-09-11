@@ -3,7 +3,7 @@
 <head>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/editStyles.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/edit.css"/>
     <script src="/js/edit.js"></script>
 </head>
 <body>
@@ -45,17 +45,6 @@
     <div id="divProfileInfo">
         <div id="divProfileName">
             <label id="profileName" th:text="${pub.getName()}"/>
-        </div>
-        <div id="divProfileDetails">
-            <div id="divProfilePhotos">
-                <label id="profilePhotos">63 photos</label>
-            </div>
-            <div id="divProfileAlbums">
-                <label id="profileAlbums">23 reservations</label>
-            </div>
-            <div id="divProfileComments">
-                <label id="profileComments">102 events</label>
-            </div>
         </div>
         <div id="divProfileEmail">
             <label id="profileEmail" th:text="${pub.getEmail()}"/>
@@ -176,6 +165,7 @@
             <div id="divSearchGameText">
                 <input type="text" id="searchGameText" placeholder="ex: Activity" onkeypress="keyPressListener(event)"/>
             </div>
+            <div class="loader" id="loader"></div>
                 <div id="divTable">
                     <div id="divTableRemove">
                         <table id="tableAddBoardGame">

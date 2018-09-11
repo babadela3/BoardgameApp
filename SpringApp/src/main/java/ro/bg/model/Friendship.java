@@ -23,6 +23,14 @@ public class Friendship {
     @OneToMany(mappedBy = "friendship",cascade = CascadeType.ALL)
     private Set<Message> messages;
 
+    public Friendship() {
+    }
+
+    public Friendship(User friendOne, User friendTwo) {
+        this.friendOne = friendOne;
+        this.friendTwo = friendTwo;
+    }
+
     public int getId() {
         return id;
     }
@@ -53,5 +61,15 @@ public class Friendship {
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    @Override
+    public String toString() {
+        return "Friendship{" +
+                "id=" + id +
+                ", friendOne=" + friendOne +
+                ", friendTwo=" + friendTwo +
+                ", messages=" + messages +
+                '}';
     }
 }

@@ -8,10 +8,13 @@ import co.yellowbricks.bggclient.search.SearchException;
 import co.yellowbricks.bggclient.search.domain.SearchItem;
 import co.yellowbricks.bggclient.search.domain.SearchOutput;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ro.bg.model.BoardGame;
 import ro.bg.model.Pub;
+import ro.bg.model.dto.BoardGameDTO;
 import ro.bg.service.BoardGameService;
 import ro.bg.service.PubService;
 
@@ -77,5 +80,49 @@ public class BoardGameController {
     public void showImage(@RequestParam("id") int id, HttpServletResponse response, HttpServletRequest request)
             throws ServletException {
 
+    }
+
+    @RequestMapping(value = "/hasGame", method = RequestMethod.POST)
+    public ResponseEntity<Object> hasGame(@ModelAttribute("gameId") String gameId,
+                                          @ModelAttribute("userId") String userId){
+        BoardGameDTO boardGameDTO = boardGameService.getGamesByUserId(Integer.parseInt(userId));
+        if(boardGameDTO.getBoardGamesIds().contains(Integer.valueOf(gameId))) {
+            return ResponseEntity.status(HttpStatus.OK).body("Yes");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.OK).body("No");
+        }
+    }
+
+    @RequestMapping(value = "/modifyGame", method = RequestMethod.POST)
+    public ResponseEntity<Object> hasGame(@ModelAttribute("idGame") String idGame,
+                                          @ModelAttribute("idUser") String idUser,
+                                          @ModelAttribute("option") String option){
+
+        if(option.equals("Add")){
+            try {
+                boardGameService.addGame(Integer.parseInt(idGame),Integer.parseInt(idUser));
+
+            } catch (FetchException e) {
+                e.printStackTrace();
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("Add");
+        }
+        if(option.equals("Delete")){
+            try {
+                boardGameService.deleteGame(Integer.parseInt(idGame),Integer.parseInt(idUser));
+            } catch (FetchException e) {
+                e.printStackTrace();
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("Delete");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @RequestMapping(value = "/getUserGames", method = RequestMethod.POST)
+    public ResponseEntity<Object> getGamesByUser(@ModelAttribute("userId") String userId) {
+        BoardGameDTO boardGameDTOs = boardGameService.getGamesByUserId(Integer.parseInt(userId));
+        return ResponseEntity.status(HttpStatus.OK).body(boardGameDTOs);
     }
 }

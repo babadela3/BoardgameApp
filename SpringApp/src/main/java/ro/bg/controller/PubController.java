@@ -3,6 +3,7 @@ package ro.bg.controller;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,22 +11,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ro.bg.exception.BoardGameServiceException;
-import ro.bg.model.Account;
-import ro.bg.model.BoardGame;
-import ro.bg.model.Pub;
-import ro.bg.model.PubPicture;
+import ro.bg.exception.ExceptionMessage;
+import ro.bg.model.*;
+import ro.bg.model.dto.PubDTO;
 import ro.bg.service.BoardGameService;
 import ro.bg.service.PubPictureService;
 import ro.bg.service.PubService;
+import ro.bg.service.ReservationService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@SessionAttributes("pubEmail")
 public class PubController {
 
     @Autowired
@@ -36,6 +39,9 @@ public class PubController {
 
     @Autowired
     BoardGameService boardGameService;
+
+    @Autowired
+    ReservationService reservationService;
 
     @RequestMapping(value = "/")
     public String login() {
@@ -61,37 +67,86 @@ public class PubController {
     @RequestMapping(value = "/getPub", method = RequestMethod.POST)
     public String getPub(@ModelAttribute("username") String username,
                          @ModelAttribute("password") String password,
-                         RedirectAttributes rm) throws BoardGameServiceException, UnsupportedEncodingException {
-        Pub pub = pubService.getPub(new Account(username, password));
-        rm.addFlashAttribute("pub", pub);
+                         RedirectAttributes rm,
+                         Model model) throws UnsupportedEncodingException {
+        Pub pub = null;
+        try {
+            pub = pubService.getPub(new Account(username, password));
+        } catch (BoardGameServiceException e) {
+            model.addAttribute("errorMessage",e.getMessage());
+            return "login";
+        }
+        rm.addFlashAttribute("pubEmail",pub.getEmail());
+        return "redirect:/profile";
+    }
+
+    @RequestMapping(value = "/createPub", method = RequestMethod.POST)
+    public String createAccount(@ModelAttribute("username") String username,
+                                @ModelAttribute("password") String password,
+                                @ModelAttribute("name") String name,
+                                @ModelAttribute("address") String address,
+                                Model model) {
+        Pub pub = new Pub();
+        pub.setEmail(username);
+        pub.setPassword(password);
+        pub.setName(name);
+        pub.setAddress(address);
+        pub.setPicture(null);
+        pub.setDescription("");
+        try {
+            pubService.createPub(pub);
+        } catch (BoardGameServiceException e) {
+            model.addAttribute("errorMessage",e.getMessage());
+            return "login";
+        }
+        return "login";
+    }
+
+    @RequestMapping(value = "/changePasswordPub", method = RequestMethod.POST)
+    public String changePasswordPub(@ModelAttribute("email") String email,
+                                    @ModelAttribute("password") String password,
+                                    @ModelAttribute("token") String token,
+                                    Model model) {
+        Pub pub = pubService.getPubByEmail(email);
+        if(pub == null) {
+            try {
+                throw new BoardGameServiceException(ExceptionMessage.EMAIL_NOT_EXISTING);
+            } catch (BoardGameServiceException e) {
+                model.addAttribute("errorMessage",e.getMessage());
+                return "login";
+            }
+        }
+        pub.setPassword(password);
+        try {
+            if(pub.getToken().equals(token)) {
+                pubService.changePassword(pub);
+            }
+            else {
+                throw new BoardGameServiceException(ExceptionMessage.INVALID_TOKEN);
+            }
+        } catch (BoardGameServiceException e) {
+            model.addAttribute("errorMessage",e.getMessage());
+            return "login";
+        }
+        return "login";
+    }
+
+
+    @RequestMapping(value = "/profile")
+    public String getStore(@ModelAttribute("pubEmail") String email,
+                           Model model) {
+        Pub pub = pubService.getPubByEmail(email);
+        model.addAttribute("pub", pub);
         Gson gson = new Gson();
         String personString = gson.toJson(pub);
         List<PubPicture> pubPictureList = pubPictureService.getPictures(pub.getId());
         List<BoardGame> boardGames = boardGameService.getAllById(pub.getId());
-        rm.addFlashAttribute("pubString", personString);
-        rm.addFlashAttribute("pictures", pubPictureList);
-        rm.addFlashAttribute("boardgames",boardGames);
-        return "redirect:/profile";
-    }
-
-
-        @RequestMapping(value = "/profile")
-    public String getStore(Model model) {
+        model.addAttribute("pubString", personString);
+        model.addAttribute("pictures", pubPictureList);
+        model.addAttribute("boardgames",boardGames);
         return "profile";
     }
 
-
-    @RequestMapping(value = "/createPub", method = RequestMethod.POST)
-    public String createAccount(@RequestBody Pub pub) {
-        pubService.createPub(pub);
-        return "resetPassword";
-    }
-
-    @RequestMapping(value = "/changePasswordPub", method = RequestMethod.POST)
-    public String changePassword(@RequestBody Pub pub) {
-        pubService.changePassword(pub);
-        return "";
-    }
 
     @RequestMapping(value = "/deletePub", method = RequestMethod.POST)
     public String deleteAccount(@RequestBody Pub pub) {
@@ -161,12 +216,65 @@ public class PubController {
     @RequestMapping(value = "/notifications", method = RequestMethod.GET)
     public String reservations(@ModelAttribute("email") String email, RedirectAttributes rm) {
         Pub pub = pubService.getPubByEmail(email);
-        rm.addFlashAttribute("pub", pub);
+        rm.addFlashAttribute("pubEmail",pub.getEmail());
         return "redirect:/reservations";
     }
 
     @RequestMapping(value = "/reservations", method = RequestMethod.GET)
-    public String reservationsPage() {
+    public String reservationsPage(@ModelAttribute("pubEmail") String pubEmail,
+                                   Model model) {
+        Pub pub = pubService.getPubByEmail(pubEmail);
+        List<Event> events = reservationService.getWaitingEvents(pub.getId());
+        List<Event> eventList = reservationService.getAcceptedEvents(pub.getId());
+        List<String> games = new ArrayList<>();
+        for(Event event : events) {
+            String game = "";
+            List<BoardGame> boardGames = new ArrayList<>();
+            boardGames.addAll(event.getBoardGames());
+            for(int i = 0; i < boardGames.size(); i++) {
+                if(i == 0) {
+                    game = boardGames.get(i).getName();
+                }
+                else {
+                    game = game + ", " + boardGames.get(i).getName();
+                }
+            }
+            games.add(game);
+        }
+        model.addAttribute("pub", pub);
+        model.addAttribute("events", events);
+        model.addAttribute("reservations",eventList);
+        model.addAttribute("games", events);
         return "reservations";
     }
+
+    @RequestMapping(value = "/getPubs", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubs() {
+        return ResponseEntity.status(HttpStatus.OK).body(pubService.getPubs());
+    }
+
+    @RequestMapping(value = "/getPubsByName", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubsByName(@ModelAttribute("name") String name){
+        List<Pub> pubs = pubService.getPubsByName(name);
+        return ResponseEntity.status(HttpStatus.OK).body(pubs);
+    }
+
+    @RequestMapping(value = "/getPubInfo", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubInfo(@ModelAttribute("id") String id){
+        PubDTO pub = pubService.getPubInfo(Integer.parseInt(id));
+        return ResponseEntity.status(HttpStatus.OK).body(pub);
+    }
+
+    @RequestMapping(value = "/getPubPicture", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubPicture(@ModelAttribute("id") String id){
+        PubPicture pubPicture = pubService.getPubPicture(Integer.parseInt(id));
+        return ResponseEntity.status(HttpStatus.OK).body(pubPicture);
+    }
+
+    @RequestMapping(value = "/getPubGames", method = RequestMethod.POST)
+    public ResponseEntity<Object> getPubGames(@ModelAttribute("pubId") String id){
+        List<BoardGame> boardGames = pubService.getPubGames(Integer.parseInt(id));
+        return ResponseEntity.status(HttpStatus.OK).body(boardGames);
+    }
+
 }

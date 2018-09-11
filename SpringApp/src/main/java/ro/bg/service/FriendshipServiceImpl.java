@@ -67,4 +67,9 @@ public class FriendshipServiceImpl implements FriendshipService {
             }
         }
     }
+
+    @Override
+    public Friendship getFriendShip(int friendOne, int friendTwo) {
+        return friendshipDAO.getFriendship(friendOne,friendTwo);
+    }
 }

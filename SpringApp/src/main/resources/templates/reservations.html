@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/reservation.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/reservationStyle.css"/>
+    <script src="/js/reservationEvents.js"></script>
 </head>
 <body>
     <div id="divBarMenu">
@@ -37,129 +38,73 @@
     </div>
     <div id="divMenu">
         <div id="divLeft">
-            <div class="reservation">
-                <div id="divUser">
-                    <div class="profilePicture">
-                        <img th:src="'/profilePhoto?email=' + ${pub.getEmail()}" class="roundedcorners"/>
-                    </div>
-                    <div class="profileInfo">
-                        <div class="userprofile">
-                            <label th:text="${pub.getName()}"/>
+
+
+            <tr th:each="event : ${events}">
+                <div class="reservation">
+                    <div class="divUser">
+                        <div class="profilePicture">
+                            <img th:src="'/profilePhotoUser?id=' + ${event.getUserCreator().getId()}" class="roundedcorners"/>
                         </div>
-                        <div class="userprofile">
-                            <label th:text="${pub.getEmail()}"/>
+                        <div class="profileInfo">
+                            <div class="userprofile">
+                                <label th:text="${event.getUserCreator().getName()}"/>
+                            </div>
+                            <div class="userprofile">
+                                <label th:text="${event.getUserCreator().getEmail()}"/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="divPictureEvent">
-                    <img src="/images/boardgames.jpg" />
-                </div>
-                <div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Event</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">Shadow Event #13</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Description</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">Descriere</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Players</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">4</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Board games</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">Activity, Resistance, Camel Up</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Date</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">18:22 &nbsp;&nbsp;&nbsp; 09.04.2018</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Mesaj</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <textarea class="textInfo" rows="20" cols="30"/>
+                    <div class="divPictureEvent">
+                        <img src="/images/boardgames.jpg" />
                     </div>
                     <div>
-                        <input class="button" type="button" value="Approve"/>
-                        <input class="button" type="button" value="Reject"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="reservation">
-                <div id="divUser">
-                    <div class="profilePicture">
-                        <img th:src="'/profilePhoto?email=' + ${pub.getEmail()}" class="roundedcorners"/>
-                    </div>
-                    <div class="profileInfo">
-                        <div class="userprofile">
-                            <label th:text="${pub.getName()}"/>
+                        <div class="divLabelInfo">
+                            <label class="labelInfo">Event</label>
                         </div>
-                        <div class="userprofile">
-                            <label th:text="${pub.getEmail()}"/>
+                        <div class="divTextInfo">
+                            <label class="textInfo" th:text="${event.getTitle()}"/>
+                        </div>
+                        <div class="divLabelInfo">
+                            <label class="labelInfo">Description</label>
+                        </div>
+                        <div class="divTextInfo">
+                            <label class="textInfo" th:text="${event.getDescription()}"/>
+                        </div>
+                        <div class="divLabelInfo">
+                            <label class="labelInfo">Players</label>
+                        </div>
+                        <div class="divTextInfo">
+                            <label class="textInfo" th:text="${event.getUsers().size()} + 1"/>
+                        </div>
+                        <div class="divLabelInfo">
+                            <label class="labelInfo">Board games</label>
+                        </div>
+                        <div class="divTextInfo">
+                            <tr th:each="game : ${event.getBoardGames()}">
+                                <label class="textInfo" th:text="${game.getName()}"/>
+                                <label class="textInfo">,</label>
+                            </tr>
+                        </div>
+                        <div class="divLabelInfo">
+                            <label class="labelInfo">Date</label>
+                        </div>
+                        <div class="divTextInfo">
+                            <label class="textInfo" th:text="${event.getDate().toString()}"/>
+                        </div>
+                        <div class="divLabelInfo">
+                            <label class="labelInfo">Mesaj</label>
+                        </div>
+                        <div class="divTextInfo">
+                            <textarea th:id="'message' + ${event.getId()}" class="textInfo" rows="20" cols="30"/>
+                        </div>
+                        <div>
+                            <input class="button" th:id="'approve' + ${event.getId()}" type="button" th:onclick="'approve(' + ${event.getId()} + ')'" value="Approve"/>
+                            <input class="button" th:id="'reject' + ${event.getId()}" type="button" th:onclick="'reject(' + ${event.getId()} + ')'" value="Reject"/>
                         </div>
                     </div>
                 </div>
-                <div class="divPictureEvent">
-                    <img src="/images/boardgames.jpg" />
-                </div>
-                <div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Event</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">Shadow Event #13</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Description</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">Descriere</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Players</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">4</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Board games</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">Activity, Resistance, Camel Up</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Date</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <label class="textInfo">18:22 &nbsp;&nbsp;&nbsp; 09.04.2018</label>
-                    </div>
-                    <div class="divLabelInfo">
-                        <label class="labelInfo">Mesaj</label>
-                    </div>
-                    <div class="divTextInfo">
-                        <textarea class="textInfo" rows="20" cols="30"/>
-                    </div>
-                    <div>
-                        <input class="button" type="button" value="Approve"/>
-                        <input class="button" type="button" value="Reject"/>
-                    </div>
-                </div>
-            </div>
-
-
+            </tr>
         </div>
 
         <div id="divRight">
@@ -177,71 +122,21 @@
                     </div>
             </div>
             <div id="divApprovedReservations">
-                <div class="approvedReservation">
-                    <div class="divProfilePicture">
-                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
-                    </div>
-                    <div class="divProfileInfo">
-                        <div class="profileLeft" >
-                            <label>Matei Cornel + 3</label>
+                <tr th:each="reservation : ${reservations}">
+                    <div class="approvedReservation">
+                        <div class="divProfilePicture">
+                            <img src="/images/boardgames.jpg" class="roundedcorners"/>
                         </div>
-                        <div class="profileLeft" >
-                            <label>19:00 &nbsp;&nbsp;  09.04.2018</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="approvedReservation">
-                    <div class="divProfilePicture">
-                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
-                    </div>
-                    <div class="divProfileInfo">
-                        <div class="profileLeft" >
-                            <label>Matei Cornel + 3</label>
-                        </div>
-                        <div class="profileLeft" >
-                            <label>19:00 &nbsp;&nbsp;  09.04.2018</label>
+                        <div class="divProfileInfo">
+                            <div class="profileLeft" >
+                                <label th:text="${reservation.getUserCreator().getName()} + ' + ' + ${reservation.getUsers().size()}"/>
+                            </div>
+                            <div class="profileLeft" >
+                                <label th:text="${reservation.getDate().toString()}"/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="approvedReservation">
-                    <div class="divProfilePicture">
-                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
-                    </div>
-                    <div class="divProfileInfo">
-                        <div class="profileLeft" >
-                            <label>Matei Cornel + 3</label>
-                        </div>
-                        <div class="profileLeft" >
-                            <label>19:00 &nbsp;&nbsp;  09.04.2018</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="approvedReservation">
-                    <div class="divProfilePicture">
-                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
-                    </div>
-                    <div class="divProfileInfo">
-                        <div class="profileLeft" >
-                            <label>Matei Cornel + 3</label>
-                        </div>
-                        <div class="profileLeft" >
-                            <label>19:00 &nbsp;&nbsp;  09.04.2018</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="approvedReservation">
-                    <div class="divProfilePicture">
-                        <img src="/images/boardgames.jpg" class="roundedcorners"/>
-                    </div>
-                    <div class="divProfileInfo">
-                        <div class="profileLeft" >
-                            <label>Matei Cornel + 3</label>
-                        </div>
-                        <div class="profileLeft" >
-                            <label>19:00 &nbsp;&nbsp; 09.04.2018</label>
-                        </div>
-                    </div>
-                </div>
+                </tr>
             </div>
         </div>
     </div>

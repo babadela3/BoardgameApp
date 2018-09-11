@@ -5,12 +5,19 @@ import co.yellowbricks.bggclient.common.ThingType;
 import co.yellowbricks.bggclient.fetch.FetchException;
 import co.yellowbricks.bggclient.fetch.domain.FetchItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import ro.bg.dao.BoardGameDAO;
 import ro.bg.dao.PubDAO;
 import ro.bg.model.BoardGame;
+import ro.bg.model.Event;
 import ro.bg.model.Pub;
+import ro.bg.model.User;
+import ro.bg.model.dto.BoardGameDTO;
+import ro.bg.model.dto.EventDTO;
+import ro.bg.model.dto.GameDTO;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -21,6 +28,9 @@ public class BoardGameServiceImpl implements BoardGameService {
 
     @Autowired
     PubDAO pubDAO;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     @Override
     public List<BoardGame> getAllById(int id) {
@@ -80,6 +90,27 @@ public class BoardGameServiceImpl implements BoardGameService {
     }
 
     @Override
+    public void deleteGame(int idGame, int idUser) throws FetchException {
+        jdbcTemplate.update(
+                "delete from user_games where pk_board_game_id = ? and pk_user_id = ?",
+                idGame,idUser);
+    }
+
+    @Override
+    public void addGame(int idGame, int idUser) throws FetchException {
+        if(findById(idGame) == null){
+            Collection<FetchItem> boardGames = BGG.fetch(Arrays.asList(idGame), ThingType.BOARDGAME);
+            for(FetchItem bg : boardGames){
+                BoardGame boardGame = new BoardGame(bg.getId(),bg.getName(),bg.getDescription(),bg.getImageUrl());
+                boardGameDAO.saveAndFlush(boardGame);
+            }
+        }
+        jdbcTemplate.update(
+                "insert into user_games values (?,?)",
+                idGame, idUser);
+    }
+
+    @Override
     public void updateBoardGame(BoardGame boardGame) {
         BoardGame oldBoardGame = boardGameDAO.findOne(boardGame.getId());
         oldBoardGame.setName(boardGame.getName());
@@ -93,5 +124,17 @@ public class BoardGameServiceImpl implements BoardGameService {
         for(int id : ids){
             boardGameDAO.delete(id);
         }
+    }
+
+    @Override
+    public BoardGameDTO getGamesByUserId(int userId) {
+        List<BoardGame> boardGames = boardGameDAO.getUserBoardGameById(userId);
+        List<Integer> ids = new ArrayList<>();
+        for(BoardGame boardGame : boardGames) {
+            ids.add(boardGame.getId());
+        }
+        BoardGameDTO boardGameDTO = new BoardGameDTO();
+        boardGameDTO.setBoardGamesIds(ids);
+        return boardGameDTO;
     }
 }

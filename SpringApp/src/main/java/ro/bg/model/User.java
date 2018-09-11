@@ -3,6 +3,7 @@ package ro.bg.model;
 import ro.bg.model.constants.AccountTypeEnum;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Set;
 
 @Entity
@@ -30,8 +31,8 @@ public class User {
     @Column(name = "account_type")
     private AccountTypeEnum accountType;
 
-    @Column(name = "profile_picture")
-    private String profilePicture;
+    @Column(name="profile_picture", nullable=false, columnDefinition="mediumblob")
+    private byte[] profilePicture;
 
     @OneToMany(mappedBy = "userCreator",cascade = CascadeType.ALL)
     private Set<Event> createdEvents;
@@ -64,12 +65,27 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Notification> notifications;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_games",
-            joinColumns = {@JoinColumn(name = "pk_user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "pk_board_game_id")})
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "users",cascade = CascadeType.ALL)
     private Set<BoardGame> boardGames;
+
+    @Column(name = "token")
+    private String token;
+
+    public User(String email, String password, String name, String town, AccountTypeEnum accountType, byte[] profilePicture) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.town = town;
+        this.accountType = accountType;
+        this.profilePicture = profilePicture;
+    }
+
+    public User() {
+    }
+
+    public User(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -119,11 +135,11 @@ public class User {
         this.accountType = accountType;
     }
 
-    public String getProfilePicture() {
+    public byte[] getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
     }
 
@@ -207,6 +223,14 @@ public class User {
         this.boardGames = boardGames;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -249,5 +273,28 @@ public class User {
         result = 31 * result + (getFriendshipsSetOne() != null ? getFriendshipsSetOne().hashCode() : 0);
         result = 31 * result + (getFriendshipsSetTwo() != null ? getFriendshipsSetTwo().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", town='" + town + '\'' +
+                ", accountType=" + accountType +
+                ", profilePicture=" + Arrays.toString(profilePicture) +
+                ", createdEvents=" + createdEvents +
+                ", eventUserSet=" + eventUserSet +
+                ", events=" + events +
+                ", friendshipsSetOne=" + friendshipsSetOne +
+                ", friendshipsSetTwo=" + friendshipsSetTwo +
+                ", senders=" + senders +
+                ", receivers=" + receivers +
+                ", gameReservations=" + gameReservations +
+                ", notifications=" + notifications +
+                ", boardGames=" + boardGames +
+                '}';
     }
 }

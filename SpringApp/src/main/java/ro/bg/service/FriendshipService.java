@@ -14,4 +14,6 @@ public interface FriendshipService {
     void insertFriendship(FriendshipRequest friendship);
 
     void deleteFriendship(Friendship friendship);
+
+    Friendship getFriendShip(int friendOne,int friendTwo);
 }

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="bgg-client-3.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../bgg-client/local-repo/co/yellowbricks/bgg-client/3.0/bgg-client-3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../bgg-client/build/libs/bgg-client-3.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

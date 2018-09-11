@@ -27,6 +27,9 @@ public class Pub {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "token")
+    private String token;
+
     @Column(name="profile_picture", nullable=false, columnDefinition="mediumblob")
     private byte[] picture;
 
@@ -140,6 +143,14 @@ public class Pub {
 
     public void setReservations(Set<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
