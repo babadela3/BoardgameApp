@@ -45,6 +45,7 @@ public class BoardGameServiceImpl implements BoardGameService {
             boardGame.setPubs(null);
             boardGame.setEvents(null);
             boardGame.setGameReservations(null);
+            boardGame.setUsers(null);
         }
         return boardGames;
     }

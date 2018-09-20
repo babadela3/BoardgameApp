@@ -27,9 +27,6 @@ public class UserServiceImpl implements UserService{
     UserDAO userDAO;
 
     @Autowired
-    EventDAO eventDAO;
-
-    @Autowired
     FriendshipDAO friendshipDAO;
 
     @Autowired

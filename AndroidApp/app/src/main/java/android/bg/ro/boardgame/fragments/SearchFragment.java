@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Fragment;
 import android.bg.ro.boardgame.MenuActivity;
 import android.bg.ro.boardgame.R;
+import android.bg.ro.boardgame.SignUpActivity;
 import android.bg.ro.boardgame.adapters.BoardGameAdapter;
 import android.bg.ro.boardgame.adapters.EventAdapter;
 import android.bg.ro.boardgame.adapters.PubAdapter;
@@ -18,8 +19,11 @@ import android.bg.ro.boardgame.services.GenericHttpService;
 import android.bg.ro.boardgame.services.TaskBoardGame;
 import android.bg.ro.boardgame.services.TaskDelegate;
 import android.bg.ro.boardgame.utils.Constant;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -33,6 +37,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,7 +53,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFragment extends Fragment implements OnMapReadyCallback, TaskDelegate, TaskBoardGame{
+public class SearchFragment extends Fragment implements OnMapReadyCallback, TaskDelegate, TaskBoardGame {
 
     TaskBoardGame taskBoardGame;
     TaskDelegate taskDelegate;
@@ -86,7 +91,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
         }
 
         List<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
-        genericHttpService = (GenericHttpService) new GenericHttpService(getActivity(),"allEvents", parameters,taskDelegate).execute(url);
+        genericHttpService = (GenericHttpService) new GenericHttpService(getActivity(), "allEvents", parameters, taskDelegate).execute(url);
 
         Button buttonSearch = (Button) getView().findViewById(R.id.buttonSearch);
         listView = (ListView) getView().findViewById(R.id.listview);
@@ -101,22 +106,21 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
                 CheckBox pubs = getView().findViewById(R.id.checkBoxPubs);
                 CheckBox games = getView().findViewById(R.id.checkBoxGames);
 
-                if(events.isChecked()){
+                if (events.isChecked()) {
                     mapping = "/getEventsByName";
                 }
-                if(users.isChecked()){
+                if (users.isChecked()) {
                     mapping = "/getUsersByName";
                 }
-                if(pubs.isChecked()){
+                if (pubs.isChecked()) {
                     mapping = "/getPubsByName";
                 }
-                if(games.isChecked()){
+                if (games.isChecked()) {
                     List<Pair<String, String>> parameters = new ArrayList<>();
                     parameters.add(new Pair<>("search", search.getText().toString()));
-                    BoardGameService boardGameService = (BoardGameService) new BoardGameService(getActivity(), parameters,taskBoardGame).execute();
-                }
-                else {
-                    if(!mapping.isEmpty()) {
+                    BoardGameService boardGameService = (BoardGameService) new BoardGameService(getActivity(), parameters, taskBoardGame).execute();
+                } else {
+                    if (!mapping.isEmpty()) {
                         URL url = null;
                         try {
                             url = new URL("http://" + Constant.IP + mapping);
@@ -148,10 +152,9 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
             return;
         }
 
-
         mMap.setMyLocationEnabled(true);
-        LatLng bucharest = new LatLng(44.426767,26.102538);
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( bucharest, 14.0f) );
+        LatLng bucharest = new LatLng(44.426767, 26.102538);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(bucharest, 14.5f));
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
     }
 
@@ -168,14 +171,32 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
     public void TaskCompletionResult(String result) {
         switch (genericHttpService.getResponseCode()) {
             case 200:
-                if(genericHttpService.getMapping().equals("allEvents")) {
+                if (genericHttpService.getMapping().equals("allEvents")) {
                     CustomParser customParser = new CustomParser();
                     events = customParser.getEvents(genericHttpService.getResponse());
-                    for(Event event : events) {
+                    for (Event event : events) {
                         mMap.addMarker(new MarkerOptions().position(new LatLng(event.getLatitude(), event.getLongitude())).title(event.getTitle()));
                     }
+
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            for (Event event : events) {
+                                if (event.getTitle().equals(marker.getTitle())) {
+                                    String message = event.getDate().substring(8, 10) + " " +
+                                            getMonth(event.getDate().substring(5, 7)) + " " +
+                                            event.getDate().substring(0, 4) + " - " +
+                                            event.getDate().substring(11, 16);
+                                    ;
+                                    Toast.makeText(getActivity(), message,
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            return false;
+                        }
+                    });
                 }
-                if(genericHttpService.getMapping().equals("getEventsByName")) {
+                if (genericHttpService.getMapping().equals("getEventsByName")) {
                     MapFragment mapFragment = (MapFragment) getFragmentManager()
                             .findFragmentById(R.id.fragment_map);
                     mapFragment.getView().setVisibility(View.GONE);
@@ -191,21 +212,21 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
 
                             Intent intent = new Intent("android.bg.ro.boardgame.EventActivity");
                             Bundle bundle = new Bundle();
-                            bundle.putInt("userId",user.getId());
-                            bundle.putInt("eventId",events.get(position).getId());
-                            bundle.putString("name",events.get(position).getTitle());
+                            bundle.putInt("userId", user.getId());
+                            bundle.putInt("eventId", events.get(position).getId());
+                            bundle.putString("name", events.get(position).getTitle());
                             intent.putExtras(bundle);
                             startActivity(intent);
                         }
                     });
                 }
-                if(genericHttpService.getMapping().equals("getUsersByName")) {
+                if (genericHttpService.getMapping().equals("getUsersByName")) {
                     MapFragment mapFragment = (MapFragment) getFragmentManager()
                             .findFragmentById(R.id.fragment_map);
                     mapFragment.getView().setVisibility(View.GONE);
                     CustomParser customParser = new CustomParser();
                     users = customParser.getUsers(genericHttpService.getResponse());
-                    UserAdapter adapter = new UserAdapter(getActivity(),0,users);
+                    UserAdapter adapter = new UserAdapter(getActivity(), 0, users);
                     listView.setAdapter(adapter);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -215,20 +236,20 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
 
                             Intent intent = new Intent("android.bg.ro.boardgame.UserActivity");
                             Bundle bundle = new Bundle();
-                            bundle.putInt("userId",user.getId());
-                            bundle.putInt("searchUserId",users.get(position).getId());
+                            bundle.putInt("userId", user.getId());
+                            bundle.putInt("searchUserId", users.get(position).getId());
                             intent.putExtras(bundle);
                             startActivity(intent);
                         }
                     });
                 }
-                if(genericHttpService.getMapping().equals("getPubsByName")) {
+                if (genericHttpService.getMapping().equals("getPubsByName")) {
                     MapFragment mapFragment = (MapFragment) getFragmentManager()
                             .findFragmentById(R.id.fragment_map);
                     mapFragment.getView().setVisibility(View.GONE);
                     CustomParser customParser = new CustomParser();
                     pubs = customParser.getPubs(genericHttpService.getResponse());
-                    PubAdapter adapter = new PubAdapter(getActivity(),0,pubs);
+                    PubAdapter adapter = new PubAdapter(getActivity(), 0, pubs);
                     listView.setAdapter(adapter);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -238,7 +259,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
 
                             Intent intent = new Intent("android.bg.ro.boardgame.PubActivity");
                             Bundle bundle = new Bundle();
-                            bundle.putInt("pubId",pubs.get(position).getId());
+                            bundle.putInt("pubId", pubs.get(position).getId());
                             intent.putExtras(bundle);
                             startActivity(intent);
                         }
@@ -253,7 +274,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.fragment_map);
         mapFragment.getView().setVisibility(View.GONE);
-        BoardGameAdapter adapter = new BoardGameAdapter(getActivity(),0,boardGames);
+        BoardGameAdapter adapter = new BoardGameAdapter(getActivity(), 0, boardGames);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -263,15 +284,45 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Task
 
                 Intent intent = new Intent("android.bg.ro.boardgame.BoardGameActivity");
                 Bundle bundle = new Bundle();
-                bundle.putInt("position",position);
-                bundle.putInt("userId",user.getId());
-                bundle.putInt("gameId",boardGames.get(position).getId());
-                bundle.putString("name",boardGames.get(position).getName());
-                bundle.putString("description",boardGames.get(position).getDescription());
-                bundle.putString("picture",boardGames.get(position).getPicture());
+                bundle.putInt("position", position);
+                bundle.putInt("userId", user.getId());
+                bundle.putInt("gameId", boardGames.get(position).getId());
+                bundle.putString("name", boardGames.get(position).getName());
+                bundle.putString("description", boardGames.get(position).getDescription());
+                bundle.putString("picture", boardGames.get(position).getPicture());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
+    }
+
+    private String getMonth(String month) {
+        switch (month) {
+            case "01":
+                return "January";
+            case "02":
+                return "February";
+            case "03":
+                return "March";
+            case "04":
+                return "April";
+            case "05":
+                return "May";
+            case "06":
+                return "June";
+            case "07":
+                return "July";
+            case "08":
+                return "August";
+            case "09":
+                return "September";
+            case "10":
+                return "October";
+            case "11":
+                return "November";
+            case "12":
+                return "December";
+        }
+        return "";
     }
 }

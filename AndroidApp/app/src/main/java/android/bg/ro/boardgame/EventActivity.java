@@ -376,7 +376,7 @@ public class EventActivity extends FragmentActivity implements OnMapReadyCallbac
 
         LatLng bucharest = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(bucharest).title(title));
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( bucharest, 15.0f) );
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( bucharest, 16.0f) );
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
     }
 

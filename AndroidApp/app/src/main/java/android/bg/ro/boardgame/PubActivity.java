@@ -197,7 +197,7 @@ public class PubActivity extends AppCompatActivity implements TaskDelegate, OnMa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng bucharest = new LatLng(44.426767,26.102538);
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( bucharest, 15.0f) );
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( bucharest, 16.0f) );
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
     }
 }

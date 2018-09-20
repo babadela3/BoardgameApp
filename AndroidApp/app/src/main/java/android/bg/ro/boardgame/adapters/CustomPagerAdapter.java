@@ -18,9 +18,14 @@ public class CustomPagerAdapter extends PagerAdapter {
             R.drawable.pub2_0,
             R.drawable.pub2_1,
             R.drawable.pub2_2,
-            R.drawable.pub2_3,
             R.drawable.pub2_4,
     };
+    int[] blackAndRed = {
+            R.drawable.images,
+            R.drawable.pub2_1,
+            R.drawable.game_event
+    };
+    int[] nothing = {};
 
     public CustomPagerAdapter(Context context, int pubId) {
         mContext = context;
@@ -30,10 +35,13 @@ public class CustomPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        if(pubId == 2) {
+        if(pubId == 3) {
             return mResources.length;
         }
-        return mResources.length;
+        if(pubId == 4) {
+            return blackAndRed.length;
+        }
+        return nothing.length;
     }
 
     @Override
@@ -46,11 +54,13 @@ public class CustomPagerAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        if(pubId == 2) {
+        if(pubId == 3) {
             imageView.setImageResource(mResources[position]);
         }
         else {
-            imageView.setImageResource(mResources[position]);
+            if(pubId == 4) {
+                imageView.setImageResource(blackAndRed[position]);
+            }
         }
 
         container.addView(itemView);

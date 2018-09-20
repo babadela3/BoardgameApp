@@ -1,9 +1,7 @@
 package android.bg.ro.boardgame.adapters;
 
-import android.annotation.SuppressLint;
 import android.bg.ro.boardgame.R;
 import android.bg.ro.boardgame.forms.SquareImageView;
-import android.bg.ro.boardgame.models.Event;
 import android.bg.ro.boardgame.models.Notification;
 import android.bg.ro.boardgame.services.ImageLoader;
 import android.content.Context;
@@ -50,6 +48,18 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         return position;
     }
 
+    @Override
+    public int getViewTypeCount() {
+
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        return position;
+    }
+
     public static class ViewHolder {
         public TextView nameEvent;
         public ImageView pictureEvent;
@@ -57,15 +67,15 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        EventAdapter.ViewHolder holder;
+        ViewHolder holder;
         try {
             if (convertView == null) {
                 vi = inflater.inflate(R.layout.list_item_notification, null);
 
             } else {
-                holder = (EventAdapter.ViewHolder) vi.getTag();
+                holder = (ViewHolder) vi.getTag();
             }
-            holder = new EventAdapter.ViewHolder();
+            holder = new ViewHolder();
             vi.setTag(holder);
 
             holder.nameEvent = (TextView) vi.findViewById(R.id.eventName);

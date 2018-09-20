@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="25dp"
-    android:background="@drawable/backgroundwhite">
+    android:padding="25dp">
 
     <android.support.v7.widget.AppCompatEditText
         android:id="@+id/textSearch"
@@ -79,15 +78,6 @@
             android:theme="@style/MyCheckBox"/>
     </LinearLayout>
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignStart="@+id/textSearch"
-        android:layout_below="@+id/linearLayout2"
-        android:id="@+id/fragment_map"
-        android:layout_marginBottom="50dp"
-        class="com.google.android.gms.maps.MapFragment"/>
-
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
@@ -96,6 +86,15 @@
         android:layout_below="@+id/linearLayout2"
         android:layout_marginBottom="50dp"
         android:background="@drawable/edittext_bg"/>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignStart="@+id/textSearch"
+        android:layout_below="@+id/linearLayout2"
+        android:id="@+id/fragment_map"
+        android:layout_marginBottom="50dp"
+        class="com.google.android.gms.maps.MapFragment"/>
 
 
 </RelativeLayout>
