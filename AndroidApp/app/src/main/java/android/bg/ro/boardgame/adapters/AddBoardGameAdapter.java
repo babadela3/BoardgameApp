@@ -50,6 +50,18 @@ public class AddBoardGameAdapter extends ArrayAdapter<BoardGame> {
         return position;
     }
 
+    @Override
+    public int getViewTypeCount() {
+
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        return position;
+    }
+
     public static class ViewHolder {
         public TextView nameGame;
         public SquareImageView pictureGame;

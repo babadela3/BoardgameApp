@@ -46,6 +46,18 @@ public class UserAdapter extends ArrayAdapter<User> {
         return position;
     }
 
+    @Override
+    public int getViewTypeCount() {
+
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        return position;
+    }
+
     public static class ViewHolder {
         public TextView nameFriend;
         public ImageView pictureFriend;

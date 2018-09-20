@@ -86,9 +86,9 @@ public class FriendsFragment extends Fragment implements TaskDelegate {
                                             int position, long id) {
 
                         Bundle bundle = new Bundle();
-                        bundle.putInt("idFriend",((MenuActivity) getActivity()).getUser().getFriends().get(position).getId());
-                        bundle.putInt("idUser",((MenuActivity) getActivity()).getUser().getId());
-                        bundle.putString("nameFriend",((MenuActivity) getActivity()).getUser().getFriends().get(position).getName());
+                        bundle.putInt("idFriend",user.getFriends().get(position).getId());
+                        bundle.putInt("idUser",user.getId());
+                        bundle.putString("nameFriend",user.getFriends().get(position).getName());
                         bundle.putInt("position",position);
 
                         Intent intent = new Intent("android.bg.ro.boardgame.ChatActivity");

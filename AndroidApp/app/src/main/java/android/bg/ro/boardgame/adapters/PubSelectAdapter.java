@@ -48,6 +48,18 @@ public class PubSelectAdapter extends ArrayAdapter<Pub> {
         return position;
     }
 
+    @Override
+    public int getViewTypeCount() {
+
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        return position;
+    }
+
     public static class ViewHolder {
         public TextView namePub;
         public ImageView picturePub;

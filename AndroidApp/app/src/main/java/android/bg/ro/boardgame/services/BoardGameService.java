@@ -41,11 +41,13 @@ public class BoardGameService extends AsyncTask<String, Void, String>{
             MultiDex.install(context);
             boardGames = new ArrayList<>();
             items = BGG.search(receiver, ThingType.BOARDGAME);
-            for (SearchItem item : items.getItems()) {
-                BoardGame boardGame = new BoardGame();
-                boardGame.setId(item.getId());
-                boardGame.setName(item.getName().getValue());
-                boardGames.add(boardGame);
+            if(items != null) {
+                for (SearchItem item : items.getItems()) {
+                    BoardGame boardGame = new BoardGame();
+                    boardGame.setId(item.getId());
+                    boardGame.setName(item.getName().getValue());
+                    boardGames.add(boardGame);
+                }
             }
         } catch (SearchException e) {
             e.printStackTrace();

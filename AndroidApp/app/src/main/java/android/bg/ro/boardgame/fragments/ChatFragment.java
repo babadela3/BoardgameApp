@@ -91,19 +91,6 @@ public class ChatFragment extends Fragment implements TaskClient{
 
         chatHistory = new ArrayList<ChatMessage>();
 
-//        ChatMessage msg = new ChatMessage();
-//        msg.setId(1);
-//        msg.setMe(false);
-//        msg.setMessage("Hi");
-//        msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-//        chatHistory.add(msg);
-//        ChatMessage msg1 = new ChatMessage();
-//        msg1.setId(2);
-//        msg1.setMe(false);
-//        msg1.setMessage("How r u doing???");
-//        msg1.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-//        chatHistory.add(msg1);
-
         adapter = new ChatAdapter(getActivity(), new ArrayList<ChatMessage>());
         messagesContainer.setAdapter(adapter);
 

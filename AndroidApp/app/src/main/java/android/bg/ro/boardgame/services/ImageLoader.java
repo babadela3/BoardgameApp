@@ -338,7 +338,7 @@ public class ImageLoader implements TaskBoardGame, TaskDelegate{
             if(bitmap!=null){
                 // if image is stored in MemoryCache Map then
                 // Show image in listview row
-                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 100, 100, false));
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 50, 50, false));
             }
             else
             {
